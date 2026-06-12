@@ -294,6 +294,7 @@ td .w{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px}
 .user-card:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
 .user-avatar{width:50px;height:50px;border:var(--bd);border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:20px;font-weight:800}
+.user-last{font-size:10.5px;font-weight:700;color:var(--muted);margin-top:-3px}
 .login-form{display:flex;flex-direction:column;gap:11px;margin-top:16px}
 .login-form .fg label{display:block;font-size:12px;font-weight:800;margin-bottom:5px}
 .login-form input{width:100%;border:var(--bd);border-radius:10px;padding:10px 12px;font:600 14px/1.3 'Manrope',sans-serif;
@@ -388,6 +389,37 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{flex:0 0 auto}
 }
+
+/* ── Nhóm từ vựng ────────────────────────────────────────── */
+.grp{display:inline-block;padding:3px 9px;border:2px solid var(--ink);border-radius:8px;
+  background:var(--lav);font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+.grp.none{background:#fff;border-style:dashed;color:var(--muted)}
+select.themed{border:var(--bd);border-radius:10px;padding:8px 10px;background:#fff;
+  font:700 13px 'Manrope',sans-serif;color:var(--ink);cursor:pointer;max-width:220px}
+select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
+
+/* ── Phản hồi tức thì trên flashcard ─────────────────────── */
+.fc-verdict{display:flex;align-items:center;gap:8px;justify-content:center;
+  border:2.5px solid var(--ink);border-radius:12px;padding:9px 16px;
+  font-weight:800;font-size:15px;max-width:94%;
+  animation:verdictPop .22s cubic-bezier(.34,1.56,.64,1)}
+.fc-verdict.ok{background:var(--mint)}
+.fc-verdict.bad{background:var(--pink)}
+.fc-verdict .ic{width:19px;height:19px;flex:0 0 auto}
+@keyframes verdictPop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* ── Phiên âm & phát âm ──────────────────────────────────── */
+.fc-ipa{display:flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;
+  font-size:16px;font-weight:600;color:#23284AB8;margin-top:-4px}
+.speak-btn{border:2.5px solid var(--ink);border-radius:50%;width:34px;height:34px;background:#fff;
+  cursor:pointer;display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;
+  box-shadow:2px 2px 0 var(--ink);color:var(--ink)}
+.speak-btn:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.speak-btn:active{transform:translate(1px,1px);box-shadow:1px 1px 0 var(--ink)}
+.speak-btn .ic{width:16px;height:16px}
+.speak-btn.sm{width:26px;height:26px;box-shadow:none;border-width:2px}
+.speak-btn.sm .ic{width:13px;height:13px}
+.tb-ipa{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:500}
 </style>
 </head>
 <body>
@@ -415,6 +447,7 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
 <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5l11 6.5-11 6.5z"/></symbol>
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5.5v13M16 5.5v13"/></symbol>
 <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/></symbol>
+<symbol id="i-sound" viewBox="0 0 24 24"><path d="M4.5 9.5v5h3.5l4.5 4V5.5l-4.5 4z" fill="currentColor" stroke="none"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01" stroke-width="2.6"/></symbol>
 </defs></svg>
 <div class="login-overlay" id="loginOverlay">
@@ -465,6 +498,11 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
           <input id="fWord" class="mono" placeholder="book">
         </div>
         <div class="fg col-3">
+          <label>Nhóm (gõ mới hoặc chọn gợi ý)</label>
+          <input id="fGroup" list="groupList" placeholder="ví dụ: Mô tả ánh sáng">
+          <datalist id="groupList"></datalist>
+        </div>
+        <div class="fg col-3">
           <label>Loại từ</label>
           <input id="fPos" placeholder="n, v, adj, phrase…">
         </div>
@@ -498,6 +536,10 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
       <div class="panel-title"><span class="dot" style="background:var(--mint)"></span>Sổ từ vựng</div>
       <div class="toolbar">
         <input type="search" id="search" placeholder="Tìm từ, nghĩa…">
+        <select class="themed" id="groupFilter" title="Lọc theo nhóm">
+          <option value="">Tất cả nhóm</option>
+        </select>
+        <button class="btn lav sm" id="btnBulkGroup" title="Gán nhóm cho toàn bộ từ đang hiển thị bên dưới"><svg class="ic"><use href="#i-pin"/></svg>Gán nhóm</button>
         <button class="btn sky sm" id="btnImport"><svg class="ic"><use href="#i-in"/></svg>Nhập file note</button>
         <button class="btn lemon sm" id="btnExport"><svg class="ic"><use href="#i-out"/></svg>Xuất file note</button>
         <input type="file" id="fileInput" accept=".txt,.note,.csv" hidden>
@@ -529,6 +571,9 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
   <section class="tab-page" id="tab-quiz">
     <div class="quiz-stage">
       <div class="q-meta">
+        <select class="themed" id="quizGroup" title="Chọn nhóm để luyện">
+          <option value="">Tất cả nhóm</option>
+        </select>
         <label class="switch-row"><input type="checkbox" id="quizSavedOnly"> Chỉ luyện từ <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg> đang học</label>
         <span class="chip" style="margin-left:auto"><svg class="ic" style="color:#E5484D"><use href="#i-flame"/></svg> chuỗi đúng: <span class="num" id="quizStreak">0</span></span>
       </div>
@@ -540,6 +585,9 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
   <section class="tab-page" id="tab-flash">
     <div class="fc-stage">
       <div class="q-meta" style="justify-content:center">
+        <select class="themed" id="fcGroup" title="Chọn nhóm để ôn">
+          <option value="">Tất cả nhóm</option>
+        </select>
         <label class="switch-row"><input type="checkbox" id="fcSavedOnly"> Chỉ ôn từ <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg> đang học</label>
       </div>
       <div id="fcArea"></div>
@@ -640,6 +688,7 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
       và dán vào CLOUD_URL bên dưới (bỏ dấu / ở cuối nếu có).
    Để trống '' = chỉ lưu trên trình duyệt của từng máy.            */
 const CLOUD_URL = 'https://flashcard-53fb0-default-rtdb.firebaseio.com';
+const APP_VERSION = 'v3.0 · 11-06-2026';
 
 const DEFAULT_USERS = ['Ni','Tom','Dinh'];
 const USERS_KEY = 'soTuUsers_v1';
@@ -666,6 +715,36 @@ async function saveUserList(){
     catch(e){ toast('Không lưu được danh sách người dùng lên mạng'); }
   }
 }
+
+/* ── Mốc đăng nhập gần nhất của từng người ── */
+const LASTLOGIN_KEY = 'soTuLastLogin_v1';
+let lastLogins = {};                       // { Tên: timestamp(ms) }
+async function loadLastLogins(){
+  let map = {};
+  try{ map = JSON.parse(localStorage.getItem(LASTLOGIN_KEY) || '{}'); }catch(e){}
+  if(cloudOn()){
+    try{
+      const cl = await cloudGet('meta/lastLogin');
+      if(cl && typeof cl === 'object') map = { ...map, ...cl };
+    }catch(e){}
+  }
+  lastLogins = map;          // gán một lần — tránh hai lần gọi chồng nhau xoá dữ liệu của nhau
+}
+async function markLogin(){
+  lastLogins[currentUser] = Date.now();
+  try{ localStorage.setItem(LASTLOGIN_KEY, JSON.stringify(lastLogins)); }catch(e){}
+  if(cloudOn()){
+    try{ await cloudPut('meta/lastLogin/' + currentUser, lastLogins[currentUser]); }catch(e){}
+  }
+}
+function lastLoginLabel(u){
+  const ts = lastLogins[u];
+  if(!ts) return 'Chưa đăng nhập';
+  const days = Math.floor((Date.now() - ts) / 86400000);
+  if(days <= 0) return 'Hôm nay';
+  if(days === 1) return 'Hôm qua';
+  return days + ' ngày trước';
+}
 let currentUser = null;
 const lsKey  = () => 'soTu_v3_' + currentUser;
 const AUTH_KEY = 'soTuAuth_v1';
@@ -687,34 +766,58 @@ function newStats(){
            times:[], avgTime:0 };
 }
 
-function makeWord(word, pos, meaning, sentence, note, kind, saved=false){
+function makeWord(word, pos, meaning, sentence, note, kind, saved=false, group=''){
   return { id:uid(), word:word.trim(), pos:(pos||'').trim(), meaning:(meaning||'').trim(),
            sentence:(sentence||'').trim(), note:(note||'').trim(),
-           kind: kind==='cụm' ? 'cụm' : 'đơn', saved:!!saved, stats:newStats() };
+           kind: kind==='cụm' ? 'cụm' : 'đơn', saved:!!saved,
+           group:(group||'').trim(), stats:newStats() };
 }
+const groupsOf = () => [...new Set(words.map(w => w.group).filter(Boolean))]
+  .sort((a,b) => a.localeCompare(b, 'vi'));
 
 /* Parser dùng chung cho file note và dữ liệu mặc định.
-   Mỗi dòng: từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm */
+   Mỗi dòng: từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm | nhóm
+   Dòng tiêu đề dạng "# ── Tên nhóm ──" sẽ gán nhóm cho các dòng bên dưới */
 function parseNoteText(text, existing){
   const entries = [];
-  let skipped = 0;
+  let skipped = 0, curGroup = '';
   const dupKey = w => (w.word + '¦' + w.meaning).toLowerCase();
   const seen = new Set((existing||[]).map(dupKey));
   text.split(/\r?\n/).forEach(line=>{
     line = line.trim();
-    if(!line || line.startsWith('#')) return;
+    if(!line) return;
+    if(line.startsWith('#')){
+      const m = line.match(/^#\s*─*\s*(?:\d+[a-z]?\.\s*)?([^─(]+?)\s*(?:\(.*\))?\s*─*\s*$/);
+      if(m && /─/.test(line)) curGroup = m[1].trim();   // chỉ nhận dòng tiêu đề có gạch ──
+      return;
+    }
     const parts = line.split('|').map(s=>s.trim());
     if(parts.length < 3 || !parts[0] || !parts[2]){ skipped++; return; }
-    const [word, pos, meaning, sentence='', note='', kindRaw=''] = parts;
+    const [word, pos, meaning, sentence='', note='', kindRaw='', groupRaw=''] = parts;
     const kind = /cụm|cum|phrase/i.test(kindRaw) ? 'cụm'
                : /đơn|don|single/i.test(kindRaw) ? 'đơn'
                : (word.includes(' ') ? 'cụm' : 'đơn');
-    const w = makeWord(word, pos, meaning, sentence, note, kind);
+    const w = makeWord(word, pos, meaning, sentence, note, kind, false, groupRaw || curGroup);
     if(seen.has(dupKey(w))){ skipped++; return; }
     seen.add(dupKey(w));
     entries.push(w);
   });
   return { entries, skipped };
+}
+
+/* Sổ cũ trên mây chưa có nhóm → tự nhận nhóm từ bộ mặc định (khớp từ + nghĩa) */
+function adoptGroups(){
+  if(!words.some(w => !w.group)) return;
+  const map = new Map(parseNoteText(DEFAULT_NOTES).entries
+    .map(e => [(e.word + '¦' + e.meaning).toLowerCase(), e.group]));
+  let changed = false;
+  for(const w of words){
+    if(w.group) continue;
+    if(typeof w.group !== 'string') w.group = '';
+    const g = map.get((w.word + '¦' + w.meaning).toLowerCase());
+    if(g){ w.group = g; changed = true; }
+  }
+  if(changed) save();
 }
 
 /* Danh sách từ mặc định (được nhúng từ notes.txt) */
@@ -956,6 +1059,95 @@ async function loadUser(){
     }
     save();
   }
+  for(const w of words) normalizeWord(w);
+  adoptGroups();
+}
+
+/* Firebase tự lược bỏ mảng/đối tượng rỗng khi lưu — vá lại đầy đủ
+   các trường để không bao giờ gặp undefined ở giữa chừng */
+function normalizeWord(w){
+  if(typeof w.group !== 'string') w.group = '';
+  if(typeof w.note  !== 'string') w.note  = '';
+  if(typeof w.sentence !== 'string') w.sentence = '';
+  if(typeof w.pos !== 'string') w.pos = '';
+  w.saved = !!w.saved;
+  if(!w.stats || typeof w.stats !== 'object') w.stats = newStats();
+  else w.stats = Object.assign(newStats(), w.stats);
+  if(!Array.isArray(w.stats.times)) w.stats.times = [];
+  if(typeof w.ipa   !== 'string') w.ipa   = '';
+  if(typeof w.audio !== 'string') w.audio = '';
+}
+
+/* ── Phiên âm + phát âm: tự tra Free Dictionary API (không cần key) ──
+   - Chỉ tra từ đơn; kết quả (IPA + link audio) lưu vào từ và đồng bộ mây
+   - Tra "lười": chỉ khi từ xuất hiện trên flashcard hoặc khi bấm loa,
+     tránh dội 107 request một lúc. Thất bại chỉ ghi nhớ trong phiên,
+     mất mạng thì lần sau vẫn thử lại. */
+const ipaFailed = new Set();
+async function fetchPhonetics(w){
+  if(w.kind !== 'đơn' || w.ipa || ipaFailed.has(w.id)) return !!w.ipa;
+  try{
+    const r = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'
+      + encodeURIComponent(w.word.toLowerCase().trim()));
+    if(!r.ok) throw 0;
+    const data = await r.json();
+    const phs = (Array.isArray(data) && data[0] && data[0].phonetics) || [];
+    /* Ưu tiên tuyệt đối bản Anh-Mỹ (file audio có đuôi -us.mp3) */
+    const us = phs.find(p => p.audio && /-us\.mp3/i.test(p.audio));
+    w.audio = (us || phs.find(p => p.audio) || {}).audio || '';
+    w.ipa   = (us && us.text)
+           || (phs.find(p => p.text) || {}).text
+           || (data[0] && data[0].phonetic) || '';
+    if(w.ipa || w.audio){ save(); return true; }
+    ipaFailed.add(w.id); return false;
+  }catch(e){ ipaFailed.add(w.id); return false; }
+}
+
+/* Đọc to: ưu tiên audio từ điển; không có thì dùng giọng đọc trình duyệt */
+function speakWord(w){
+  if(w.kind !== 'đơn') return;               // chỉ phát âm từ đơn
+  if(w.audio){
+    new Audio(w.audio).play().catch(() => speakTTS(w.word));
+    return;
+  }
+  fetchPhonetics(w).then(ok => {
+    if(w.audio){ new Audio(w.audio).play().catch(() => speakTTS(w.word)); }
+    else speakTTS(w.word);
+    if(ok && fc && fc.w.id === w.id) updateFcIpa();
+  });
+}
+/* Tra sẵn phiên âm cho mọi từ đơn còn thiếu — chạy nền sau khi đăng nhập,
+   cách nhau 300ms để lịch sự với API. IPA hiện ra ngay, không cần bấm loa. */
+let ipaQueueRunning = false;
+async function prefetchPhonetics(){
+  if(ipaQueueRunning) return;
+  ipaQueueRunning = true;
+  const user = currentUser;
+  const targets = words.filter(w => w.kind === 'đơn' && !w.ipa && !ipaFailed.has(w.id));
+  let found = 0;
+  for(const w of targets){
+    if(currentUser !== user) break;          // đổi người dùng → dừng
+    if(await fetchPhonetics(w)){
+      found++;
+      if(fc && fc.w.id === w.id) updateFcIpa();
+    }
+    await new Promise(r => setTimeout(r, 300));
+  }
+  if(found && currentUser === user) renderTable();
+  ipaQueueRunning = false;
+}
+
+function speakTTS(text){
+  try{
+    if(!('speechSynthesis' in window)) { toast('Trình duyệt không hỗ trợ đọc'); return; }
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.92;
+    const v = speechSynthesis.getVoices().find(v => v.lang === 'en-US')
+           || speechSynthesis.getVoices().find(v => v.lang.startsWith('en-US'));
+    if(v) u.voice = v;
+    speechSynthesis.speak(u);
+  }catch(e){}
 }
 function save(){
   if(!currentUser || !words) return;
@@ -1048,7 +1240,9 @@ function pickWord(pool){
 
 /* grade: 0 = quên/sai · 1 = mơ hồ · 2 = nhớ/đúng */
 function applyGrade(w, grade, timeMs){
+  if(!w.stats) w.stats = newStats();
   const s = w.stats;
+  if(!Array.isArray(s.times)) s.times = [];
   s.seen++; s.lastSeen = now();
   if(timeMs){
     s.times.push(timeMs);
@@ -1101,16 +1295,22 @@ $('#btnAdd').addEventListener('click', ()=>{
   const dup = words.find(w => w.word.toLowerCase() === word.toLowerCase()
                            && w.meaning.toLowerCase() === meaning.toLowerCase());
   if(dup){ toast('Từ này đã có trong sổ'); return; }
-  words.push(makeWord(word, $('#fPos').value, meaning, $('#fSentence').value, $('#fNote').value, formKind));
+  words.push(makeWord(word, $('#fPos').value, meaning, $('#fSentence').value, $('#fNote').value, formKind,
+                      false, $('#fGroup').value));
   save(); renderTable(); renderStats(); clearForm();
   toast(`Đã thêm "${word}" vào sổ`);
+  const justAdded = words[words.length - 1];
+  if(justAdded.kind === 'đơn'){
+    fetchPhonetics(justAdded).then(ok => { if(ok){ renderTable();
+      toast(`Đã tra phiên âm: ${justAdded.word} ${justAdded.ipa}`); } });
+  }
 });
-['fWord','fPos','fMeaning','fSentence','fNote'].forEach(id =>
+['fWord','fPos','fMeaning','fSentence','fNote','fGroup'].forEach(id =>
   $('#' + id).addEventListener('keydown', e => {
     if(e.key === 'Enter'){ e.preventDefault(); $('#btnAdd').click(); }
   }));
 function clearForm(){
-  ['fWord','fPos','fMeaning','fSentence','fNote'].forEach(id=>$('#'+id).value='');
+  ['fWord','fPos','fMeaning','fSentence','fNote','fGroup'].forEach(id=>$('#'+id).value='');
   $('#fWord').focus();
 }
 $('#btnClear').addEventListener('click', clearForm);
@@ -1124,9 +1324,11 @@ const lvRank = w => !w.stats.seen ? 0 : (w.stats.interval||0) < 3 ? 1 : (w.stats
 function renderTable(){
   const q = ($('#search').value||'').toLowerCase();
   const tb = $('#wordTbody');
+  const gf = $('#groupFilter').value;
   let list = words.filter(w =>
-    !q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
-       || (w.note||'').toLowerCase().includes(q));
+    (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
+        || (w.note||'').toLowerCase().includes(q))
+    && (gf === '' || (gf === '∅' ? !w.group : w.group === gf)));
   if(sortBy){
     const key = {
       word: w => w.word.toLowerCase(),
@@ -1139,6 +1341,12 @@ function renderTable(){
       return (ka < kb ? -1 : ka > kb ? 1 : 0) * sortDir;
     });
   }
+  const gSel = $('#groupFilter'), keep = gSel.value;
+  gSel.innerHTML = '<option value="">Tất cả nhóm</option>'
+    + groupsOf().map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('')
+    + '<option value="∅">Chưa phân nhóm</option>';
+  gSel.value = [...gSel.options].some(o => o.value === keep) ? keep : '';
+  $('#groupList').innerHTML = groupsOf().map(g => `<option value="${esc(g)}">`).join('');
   $$('th.sortable').forEach(th => {
     th.querySelector('.arrow').textContent =
       th.dataset.sort === sortBy ? (sortDir > 0 ? '▲' : '▼') : '';
@@ -1151,7 +1359,11 @@ function renderTable(){
     const acc = w.stats.seen ? Math.round(accuracy(w)*100) : null;
     return `<tr>
       <td><button class="star-btn ${w.saved?'on':''}" data-act="star" data-id="${w.id}" title="Lưu vào danh sách đang học">${I('star')}</button></td>
-      <td><span class="w">${esc(w.word)}</span></td>
+      <td>${w.kind === 'đơn' ? `<div style="display:flex;align-items:center;gap:7px">
+        <button class="speak-btn sm" data-act="say" data-id="${w.id}" title="Nghe phát âm">${I('sound')}</button>
+        <div><span class="w">${esc(w.word)}</span>
+          ${w.ipa ? `<br><span class="tb-ipa">${esc(w.ipa)}</span>` : ''}</div>
+      </div>` : `<span class="w">${esc(w.word)}</span>`}</td>
       <td>${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''}</td>
       <td>${esc(w.meaning)}</td>
       <td class="mono" style="font-size:12.5px">${esc(w.sentence)}</td>
@@ -1167,6 +1379,21 @@ function renderTable(){
   }).join('');
 }
 $('#search').addEventListener('input', renderTable);
+$('#groupFilter').addEventListener('change', renderTable);
+$('#btnBulkGroup').addEventListener('click', () => {
+  const q = ($('#search').value||'').toLowerCase();
+  const gf = $('#groupFilter').value;
+  const list = words.filter(w =>
+    (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
+        || (w.note||'').toLowerCase().includes(q))
+    && (gf === '' || (gf === '∅' ? !w.group : w.group === gf)));
+  if(!list.length){ toast('Không có từ nào đang hiển thị'); return; }
+  const g = prompt('Gán nhóm cho ' + list.length + ' từ đang hiển thị (để trống = bỏ nhóm):', '');
+  if(g === null) return;
+  list.forEach(w => w.group = g.trim());
+  save(); renderTable();
+  toast(g.trim() ? `Đã xếp ${list.length} từ vào nhóm ${g.trim()}` : `Đã bỏ nhóm của ${list.length} từ`);
+});
 document.querySelector('thead').addEventListener('click', e => {
   const th = e.target.closest('th.sortable'); if(!th) return;
   if(sortBy === th.dataset.sort) {
@@ -1179,7 +1406,10 @@ document.querySelector('thead').addEventListener('click', e => {
 $('#wordTbody').addEventListener('click', e=>{
   const b = e.target.closest('button'); if(!b) return;
   const w = words.find(x=>x.id===b.dataset.id); if(!w) return;
-  if(b.dataset.act==='star'){
+  if(b.dataset.act==='say'){
+    speakWord(w);
+    if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
+  }else if(b.dataset.act==='star'){
     w.saved = !w.saved; save(); renderTable(); renderStats();
     toast(w.saved ? `Đang học "${w.word}"` : `Đã bỏ lưu "${w.word}"`);
   }else if(b.dataset.act==='del'){
@@ -1208,9 +1438,9 @@ $('#fileInput').addEventListener('change', e=>{
 
 $('#btnExport').addEventListener('click', ()=>{
   if(!words.length){ toast('Sổ đang trống'); return; }
-  const header = '# Sổ Từ — file note (từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm)\n';
+  const header = '# Sổ Từ — file note (từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm | nhóm)\n';
   const body = words.map(w =>
-    [w.word, w.pos, w.meaning, w.sentence, w.note, w.kind].join(' | ')).join('\n');
+    [w.word, w.pos, w.meaning, w.sentence, w.note, w.kind, w.group || ''].join(' | ')).join('\n');
   const blob = new Blob([header + body + '\n'], {type:'text/plain;charset=utf-8'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -1226,9 +1456,16 @@ $('#btnExport').addEventListener('click', ()=>{
 let quiz = null;          // {w, mode, startAt, hintUsed, typed[], pickedIdx[]}
 let quizStreak = 0;
 
+function fillGroupSelect(sel){
+  const keep = sel.value;
+  sel.innerHTML = '<option value="">Tất cả nhóm</option>'
+    + groupsOf().map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
+  sel.value = [...sel.options].some(o => o.value === keep) ? keep : '';
+}
 function quizPool(){
   const savedOnly = $('#quizSavedOnly').checked;
-  return words.filter(w => !savedOnly || w.saved);
+  const g = $('#quizGroup').value;
+  return words.filter(w => (!savedOnly || w.saved) && (!g || w.group === g));
 }
 
 function startQuiz(){
@@ -1406,6 +1643,7 @@ function checkQuiz(){
   $('#quizStreak').textContent = quizStreak;
 }
 $('#quizSavedOnly').addEventListener('change', startQuiz);
+$('#quizGroup').addEventListener('change', startQuiz);
 
 /* ═══════════════════════════════════════════════════════════
    TAB FLASHCARD — trắc nghiệm chọn nghĩa đúng
@@ -1414,14 +1652,17 @@ let fc = null; // {w, opts, correctIdx, startAt, answered, picked, flipped}
 
 function fcPool(){
   const savedOnly = $('#fcSavedOnly').checked;
-  return words.filter(w => !savedOnly || w.saved);
+  const g = $('#fcGroup').value;
+  return words.filter(w => (!savedOnly || w.saved) && (!g || w.group === g));
 }
 
-/* Tạo 4 phương án: 1 nghĩa đúng + 3 nghĩa nhiễu (ưu tiên cùng loại đơn/cụm) */
+/* Tạo 4 phương án: 1 nghĩa đúng + 3 nghĩa nhiễu
+   (ưu tiên cùng nhóm > cùng loại đơn/cụm — nhiễu càng "gần" càng khó đoán mò) */
 function buildOptions(w){
   const seen = new Set([w.meaning.toLowerCase()]);
+  const rank = x => (x.group && x.group === w.group ? 2 : 0) + (x.kind === w.kind ? 1 : 0);
   const cands = shuffle(words.filter(x => x.id !== w.id && x.meaning))
-                  .sort((a,b)=>(b.kind===w.kind)-(a.kind===w.kind));
+                  .sort((a,b) => rank(b) - rank(a));
   const distract = [];
   for(const x of cands){
     const m = x.meaning.trim();
@@ -1477,12 +1718,20 @@ function renderFc(){
           <div class="fc-corner">
             ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''}
             <span class="kind-tag ${w.kind==='đơn'?'kind-don':'kind-cum'}">${w.kind}</span>
+            ${w.group?`<span class="grp" style="cursor:default">${esc(w.group)}</span>`:''}
           </div>
           <button class="fc-star ${w.saved?'on':''}" id="fcStar" title="Lưu vào danh sách đang học">${I('star')}</button>
           <div class="fc-word">${esc(w.word)}</div>
-          ${clozeHtml(w) ? `<div class="fc-cloze">${clozeHtml(w)}</div>` : ''}
+          ${w.kind === 'đơn' ? `<div class="fc-ipa" id="fcIpa">
+            <button class="speak-btn" id="fcSpeak" title="Nghe phát âm">${I('sound')}</button>
+            <span id="fcIpaText">${esc(w.ipa || '')}</span>
+          </div>` : ''}
+          ${answered ? (fc.picked === fc.correctIdx
+              ? `<div class="fc-verdict ok">${I('check')} Chính xác!</div>`
+              : `<div class="fc-verdict bad">${I('x')} Chưa đúng — đáp án: <b>${esc(w.meaning)}</b></div>`)
+            : (clozeHtml(w) ? `<div class="fc-cloze">${clozeHtml(w)}</div>` : '')}
           <span class="fc-lv">${lvBadge(w)}</span>
-          <div class="fc-tap">${answered ? 'Chạm để lật thẻ xem chi tiết' : 'Chọn nghĩa đúng bên dưới'}</div>
+          <div class="fc-tap">${answered ? 'Chạm để lật thẻ xem ví dụ + ghi chú' : 'Chọn nghĩa đúng bên dưới'}</div>
         </div>
         <div class="fc-face fc-back">
           <div class="fc-meaning">${esc(w.meaning)}</div>
@@ -1501,13 +1750,20 @@ function renderFc(){
       ${dueIn<=0 && w.stats.seen ? ' · <b style="color:var(--red)">đến hạn ôn</b>' : ''}
     </div>`;
 
+  const spk = $('#fcSpeak');
+  if(spk) spk.addEventListener('click', e => { e.stopPropagation(); speakWord(w); });
+  if(w.kind === 'đơn' && !w.ipa){
+    fetchPhonetics(w).then(ok => { if(ok) updateFcIpa(); });
+  }
   $('#fcCard').addEventListener('click', e=>{
-    if(e.target.closest('.fc-star')) return;
+    if(e.target.closest('.fc-star') || e.target.closest('.speak-btn')) return;
     if(!fc.answered) return;                 // chưa trả lời thì không cho lật
-    fc.flipped = !fc.flipped; renderFc();
+    fc.flipped = !fc.flipped;
+    $('#fcCard').classList.toggle('flipped', fc.flipped);   // lật tại chỗ — mượt và không vẽ lại
   });
   $('#fcStar').addEventListener('click', ()=>{
-    w.saved = !w.saved; save(); renderStats(); renderFc();
+    w.saved = !w.saved; save(); renderStats();
+    $('#fcStar').classList.toggle('on', w.saved);            // đổi sao tại chỗ
     toast(w.saved ? `Đang học "${w.word}"` : `Đã bỏ lưu "${w.word}"`);
   });
   const optsEl = $('#fcOpts');
@@ -1522,15 +1778,52 @@ function renderFc(){
   if(kn) kn.addEventListener('click', ()=>{ applyGrade(w, 2, now()-fc.startAt); startFc(); });
 }
 
+function updateFcIpa(){
+  const t = $('#fcIpaText');
+  if(t && fc) t.textContent = fc.w.ipa || '';
+}
+
 function answerFc(i){
   if(!fc || fc.answered) return;
   fc.picked = i;
   fc.answered = true;
-  fc.flipped = true;                          // lật thẻ cho xem chi tiết
   const t = now() - fc.startAt;
-  const grade = i === fc.correctIdx ? (t < 7000 ? 2 : 1) : 0;
-  applyGrade(fc.w, grade, t);
-  renderFc();
+  const correct = i === fc.correctIdx;
+
+  /* Phản hồi tại chỗ — đổi trực tiếp các phần tử đang hiển thị,
+     không vẽ lại thẻ nên không thể bị kẹt trên bất kỳ trình duyệt nào */
+  $$('#fcOpts .opt').forEach((b, j) => {
+    b.disabled = true;
+    if(j === fc.correctIdx) b.classList.add('right');
+    else if(j === i)        b.classList.add('wrong');
+    else                    b.classList.add('dim');
+  });
+  const front = document.querySelector('.fc-front');
+  if(front){
+    const cz = front.querySelector('.fc-cloze');
+    if(cz) cz.remove();                       // câu cloze nhường chỗ cho kết quả
+    const v = document.createElement('div');
+    v.className = 'fc-verdict ' + (correct ? 'ok' : 'bad');
+    v.innerHTML = correct
+      ? I('check') + ' Chính xác!'
+      : I('x') + ' Chưa đúng — đáp án: <b>' + esc(fc.w.meaning) + '</b>';
+    const tap = front.querySelector('.fc-tap');
+    front.insertBefore(v, tap);
+    if(tap) tap.textContent = 'Chạm để lật thẻ xem ví dụ + ghi chú';
+  }
+  const optsEl = $('#fcOpts');
+  if(optsEl && !$('#fcNext')){
+    const d = document.createElement('div');
+    d.style.cssText = 'margin:14px 0 6px;text-align:center';
+    const btn = document.createElement('button');
+    btn.className = 'btn primary'; btn.id = 'fcNext';
+    btn.innerHTML = 'Thẻ tiếp theo ' + I('next');
+    btn.addEventListener('click', startFc);
+    d.appendChild(btn);
+    optsEl.after(d);
+  }
+
+  applyGrade(fc.w, correct ? (t < 7000 ? 2 : 1) : 0, t);   // chấm điểm SAU khi đã hiện kết quả
 }
 
 /* Phím tắt cho flashcard: 1–4 chọn đáp án, Enter/Space sang thẻ kế */
@@ -1546,6 +1839,7 @@ document.addEventListener('keydown', e=>{
   }
 });
 $('#fcSavedOnly').addEventListener('change', startFc);
+$('#fcGroup').addEventListener('change', startFc);
 
 /* ═══════════════════════════════════════════════════════════
    §9 TẬP TRUNG — hẹn giờ, chuông nhắc khi rời cửa sổ, hoa nở
@@ -1771,8 +2065,8 @@ $('#focusStop').addEventListener('click', () => stopFocus(false));
 $$('.tab-btn').forEach(b=>b.addEventListener('click', ()=>{
   $$('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
   $$('.tab-page').forEach(p=>p.classList.toggle('active', p.id==='tab-'+b.dataset.tab));
-  if(b.dataset.tab==='quiz') startQuiz();
-  if(b.dataset.tab==='flash') startFc();
+  if(b.dataset.tab==='quiz'){ fillGroupSelect($('#quizGroup')); startQuiz(); }
+  if(b.dataset.tab==='flash'){ fillGroupSelect($('#fcGroup')); startFc(); }
   if(b.dataset.tab==='notes') renderTable();
   if(b.dataset.tab==='focus'){ renderFocus(); renderGarden(); }
 }));
@@ -1794,11 +2088,13 @@ const avatarHtml = u => `<span class="user-avatar" style="background:${userColor
 async function renderPick(){
   loginSteps().innerHTML = '<p class="login-sub">Đang tải danh sách người dùng…</p>';
   await loadUserList();
+  await loadLastLogins();
   loginSteps().innerHTML = `
     <p class="login-sub">Chọn người dùng để mở sổ tay của bạn</p>
     <div class="user-grid many">
       ${userList.map(u => `
-        <button class="user-card" data-user="${esc(u)}">${avatarHtml(u)}${esc(u)}</button>`).join('')}
+        <button class="user-card" data-user="${esc(u)}">${avatarHtml(u)}${esc(u)}
+          <span class="user-last">${lastLoginLabel(u)}</span></button>`).join('')}
       <button class="user-card add" id="addUserBtn">
         <span class="user-avatar">${I('plus')}</span>Thêm người</button>
     </div>
@@ -1951,6 +2247,7 @@ function renderForgot(rec){
 async function enterApp(){
   loginSteps().innerHTML = '<p class="login-sub">Đang mở sổ tay của ' + currentUser + '…</p>';
   await loadUser();
+  markLogin();
   $('#userName').textContent = currentUser;
   $('#loginOverlay').style.display = 'none';
   quiz = null; fc = null; quizStreak = 0; lastShownId = null;
@@ -1959,6 +2256,7 @@ async function enterApp(){
   loadGarden();
   renderTable();
   renderStats();
+  prefetchPhonetics();
   if(memoryOnly) toast('Trình duyệt chặn lưu trữ — dữ liệu chỉ giữ trong phiên này, hãy dùng Xuất file note');
 }
 
@@ -1973,7 +2271,13 @@ $('#userChip').addEventListener('click', () => {
   renderPick();
 });
 
+/* Lỗi bất ngờ → hiện toast thay vì đứng im */
+window.addEventListener('error', e => {
+  try{ toast('Lỗi: ' + (e.message || 'không rõ')); }catch(x){}
+});
+
 /* ── Khởi động ───────────────────────────────────────────── */
+console.log('Sổ Từ', APP_VERSION);
 renderPick();
 </script>
 </body>

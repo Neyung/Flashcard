@@ -210,7 +210,13 @@ td .w{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px}
 }
 .fc-front{background:var(--peach)}
 .fc-back{background:var(--mint);transform:rotateY(180deg)}
-.fc-word{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:clamp(26px,6vw,44px);letter-spacing:-1px;word-break:break-word}
+.fc-word{font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:-1px;
+  word-break:break-word;overflow-wrap:break-word;hyphens:auto;
+  font-size:clamp(16px,5.5vw,44px);           /* co xuống tối thiểu 16px */
+  line-height:1.25;max-width:100%;padding:0 6px}
+.fc-word.len-med{font-size:clamp(16px,4.5vw,34px)}   /* 20–35 ký tự */
+.fc-word.len-long{font-size:clamp(14px,3.5vw,26px)}  /* 36–55 ký tự */
+.fc-word.len-xlong{font-size:clamp(13px,2.6vw,20px)} /* 56+ ký tự   */
 .fc-meaning{font-size:24px;font-weight:800}
 .fc-sentence{font-family:'JetBrains Mono',monospace;font-size:14.5px;font-weight:500;background:#FFFFFFB0;border:2px solid var(--ink);border-radius:10px;padding:8px 14px}
 .fc-note{font-size:13px;font-weight:600;color:#23284ACC;max-width:90%}
@@ -420,6 +426,35 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 .speak-btn.sm{width:26px;height:26px;box-shadow:none;border-width:2px}
 .speak-btn.sm .ic{width:13px;height:13px}
 .tb-ipa{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);font-weight:500}
+
+/* ── Sửa từ trong bảng ───────────────────────────────────── */
+.edit-row td{background:var(--lemon);padding:14px 12px}
+.edit-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:9px;align-items:end}
+.edit-grid .fg{margin:0}
+.edit-grid label{display:block;font-size:10.5px;font-weight:800;margin-bottom:3px}
+.edit-grid input,.edit-grid select{width:100%;border:2px solid var(--ink);border-radius:8px;
+  padding:7px 9px;font:600 12.5px 'Manrope',sans-serif;background:#fff;box-sizing:border-box}
+.edit-grid .span2{grid-column:span 2}
+.edit-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+@media (max-width:760px){.edit-grid{grid-template-columns:repeat(2,1fr)}.edit-grid .span2{grid-column:span 2}}
+/* ── Luyện gõ: chế độ cho cụm ────────────────────────────── */
+.mode-pills{display:flex;gap:8px;justify-content:center;margin:0 0 12px}
+.mode-pill{border:2.5px solid var(--ink);border-radius:999px;background:#fff;
+  padding:6px 14px;font:800 12.5px 'Manrope',sans-serif;cursor:pointer;color:var(--ink)}
+.mode-pill.on{background:var(--ink);color:#fff}
+.phrase-input{display:block;width:100%;max-width:560px;margin:0 auto 14px;border:var(--bd);
+  border-radius:12px;padding:13px 15px;font:600 15px/1.4 'JetBrains Mono',monospace;
+  background:#fff;box-sizing:border-box}
+.phrase-input:focus{outline:none;box-shadow:4px 4px 0 var(--ink)}
+.phrase-input:disabled{background:var(--bg);color:var(--muted)}
+
+.edit-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;align-items:end}
+.edit-grid label{display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:800}
+.edit-grid input,.edit-grid select{border:2.5px solid var(--ink);border-radius:9px;padding:8px 10px;
+  font:600 13px 'Manrope',sans-serif;background:#fff;width:100%;box-sizing:border-box}
+.edit-grid input:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
+.edit-actions{display:flex;gap:8px;align-items:center}
+@media (max-width:900px){.edit-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -448,6 +483,7 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5.5v13M16 5.5v13"/></symbol>
 <symbol id="i-stop" viewBox="0 0 24 24"><rect x="6.5" y="6.5" width="11" height="11" rx="1.5"/></symbol>
 <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4.5 9.5v5h3.5l4.5 4V5.5l-4.5 4z" fill="currentColor" stroke="none"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="M14.5 5.5l4 4L8 20H4v-4z"/><path d="M12.5 7.5l4 4"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01" stroke-width="2.6"/></symbol>
 </defs></svg>
 <div class="login-overlay" id="loginOverlay">
@@ -688,7 +724,7 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
       và dán vào CLOUD_URL bên dưới (bỏ dấu / ở cuối nếu có).
    Để trống '' = chỉ lưu trên trình duyệt của từng máy.            */
 const CLOUD_URL = 'https://flashcard-53fb0-default-rtdb.firebaseio.com';
-const APP_VERSION = 'v3.0 · 11-06-2026';
+const APP_VERSION = 'v3.1 · 11-06-2026';
 
 const DEFAULT_USERS = ['Ni','Tom','Dinh'];
 const USERS_KEY = 'soTuUsers_v1';
@@ -819,136 +855,6 @@ function adoptGroups(){
   }
   if(changed) save();
 }
-
-/* Danh sách từ mặc định (được nhúng từ notes.txt) */
-const DEFAULT_NOTES = `# Sổ Từ — file note (Write About the Photo · DET)
-# Định dạng mỗi dòng: từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm
-# Dòng bắt đầu bằng # sẽ được bỏ qua khi nhập vào ứng dụng
-
-# ── 1. Từ vựng ──────────────────────────────────────────────
-vendor | n | người bán hàng ở chợ | a vendor is arranging fruit at her stall | trang trọng hơn seller | đơn
-stall | n | quầy hàng | the market stall is filled with fresh vegetables | | đơn
-produce | n | nông sản, sản phẩm tươi | the stall is filled with fresh produce | phân biệt với product (sản phẩm nói chung) | đơn
-awning | n | mái hiên, mái che | the vendors stand under colorful awnings | | đơn
-tend to a stall | v | trông coi quầy hàng | an elderly woman is tending to a stall | | cụm
-set up | v | chuẩn bị, dựng (quầy hàng) | the vendors are setting up their stalls | phrasal verb: set up - set up - set up | cụm
-display | v | trưng bày | the vendor displays fresh produce neatly | danh từ: a display | đơn
-industrious | a | chăm chỉ, cần mẫn | the market has an industrious atmosphere | = studious (nhưng studious chỉ dành cho học tập) | đơn
-careful | a | cẩn thận | she is careful when arranging the goods | trạng từ: carefully | đơn
-colorful | a | đầy màu sắc | colorful awnings cover the stalls | | đơn
-study area | n | khu vực học tập | the students are sitting in a quiet study area | | cụm
-well-lit space | n | không gian sáng sủa | they are working in a well-lit space | | cụm
-stationery | n | đồ dùng học tập, văn phòng phẩm | stationery is spread across the table | đừng nhầm với stationary (đứng yên) | đơn
-printed materials | n | giấy tờ, tài liệu in nói chung | printed materials are spread across the table | | cụm
-advisor | n | cố vấn | an advisor appears to be leading the discussion | | đơn
-collaborative | a | hợp tác, làm việc nhóm | they are engaged in a collaborative study session | động từ: collaborate | đơn
-attentive | a | chú tâm, lắng nghe kỹ | the students look attentive and focused | | đơn
-purposeful | a | có mục đích | the scene conveys a purposeful atmosphere | | đơn
-earnest | a | nghiêm túc, chân thành | they are having an earnest discussion | | đơn
-neighborhood coffee shop | n | quán cà phê địa phương | the photo shows a cosy neighborhood coffee shop | | cụm
-a striped sweater | n | áo len kẻ sọc | the man is wearing a striped sweater | tương tự: a long-sleeved top (áo dài tay) | cụm
-patron | n | khách hàng (bối cảnh trong quán) | patrons are chatting at wooden tables | trang trọng hơn customer | đơn
-unhurried | a | không vội vã | the café has an unhurried atmosphere | | đơn
-sociable | a | thân thiện, thích giao lưu | the scene feels relaxed and sociable | | đơn
-vibrant | a | sôi động | the market looks vibrant and bustling | | đơn
-laid-back | a | thoải mái, không căng thẳng | the coffee shop has a laid-back vibe | | đơn
-cosy | a | ấm áp, dễ chịu | the interior feels warm and cosy | cách viết Mỹ: cozy | đơn
-deserted horizon | n | đường chân trời vắng lặng | the beach stretches toward a deserted horizon | | cụm
-ease | n | sự thoải mái | they seem deeply at ease with one another | thường dùng trong cụm: at ease | đơn
-blissful | a | hạnh phúc viên mãn | the scene has a blissful quality | hay dùng: a blissful quality | đơn
-serene | a | thanh thản, bình yên | a serene scene unfolds along the shore | danh từ: serenity | đơn
-jersey | n | áo thi đấu | he is dressed in a fitted cycling jersey | | đơn
-
-# ── 2. Paraphrase (cách diễn đạt nâng cấp) ──────────────────
-take notes in their notebooks | phrase | ghi chép vào vở | the students take notes in their notebooks | paraphrase của: writing in notebooks | cụm
-pore over academic texts | phrase | chăm chú đọc tài liệu học thuật | she is poring over academic texts | paraphrase của: reading a book; = reviewing | cụm
-engaged in discussion | phrase | đang thảo luận | they are engaged in discussion | paraphrase của: talking to each other | cụm
-collaborating on academic work | phrase | cùng làm bài, học nhóm | they are collaborating on academic work | paraphrase của: studying together | cụm
-deeply immersed in | phrase | chìm đắm, tập trung cao độ vào | they are deeply immersed in their work | paraphrase của: focusing on | cụm
-throughout the café | phrase | khắp quán cà phê | patrons are seated throughout the café | paraphrase của: around the store | cụm
-a latte with a layer of steamed foam | phrase | ly latte với lớp bọt sữa | a latte with a layer of steamed foam sits on the table | lưu ý: steamed, không phải streamed | cụm
-a warm beverage | phrase | đồ uống nóng | she is holding a warm beverage | paraphrase của: hot drink | cụm
-over a white shirt | phrase | khoác ngoài áo sơ mi trắng | he wears a sweater over a white shirt | paraphrase của: mixed with white shirt | cụm
-his arm around her shoulder | phrase | vòng tay qua vai cô ấy | he has his arm around her shoulder | paraphrase của: they are hugging | cụm
-deeply at ease with one another | phrase | rất thoải mái với nhau | the couple seems deeply at ease with one another | paraphrase của: comfortable with each other | cụm
-a tranquil body of water | phrase | một vùng nước tĩnh lặng | a tranquil body of water reflects the light | paraphrase của: a lake / river | cụm
-a line of mature trees | phrase | một hàng cây cổ thụ | a line of mature trees borders the path | paraphrase của: large trees | cụm
-
-# ── 3. Cụm câu mô tả hay dùng ───────────────────────────────
-a stall filled with fresh produce | phrase | quầy hàng đầy ắp nông sản tươi | the photo shows a stall filled with fresh produce | | cụm
-setting up their stalls under colorful awnings | phrase | dựng quầy hàng dưới những mái che sặc sỡ | vendors are setting up their stalls under colorful awnings | | cụm
-captures the industrious atmosphere of a morning market | phrase | ghi lại không khí cần mẫn của phiên chợ sáng | the image captures the industrious atmosphere of a morning market | hay dùng cho câu kết bài | cụm
-seemingly engaged in a group study session | phrase | dường như đang trong buổi học nhóm | they are seemingly engaged in a group study session | | cụm
-deeply immersed in academic work | phrase | chìm đắm trong việc học | the students are deeply immersed in academic work | | cụm
-taking turns contributing to the discussion | phrase | lần lượt đóng góp ý kiến vào buổi thảo luận | they are taking turns contributing to the discussion | lưu ý: taking turns (có s) | cụm
-spread across the table | phrase | trải khắp mặt bàn | books and papers are spread across the table | | cụm
-lined with a range of academic texts | phrase | xếp đầy các loại tài liệu học thuật | the shelves are lined with a range of academic texts | mô tả kệ sách | cụm
-a dedicated academic environment | phrase | một môi trường học tập chuyên biệt | the library offers a dedicated academic environment | | cụm
-who appears to be leading the discussion | phrase | người dường như đang dẫn dắt buổi thảo luận | an older man, who appears to be leading the discussion, sits at the center | mệnh đề quan hệ mô tả người | cụm
-a relaxed and sociable atmosphere | phrase | bầu không khí thoải mái và thân thiện | the café has a relaxed and sociable atmosphere | | cụm
-conveying a sense of creativity and quiet inspiration | phrase | gợi lên cảm giác sáng tạo và nguồn cảm hứng nhẹ nhàng | the corner is full of plants, conveying a sense of creativity and quiet inspiration | hay dùng cuối bài | cụm
-gently lapping waves | phrase | những con sóng vỗ nhẹ | gently lapping waves reach the shore | | cụm
-a serene scene unfolds | phrase | một khung cảnh bình yên hiện ra | a serene scene unfolds, with calm water and soft light | sau đó thêm dấu gạch hoặc phẩy để giải thích thêm | cụm
-a quiet stretch of beach | phrase | một dải biển yên tĩnh | the couple walks along a quiet stretch of beach | | cụm
-a breezy, sunny day | phrase | một ngày nắng và lộng gió | the photo was taken on a breezy, sunny day | | cụm
-can be seen laughing and holding hands together | phrase | có thể thấy họ đang cười và nắm tay nhau | the couple can be seen laughing and holding hands together | mẫu câu: can be seen + V-ing | cụm
-a sense of companionship | phrase | cảm giác đồng hành, tình bạn đồng hành | the scene conveys a sense of companionship | | cụm
-flanked on one side by trees and on the other side by water | phrase | một bên là hàng cây, bên kia là mặt nước | the path is flanked on one side by trees and on the other side by water | mẫu mô tả hai bên con đường | cụm
-without a single ripple | phrase | không một gợn sóng | the lake is completely still, without a single ripple | mô tả mặt nước phẳng lặng | cụm
-dressed in a fitted cycling jersey | phrase | mặc áo đạp xe ôm dáng | the man is dressed in a fitted cycling jersey | mẫu câu: dressed in + trang phục | cụm
-
-# ── 4a. Mô tả ánh sáng ──────────────────────────────────────
-bathed in sunlight | phrase | tràn ngập ánh nắng (ánh sáng mạnh) | the meadow is bathed in sunlight | nhóm: mô tả ánh sáng | cụm
-dappled light | phrase | ánh sáng lốm đốm, lấp lánh | dappled light falls through the canopy | lưu ý: dappled (không phải dapped) · nhóm: mô tả ánh sáng | cụm
-softly lit | phrase | được chiếu sáng dịu nhẹ | the room is softly lit | nhóm: mô tả ánh sáng | cụm
-casts long shadows | phrase | tạo ra những bóng dài | the low sun casts long shadows | nhóm: mô tả ánh sáng | cụm
-reflects the light | phrase | phản chiếu ánh sáng | the calm water reflects the light | nhóm: mô tả ánh sáng | cụm
-illuminated by | phrase | được chiếu sáng bởi | the street is illuminated by warm lamps | nhóm: mô tả ánh sáng | cụm
-
-# ── 4b. Mô tả chiều sâu ─────────────────────────────────────
-stretches into the distance | phrase | trải dài về phía xa | the road stretches into the distance | nhóm: mô tả chiều sâu | cụm
-extends toward the horizon | phrase | kéo dài về phía chân trời | the beach extends toward the horizon | nhóm: mô tả chiều sâu | cụm
-disappears around the bend | phrase | khuất sau khúc cua | the path disappears around the bend | nhóm: mô tả chiều sâu | cụm
-leads further into | phrase | dẫn sâu hơn vào | a trail leads further into the forest | nhóm: mô tả chiều sâu | cụm
-visible in the far background | phrase | hiện ra ở phía xa xa | mountains are visible in the far background | nhóm: mô tả chiều sâu | cụm
-recedes into the distance | phrase | lùi dần về phía xa | the shoreline recedes into the distance | nhóm: mô tả chiều sâu | cụm
-
-# ── 4c. Mô tả thiên nhiên ───────────────────────────────────
-lush greenery | phrase | cây cối xanh tươi tốt | the park is full of lush greenery | nhóm: mô tả thiên nhiên | cụm
-dense foliage | phrase | tán lá rậm rạp | the house is hidden behind dense foliage | nhóm: mô tả thiên nhiên | cụm
-rolling hills | phrase | những ngọn đồi nhấp nhô | rolling hills surround the village | nhóm: mô tả thiên nhiên | cụm
-a canopy of trees | phrase | một tán cây rợp bóng | the path runs under a canopy of trees | nhóm: mô tả thiên nhiên | cụm
-open meadow | phrase | đồng cỏ rộng mở | a picnic is set up in an open meadow | nhóm: mô tả thiên nhiên | cụm
-solitude and natural grandeur | phrase | sự tĩnh lặng và vẻ hùng vĩ của thiên nhiên | the scene conveys solitude and natural grandeur | nhóm: mô tả thiên nhiên | cụm
-an untouched natural landscape | phrase | cảnh thiên nhiên hoang sơ | the photo captures an untouched natural landscape | nhóm: mô tả thiên nhiên | cụm
-a welcome sense of escape for urban dwellers | phrase | cảm giác thoát ly dễ chịu cho cư dân thành thị | the lake offers a welcome sense of escape for urban dwellers | câu kết hay · nhóm: mô tả thiên nhiên | cụm
-
-# ── 4d. Mô tả đô thị ────────────────────────────────────────
-towering buildings | phrase | những tòa nhà cao chọc trời | towering buildings line the avenue | nhóm: mô tả đô thị | cụm
-a well-maintained facade | phrase | mặt tiền được bảo trì tốt | the shop has a well-maintained facade | nhóm: mô tả đô thị | cụm
-a bustling street scene | phrase | khung cảnh đường phố nhộn nhịp | the photo shows a bustling street scene | nhóm: mô tả đô thị | cụm
-cobblestone pavement | phrase | vỉa hè lát đá cuội | tables are set on the cobblestone pavement | nhóm: mô tả đô thị | cụm
-multi-storey structures | phrase | các công trình nhiều tầng | multi-storey structures rise behind the square | nhóm: mô tả đô thị | cụm
-a pedestrian walkway | phrase | lối đi dành cho người đi bộ | a pedestrian walkway runs along the river | nhóm: mô tả đô thị | cụm
-
-# ── 4e. Mô tả nội thất ──────────────────────────────────────
-well-lit interior | phrase | nội thất sáng sủa | the café has a well-lit interior | nhóm: mô tả nội thất | cụm
-natural light streams in | phrase | ánh sáng tự nhiên tràn ngập vào | natural light streams in through tall windows | nhóm: mô tả nội thất | cụm
-neatly arranged | phrase | được sắp xếp gọn gàng | books are neatly arranged on the shelves | nhóm: mô tả nội thất | cụm
-open-plan layout | phrase | bố cục không gian mở | the office has an open-plan layout | nhóm: mô tả nội thất | cụm
-minimalist design | phrase | thiết kế tối giản | the room features a minimalist design | nhóm: mô tả nội thất | cụm
-a spacious, airy room | phrase | một căn phòng rộng rãi, thoáng đãng | they are studying in a spacious, airy room | nhóm: mô tả nội thất | cụm
-
-# ── 4f. Cặp tính từ kết bài ─────────────────────────────────
-serene and tranquil | a | thanh bình, yên tĩnh | overall, the scene feels serene and tranquil | cặp tính từ kết bài | cụm
-vibrant and bustling | a | sôi động, nhộn nhịp | overall, the market looks vibrant and bustling | cặp tính từ kết bài | cụm
-expansive and vast | a | rộng lớn, bao la | the landscape feels expansive and vast | cặp tính từ kết bài | cụm
-expansive and awe-inspiring | a | rộng lớn, hùng vĩ | the view is expansive and awe-inspiring | cặp tính từ kết bài | cụm
-unspoilt and immaculate | a | nguyên sơ, tinh khôi | the beach looks unspoilt and immaculate | cặp tính từ kết bài | cụm
-fresh and verdant | a | tươi mát, xanh tươi | the valley appears fresh and verdant | cặp tính từ kết bài | cụm
-remote and unspoilt | a | xa xôi, hoang sơ | the island feels remote and unspoilt | cặp tính từ kết bài | cụm
-inviting and picturesque | a | hấp dẫn, đẹp như tranh vẽ | the village looks inviting and picturesque | cặp tính từ kết bài | cụm
-well-preserved | a | được bảo tồn tốt | the old town is well-preserved | hay dùng cho công trình, khu phố cổ | đơn`;
 
 /* ── Băm mật khẩu (SHA-256, có fallback khi mở bằng file://) ── */
 async function hashText(text, salt){
@@ -1105,7 +1011,7 @@ async function fetchPhonetics(w){
 
 /* Đọc to: ưu tiên audio từ điển; không có thì dùng giọng đọc trình duyệt */
 function speakWord(w){
-  if(w.kind !== 'đơn') return;               // chỉ phát âm từ đơn
+  if(w.kind !== 'đơn'){ speakTTS(w.word); return; }   // cụm: giọng trình duyệt en-US
   if(w.audio){
     new Audio(w.audio).play().catch(() => speakTTS(w.word));
     return;
@@ -1319,6 +1225,24 @@ $('#btnClear').addEventListener('click', clearForm);
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 let sortBy = null, sortDir = 1;
+let editingId = null;
+
+function saveEdit(w){
+  const word = $('#eWord').value.trim(), meaning = $('#eMeaning').value.trim();
+  if(!word || !meaning){ toast('Từ và nghĩa không được để trống'); return; }
+  const wordChanged = word.toLowerCase() !== w.word.toLowerCase();
+  w.word = word;
+  w.pos = $('#ePos').value.trim();
+  w.meaning = meaning;
+  w.sentence = $('#eSentence').value.trim();
+  w.note = $('#eNote').value.trim();
+  w.kind = $('#eKind').value === 'cụm' ? 'cụm' : 'đơn';
+  w.group = $('#eGroup').value.trim();
+  if(wordChanged || w.kind === 'cụm'){ w.ipa = ''; w.audio = ''; ipaFailed.delete(w.id); }
+  save(); editingId = null; renderTable(); renderStats();
+  toast(`Đã cập nhật "${w.word}"`);
+  if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
+}
 const lvRank = w => !w.stats.seen ? 0 : (w.stats.interval||0) < 3 ? 1 : (w.stats.interval||0) < 14 ? 2 : 3;
 
 function renderTable(){
@@ -1357,13 +1281,33 @@ function renderTable(){
   }
   tb.innerHTML = list.map(w=>{
     const acc = w.stats.seen ? Math.round(accuracy(w)*100) : null;
+    if(w.id === editingId){
+      return `<tr class="edit-row"><td colspan="10">
+        <div class="edit-grid">
+          <label>Từ / cụm<input id="eWord" value="${esc(w.word)}"></label>
+          <label>Loại từ<input id="ePos" value="${esc(w.pos)}"></label>
+          <label>Nghĩa<input id="eMeaning" value="${esc(w.meaning)}"></label>
+          <label>Đặt câu<input id="eSentence" value="${esc(w.sentence)}"></label>
+          <label>Chú thích<input id="eNote" value="${esc(w.note)}"></label>
+          <label>Đơn/Cụm<select id="eKind" class="themed">
+            <option value="đơn" ${w.kind==='đơn'?'selected':''}>đơn</option>
+            <option value="cụm" ${w.kind==='cụm'?'selected':''}>cụm</option></select></label>
+          <label>Nhóm<input id="eGroup" value="${esc(w.group)}" list="groupList"></label>
+          <span class="edit-actions">
+            <button class="btn mint sm" data-act="saveEdit" data-id="${w.id}">${I('check')}Lưu</button>
+            <button class="btn ghost sm" data-act="cancelEdit" data-id="${w.id}">Huỷ</button>
+          </span>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin:8px 0 0">Enter để lưu · Esc để huỷ · thống kê học của từ được giữ nguyên</p>
+      </td></tr>`;
+    }
     return `<tr>
       <td><button class="star-btn ${w.saved?'on':''}" data-act="star" data-id="${w.id}" title="Lưu vào danh sách đang học">${I('star')}</button></td>
-      <td>${w.kind === 'đơn' ? `<div style="display:flex;align-items:center;gap:7px">
+      <td><div style="display:flex;align-items:center;gap:7px">
         <button class="speak-btn sm" data-act="say" data-id="${w.id}" title="Nghe phát âm">${I('sound')}</button>
         <div><span class="w">${esc(w.word)}</span>
-          ${w.ipa ? `<br><span class="tb-ipa">${esc(w.ipa)}</span>` : ''}</div>
-      </div>` : `<span class="w">${esc(w.word)}</span>`}</td>
+          ${w.kind === 'đơn' && w.ipa ? `<br><span class="tb-ipa">${esc(w.ipa)}</span>` : ''}</div>
+      </div></td>
       <td>${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''}</td>
       <td>${esc(w.meaning)}</td>
       <td class="mono" style="font-size:12.5px">${esc(w.sentence)}</td>
@@ -1374,7 +1318,9 @@ function renderTable(){
             : `<span class="acc-bar"><span class="acc-fill" style="width:${acc}%"></span></span> <span class="mono" style="font-size:11.5px">${acc}%</span>`}
       </td>
       <td>${lvBadge(w)}</td>
-      <td><button class="icon-btn" data-act="del" data-id="${w.id}" title="Xoá từ">${I('trash')}</button></td>
+      <td style="white-space:nowrap">
+        <button class="icon-btn" data-act="edit" data-id="${w.id}" title="Chỉnh sửa">${I('edit')}</button>
+        <button class="icon-btn" data-act="del" data-id="${w.id}" title="Xoá từ">${I('trash')}</button></td>
     </tr>`;
   }).join('');
 }
@@ -1394,6 +1340,16 @@ $('#btnBulkGroup').addEventListener('click', () => {
   save(); renderTable();
   toast(g.trim() ? `Đã xếp ${list.length} từ vào nhóm ${g.trim()}` : `Đã bỏ nhóm của ${list.length} từ`);
 });
+$('#wordTbody').addEventListener('keydown', e => {
+  if(!e.target.closest('.edit-row')) return;
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const w = words.find(x => x.id === editingId);
+    if(w) saveEdit(w);
+  }else if(e.key === 'Escape'){
+    editingId = null; renderTable();
+  }
+});
 document.querySelector('thead').addEventListener('click', e => {
   const th = e.target.closest('th.sortable'); if(!th) return;
   if(sortBy === th.dataset.sort) {
@@ -1406,7 +1362,18 @@ document.querySelector('thead').addEventListener('click', e => {
 $('#wordTbody').addEventListener('click', e=>{
   const b = e.target.closest('button'); if(!b) return;
   const w = words.find(x=>x.id===b.dataset.id); if(!w) return;
-  if(b.dataset.act==='say'){
+  if(b.dataset.act==='saveEdit'){
+    saveEdit(w);
+  }else if(b.dataset.act==='cancelEdit'){
+    editingId = null; renderTable();
+  }else if(b.dataset.act==='edit'){
+    editingId = w.id; renderTable();
+    const f = $('#eWord'); if(f){ f.focus(); f.select(); }
+  }else if(b.dataset.act==='editSave'){
+    saveEdit(w);
+  }else if(b.dataset.act==='editCancel'){
+    editingId = null; renderTable();
+  }else if(b.dataset.act==='say'){
     speakWord(w);
     if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
   }else if(b.dataset.act==='star'){
@@ -1478,7 +1445,9 @@ function startQuiz(){
   }
   const w = pickWord(pool);
   lastShownId = w.id;
-  quiz = { w, mode: w.kind, startAt: now(), hintUsed:false, typed:[], pickedIdx:[] };
+  quiz = { w, mode: w.kind, startAt: now(), hintUsed:false, typed:[], pickedIdx:[],
+           phraseMode: localStorage.getItem('soTuPhraseMode_v1') === 'type' ? 'type' : 'chips',
+           typedPhrase: '' };
   if(w.kind === 'đơn'){
     const letters = w.word.toLowerCase().split('');
     quiz.shuffled = shuffle(letters.map((ch,i)=>({ch,i})).filter(x=>x.ch!==' '));
@@ -1494,6 +1463,8 @@ function shuffle(a){
   for(let i=a.length-1;i>0;i--){ const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
+
+const normPhrase = t => t.toLowerCase().replace(/[.,!?;:"""'’]/g, ' ').replace(/\s+/g, ' ').trim();
 
 function renderQuiz(){
   const {w} = quiz;
@@ -1521,14 +1492,26 @@ function renderQuiz(){
       </div>
       <p class="muted" style="text-align:center;font-size:12px;margin-bottom:14px">Gõ trực tiếp trên bàn phím hoặc bấm chữ cái · Backspace để xoá · tự kiểm tra khi điền đủ</p>`;
   }else{
-    bodyHtml = `
-      <div class="answer-line" id="ansLine">${quiz.pickedIdx.length
-        ? quiz.pickedIdx.map((idx,k)=>`<span class="chip-w" data-k="${k}">${esc(quiz.shuffled[idx].t)}</span>`).join('')
-        : '<span class="placeholder">Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ</span>'}
-      </div>
-      <div class="chips" id="chips">${quiz.shuffled.map((o,idx)=>
-        `<span class="chip-w ${quiz.pickedIdx.includes(idx)?'used':''}" data-idx="${idx}">${esc(o.t)}</span>`).join('')}
+    const pills = `
+      <div class="mode-pills">
+        <button class="mode-pill ${quiz.phraseMode==='chips'?'on':''}" data-pm="chips">Ghép từ</button>
+        <button class="mode-pill ${quiz.phraseMode==='type'?'on':''}" data-pm="type">Gõ bàn phím</button>
       </div>`;
+    if(quiz.phraseMode === 'type'){
+      bodyHtml = pills + `
+        <input class="phrase-input" id="phraseInput" autocomplete="off" spellcheck="false"
+          placeholder="Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài"
+          value="${esc(quiz.typedPhrase)}">`;
+    }else{
+      bodyHtml = pills + `
+        <div class="answer-line" id="ansLine">${quiz.pickedIdx.length
+          ? quiz.pickedIdx.map((idx,k)=>`<span class="chip-w" data-k="${k}">${esc(quiz.shuffled[idx].t)}</span>`).join('')
+          : '<span class="placeholder">Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ</span>'}
+        </div>
+        <div class="chips" id="chips">${quiz.shuffled.map((o,idx)=>
+          `<span class="chip-w ${quiz.pickedIdx.includes(idx)?'used':''}" data-idx="${idx}">${esc(o.t)}</span>`).join('')}
+        </div>`;
+    }
   }
 
   $('#quizArea').innerHTML = `
@@ -1544,7 +1527,27 @@ function renderQuiz(){
   $('#btnCheck').addEventListener('click', checkQuiz);
   $('#btnSkip').addEventListener('click', ()=>{ applyGrade(quiz.w, 0); startQuiz(); });
   $('#btnHint').addEventListener('click', ()=>{ quiz.hintUsed = true; renderQuiz(); });
-  $('#chips').addEventListener('click', e=>{
+  $$('#quizArea .mode-pill').forEach(p => p.addEventListener('click', () => {
+    if(quiz.graded || quiz.phraseMode === p.dataset.pm) return;
+    quiz.phraseMode = p.dataset.pm;
+    try{ localStorage.setItem('soTuPhraseMode_v1', quiz.phraseMode); }catch(e){}
+    quiz.pickedIdx = []; quiz.typedPhrase = '';        // đổi chế độ → làm lại từ đầu, giữ đồng hồ
+    renderQuiz();
+  }));
+  const pIn = $('#phraseInput');
+  if(pIn){
+    pIn.addEventListener('input', () => {
+      quiz.typedPhrase = pIn.value;
+      const a = normPhrase(pIn.value), b = normPhrase(quiz.w.word);
+      if(a === b || a.length >= b.length) { autoCheck(true); }
+    });
+    pIn.addEventListener('keydown', e => {
+      if(e.key === 'Enter'){ e.preventDefault(); if(!quiz.graded) checkQuiz(); }
+    });
+    if(!quiz.graded) pIn.focus();
+  }
+  const chipsEl = $('#chips');
+  if(chipsEl) chipsEl.addEventListener('click', e=>{
     if(quiz.graded) return;
     const c = e.target.closest('.chip-w'); if(!c || c.classList.contains('used')) return;
     quiz.pickedIdx.push(+c.dataset.idx);
@@ -1562,11 +1565,13 @@ function renderQuiz(){
 }
 
 /* Tự động kiểm tra khi hoàn tất chữ cái / từ cuối cùng */
-function autoCheck(){
+function autoCheck(fromTyping){
   if(!quiz || quiz.graded) return;
   if(quiz.mode === 'đơn'){
     const maxLen = quiz.w.word.replace(/ /g,'').length;
     if(quiz.typed.length >= maxLen) checkQuiz();
+  }else if(quiz.phraseMode === 'type'){
+    if(fromTyping) checkQuiz();
   }else{
     if(quiz.pickedIdx.length >= quiz.shuffled.length) checkQuiz();
   }
@@ -1617,6 +1622,11 @@ function checkQuiz(){
   if(w.kind === 'đơn'){
     userAns = quiz.typed.join('');
     correct = userAns === w.word.toLowerCase().replace(/ /g,'');
+  }else if(quiz.phraseMode === 'type'){
+    const pIn = $('#phraseInput');
+    userAns = pIn ? pIn.value : quiz.typedPhrase;
+    correct = normPhrase(userAns) === normPhrase(w.word);
+    if(pIn){ pIn.disabled = true; pIn.blur(); }       // nhả Enter cho "từ tiếp theo"
   }else{
     userAns = quiz.pickedIdx.map(i=>quiz.shuffled[i].t).join(' ');
     correct = userAns.toLowerCase() === w.word.toLowerCase();
@@ -1721,11 +1731,11 @@ function renderFc(){
             ${w.group?`<span class="grp" style="cursor:default">${esc(w.group)}</span>`:''}
           </div>
           <button class="fc-star ${w.saved?'on':''}" id="fcStar" title="Lưu vào danh sách đang học">${I('star')}</button>
-          <div class="fc-word">${esc(w.word)}</div>
-          ${w.kind === 'đơn' ? `<div class="fc-ipa" id="fcIpa">
+          <div class="fc-word ${w.word.length>55?'len-xlong':w.word.length>35?'len-long':w.word.length>19?'len-med':''}">${esc(w.word)}</div>
+          <div class="fc-ipa" id="fcIpa">
             <button class="speak-btn" id="fcSpeak" title="Nghe phát âm">${I('sound')}</button>
-            <span id="fcIpaText">${esc(w.ipa || '')}</span>
-          </div>` : ''}
+            <span id="fcIpaText">${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span>
+          </div>
           ${answered ? (fc.picked === fc.correctIdx
               ? `<div class="fc-verdict ok">${I('check')} Chính xác!</div>`
               : `<div class="fc-verdict bad">${I('x')} Chưa đúng — đáp án: <b>${esc(w.meaning)}</b></div>`)

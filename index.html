@@ -724,7 +724,7 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
       và dán vào CLOUD_URL bên dưới (bỏ dấu / ở cuối nếu có).
    Để trống '' = chỉ lưu trên trình duyệt của từng máy.            */
 const CLOUD_URL = 'https://flashcard-53fb0-default-rtdb.firebaseio.com';
-const APP_VERSION = 'v3.1 · 11-06-2026';
+const APP_VERSION = 'v3.2 · 13-06-2026';
 
 const DEFAULT_USERS = ['Ni','Tom','Dinh'];
 const USERS_KEY = 'soTuUsers_v1';
@@ -811,7 +811,7 @@ function makeWord(word, pos, meaning, sentence, note, kind, saved=false, group='
 const groupsOf = () => [...new Set(words.map(w => w.group).filter(Boolean))]
   .sort((a,b) => a.localeCompare(b, 'vi'));
 
-/* Parser dùng chung cho file note và dữ liệu mặc định.
+/* Parser dùng chung khi nhập file note.
    Mỗi dòng: từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm | nhóm
    Dòng tiêu đề dạng "# ── Tên nhóm ──" sẽ gán nhóm cho các dòng bên dưới */
 function parseNoteText(text, existing){
@@ -841,20 +841,7 @@ function parseNoteText(text, existing){
   return { entries, skipped };
 }
 
-/* Sổ cũ trên mây chưa có nhóm → tự nhận nhóm từ bộ mặc định (khớp từ + nghĩa) */
-function adoptGroups(){
-  if(!words.some(w => !w.group)) return;
-  const map = new Map(parseNoteText(DEFAULT_NOTES).entries
-    .map(e => [(e.word + '¦' + e.meaning).toLowerCase(), e.group]));
-  let changed = false;
-  for(const w of words){
-    if(w.group) continue;
-    if(typeof w.group !== 'string') w.group = '';
-    const g = map.get((w.word + '¦' + w.meaning).toLowerCase());
-    if(g){ w.group = g; changed = true; }
-  }
-  if(changed) save();
-}
+/* Danh sách từ mặc định (được nhúng từ notes.txt) */
 
 /* ── Băm mật khẩu (SHA-256, có fallback khi mở bằng file://) ── */
 async function hashText(text, salt){
@@ -955,18 +942,11 @@ async function loadUser(){
       }
     }catch(e){}
   }
-  if(!words){                                      // 3) lần đầu tiên
-    if(currentUser === 'Tom'){
-      let legacy = null;                           // giữ nguyên sổ cũ của Tom nếu có
-      try{ legacy = JSON.parse(localStorage.getItem('soTu_v2') || 'null'); }catch(e){}
-      words = (Array.isArray(legacy) && legacy.length) ? legacy : parseNoteText(DEFAULT_NOTES).entries;
-    }else{
-      words = [];
-    }
+  if(!words){                                      // 3) lần đầu tiên — sổ trống
+    words = [];
     save();
   }
   for(const w of words) normalizeWord(w);
-  adoptGroups();
 }
 
 /* Firebase tự lược bỏ mảng/đối tượng rỗng khi lưu — vá lại đầy đủ

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sổ Ngữ · Flashcard học từ vựng</title>
+<title>Sổ Ngữ · Flashcard</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FFE0C9'/%3E%3Cpath d='M6 5.5h8.5a3 3 0 0 1 3 3V19H8a2.5 2.5 0 0 1-2.5-2.5z' fill='%23fff' stroke='%2323284A' stroke-width='2'/%3E%3Cpath d='M9.5 9.5h5M9.5 13h5' stroke='%231E5EFF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -921,6 +921,10 @@ function lastLoginLabel(u){
   if(days === 1) return t('yesterday');
   return t('daysAgo', days);
 }
+/* Mật khẩu xác nhận xoá tài khoản — chỉ lưu bản băm SHA-256 (không lưu chữ
+   thô trong code) để đối chiếu bằng hashText() có sẵn của app. */
+const DELETE_PW_SALT = 'sngu_del_2026';
+const DELETE_PW_HASH = '33c5d769ba607a9f12ccc59f1e0a2899b07954536cad5e5ae24e586f6bbee6c9';
 /* Xoá vĩnh viễn một tài khoản: khỏi danh sách người dùng, mật khẩu, mốc đăng
    nhập, và toàn bộ dữ liệu (từ vựng, mẫu câu, vườn hoa) trên máy lẫn trên
    mây — 'users/<tên>' trên Firebase chứa cả words/sentences_v2/garden nên
@@ -955,7 +959,7 @@ let LANG = (()=>{ try{ return localStorage.getItem('soTuLang_v1') || 'vi'; }catc
 let appMode = (()=>{ try{ return localStorage.getItem('soTuMode_v1') || 'vocab'; }catch(e){ return 'vocab'; } })();
 const I18N = {
 vi:{
-  appTitle:'Sổ Ngữ · Flashcard học từ vựng', switchUser:'Đổi người dùng',
+  appTitle:'Sổ Ngữ · Flashcard', switchUser:'Đổi người dùng',
   langNameVi:'Tiếng Việt', langNameEn:'Tiếng Anh',
   modeVocab:'Học Từ', modeWriting:'Luyện Viết',
   statWords:'từ', statLearning:'đang học', statDue:'đến hạn', statTemplates:'mẫu câu',
@@ -1045,7 +1049,8 @@ vi:{
   writeErrorsFound:n=>`Phát hiện ${n} lỗi chính tả — từ được khoanh đỏ bên trên`, writeNoErrors:'Không phát hiện lỗi chính tả nào!',
   loadingUsers:'Đang tải danh sách người dùng…', pickUserSub:'Chọn người dùng để mở sổ tay của bạn', addPerson:'Thêm người',
   deleteAccountTitle:'Xoá tài khoản này',
-  confirmDeleteAccount:u=>`Xoá vĩnh viễn tài khoản "${u}" cùng toàn bộ từ vựng, mẫu câu và vườn hoa? Không thể hoàn tác.`,
+  deletePwPrompt:u=>`Nhập mật khẩu xác nhận để xoá vĩnh viễn tài khoản "${u}" (không thể hoàn tác):`,
+  deletePwWrong:'Mật khẩu xác nhận không đúng — đã huỷ thao tác xoá.',
   toastAccountDeleted:u=>`Đã xoá tài khoản "${u}"`,
   loginNoteNoCloud:'Chưa bật đồng bộ mạng — sổ tay lưu riêng trên từng trình duyệt',
   neverLoggedIn:'Chưa đăng nhập', today:'Hôm nay', yesterday:'Hôm qua', daysAgo:n=>`${n} ngày trước`,
@@ -1063,7 +1068,7 @@ vi:{
   toastVerified:'Đã xác minh — hãy tạo mật khẩu mới', openingBook:u=>`Đang mở sổ tay của ${u}…`,
 },
 en:{
-  appTitle:'LangBook · Vocabulary Flashcards', switchUser:'Switch user',
+  appTitle:'LangBook · Flashcard', switchUser:'Switch user',
   langNameVi:'Vietnamese', langNameEn:'English',
   modeVocab:'Vocabulary', modeWriting:'Writing',
   statWords:'words', statLearning:'learning', statDue:'due', statTemplates:'templates',
@@ -1153,7 +1158,8 @@ en:{
   writeErrorsFound:n=>`Found ${n} misspelled word${n>1?'s':''} — highlighted in red above`, writeNoErrors:'No spelling errors found!',
   loadingUsers:'Loading user list…', pickUserSub:'Pick a user to open your book', addPerson:'Add person',
   deleteAccountTitle:'Delete this account',
-  confirmDeleteAccount:u=>`Permanently delete the account "${u}" along with all its words, sentence templates, and garden? This cannot be undone.`,
+  deletePwPrompt:u=>`Enter the confirmation password to permanently delete the account "${u}" (this cannot be undone):`,
+  deletePwWrong:'Wrong confirmation password — deletion cancelled.',
   toastAccountDeleted:u=>`Deleted account "${u}"`,
   loginNoteNoCloud:'Cloud sync is off — your book is saved separately per browser',
   neverLoggedIn:'Never logged in', today:'Today', yesterday:'Yesterday', daysAgo:n=>`${n} days ago`,
@@ -3123,11 +3129,15 @@ async function renderPick(){
       pickUser(card.dataset.user);
     }));
   $$('#loginSteps .user-del').forEach(btn =>
-    btn.addEventListener('click', e => {
+    btn.addEventListener('click', async e => {
       e.stopPropagation();
       const u = btn.dataset.del;
-      if(!confirm(t('confirmDeleteAccount', u))) return;
-      deleteUserAccount(u).then(() => { toast(t('toastAccountDeleted', u)); renderPick(); });
+      const pw = prompt(t('deletePwPrompt', u));
+      if(pw === null) return;                          // huỷ hộp thoại
+      const h = await hashText(pw, DELETE_PW_SALT);
+      if(h !== DELETE_PW_HASH){ toast(t('deletePwWrong')); return; }
+      await deleteUserAccount(u);
+      toast(t('toastAccountDeleted', u)); renderPick();
     }));
   $('#addUserBtn').addEventListener('click', renderAddUser);
 }

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sổ Từ · Flashcard học từ vựng</title>
+<title>Sổ Ngữ · Flashcard học từ vựng</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FFE0C9'/%3E%3Cpath d='M6 5.5h8.5a3 3 0 0 1 3 3V19H8a2.5 2.5 0 0 1-2.5-2.5z' fill='%23fff' stroke='%2323284A' stroke-width='2'/%3E%3Cpath d='M9.5 9.5h5M9.5 13h5' stroke='%231E5EFF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -107,7 +107,7 @@ header{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-bottom:20p
   transition:box-shadow .12s;
 }
 .fg input:focus,.fg select:focus,.fg textarea:focus{box-shadow:3px 3px 0 var(--blue);border-color:var(--blue)}
-.col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-12{grid-column:span 12}
+.col-3{grid-column:span 3}.col-4{grid-column:span 4}.col-6{grid-column:span 6}.col-8{grid-column:span 8}.col-9{grid-column:span 9}.col-12{grid-column:span 12}
 .seg{display:flex;border:var(--bd);border-radius:10px;overflow:hidden;background:#FFFEFA}
 .seg button{flex:1;border:none;background:transparent;font-family:'Manrope',sans-serif;font-weight:800;font-size:13px;padding:10px;cursor:pointer;color:var(--muted)}
 .seg button.on{background:var(--ink);color:#fff}
@@ -273,7 +273,7 @@ td .w{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px}
 .switch-row{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
 .switch-row input{width:18px;height:18px;accent-color:var(--blue)}
 @media (max-width:760px){
-  .col-3,.col-4,.col-6{grid-column:span 12}
+  .col-3,.col-4,.col-6,.col-8,.col-9{grid-column:span 12}
   .head-stats{margin-left:0}
   .tile{width:40px;height:46px;font-size:18px}
 }
@@ -293,11 +293,15 @@ td .w{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px}
 .login-sub{color:var(--muted);font-weight:600;font-size:13.5px;margin:8px 0 0}
 .login-note{color:var(--muted);font-weight:600;font-size:12px;margin:14px 0 0;text-align:center}
 .user-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-.user-card{border:var(--bd);border-radius:14px;background:var(--paper);box-shadow:var(--shadow-sm);
+.user-card{position:relative;border:var(--bd);border-radius:14px;background:var(--paper);box-shadow:var(--shadow-sm);
   padding:16px 8px 13px;text-align:center;cursor:pointer;font-weight:800;font-family:inherit;font-size:15px;
   color:var(--ink);display:flex;flex-direction:column;gap:9px;align-items:center;transition:transform .08s}
 .user-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
 .user-card:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.user-del{position:absolute;top:5px;right:5px;background:none;border:none;cursor:pointer;
+  color:var(--ink);opacity:.35;padding:4px;transition:opacity .12s,color .12s}
+.user-del .ic{width:14px;height:14px}
+.user-del:hover{opacity:1;color:var(--red)}
 .user-avatar{width:50px;height:50px;border:var(--bd);border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:20px;font-weight:800}
 .user-last{font-size:10.5px;font-weight:700;color:var(--muted);margin-top:-3px}
@@ -368,9 +372,6 @@ td .w{font-family:'JetBrains Mono',monospace;font-weight:800;font-size:14px}
 .sf.h3 #sfPetals{transform:scale(1)}
 @keyframes sfSway{0%,100%{transform:rotate(-2.4deg)}50%{transform:rotate(2.4deg)}}
 .sf.h3 #sfAll{transform-origin:120px 252px;animation:sfSway 4.5s ease-in-out infinite}
-.garden{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
-  margin-top:16px;font-weight:800;font-size:13.5px}
-.garden .ic{width:20px;height:20px;color:#C98A12}
 
 /* ── Tối ưu UI ───────────────────────────────────────────── */
 .tab-badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;
@@ -455,6 +456,74 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 .edit-grid input:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 .edit-actions{display:flex;gap:8px;align-items:center}
 @media (max-width:900px){.edit-grid{grid-template-columns:repeat(2,1fr)}}
+
+/* ── Chuyển ngôn ngữ (header) ────────────────────────────────── */
+.head-seg{display:flex;border:var(--bd);border-radius:10px;overflow:hidden;background:var(--paper);box-shadow:var(--shadow-sm)}
+.head-seg button{border:none;background:transparent;font-family:'Manrope',sans-serif;font-weight:800;
+  font-size:12.5px;padding:9px 14px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.head-seg button.on{background:var(--ink);color:#fff}
+header{align-items:center}
+
+/* ── Chuyển chế độ (Học Từ / Luyện Viết) — canh phải trên hàng tab ── */
+.tabs{align-items:center}
+.mode-switch{display:flex;margin-left:auto;border:3px solid var(--ink);border-radius:12px;overflow:hidden;
+  background:var(--lav);box-shadow:var(--shadow)}
+.mode-switch button{border:none;background:transparent;font-family:'Manrope',sans-serif;font-weight:800;
+  font-size:14px;padding:11px 18px;cursor:pointer;color:var(--ink);white-space:nowrap;transition:background .12s,color .12s}
+.mode-switch button.on{background:var(--blue);color:#fff}
+.mode-switch button:not(.on):hover{background:#ffffff80}
+@media (max-width:640px){.mode-switch{margin-left:0;width:100%;order:99}}
+
+/* ── Vườn hoa: luống hoa hiển thị trực quan + gộp bậc (Merge) ── */
+.garden{margin-top:4px}
+.g-bed{position:relative;width:100%;min-height:150px;border:var(--bd);border-radius:14px;
+  background:var(--mint);background-image:radial-gradient(#23284A1f 1.6px, transparent 1.6px);
+  background-size:22px 22px;overflow:hidden}
+.g-sprout{position:absolute;transform-origin:center;filter:drop-shadow(1.5px 2px 0 #23284A40)}
+.g-bed-empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;color:var(--muted);font-weight:700;font-size:12.5px;text-align:center;padding:0 24px}
+.g-bed-empty .ic{width:32px;height:32px;stroke-width:1.8}
+.g-legend{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+.g-legend-item{display:flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:999px;
+  padding:6px 12px;background:var(--paper);font:700 12px 'Manrope',sans-serif;box-shadow:2px 2px 0 var(--ink)}
+.g-legend-item .ic{width:16px;height:16px}
+.g-legend-item.special{background:var(--lemon)}
+
+/* ── Luyện Viết: thẻ mẫu câu sinh động ────────────────────────── */
+.w-card{border:var(--bd);border-radius:var(--r);box-shadow:var(--shadow);padding:24px;
+  background:var(--paper);margin-bottom:20px;position:relative;overflow:hidden}
+.w-card:before{content:"";position:absolute;top:-40px;right:-40px;width:120px;height:120px;
+  border-radius:50%;background:var(--lemon);opacity:.55;z-index:0}
+.w-card:after{content:"";position:absolute;bottom:-50px;left:-30px;width:100px;height:100px;
+  border-radius:50%;background:var(--sky);opacity:.5;z-index:0}
+.w-topic-row{display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap;position:relative;z-index:1}
+.w-topic-badge{display:inline-flex;align-items:center;gap:8px;border:3px solid var(--ink);border-radius:12px;
+  padding:10px 18px;font-weight:800;font-size:18px;box-shadow:var(--shadow-sm);transform:rotate(-1.6deg)}
+.w-topic-badge .ic{width:19px;height:19px}
+.w-chain{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;
+  margin-bottom:18px;position:relative;z-index:1}
+.w-chain-chip{display:inline-flex;align-items:center;gap:7px;font-family:'JetBrains Mono',monospace;
+  font-weight:700;font-size:13px;border:2px solid var(--ink);border-radius:10px;
+  padding:6px 13px 6px 6px;box-shadow:2px 2px 0 var(--ink)}
+.w-chain-chip .num{display:inline-flex;align-items:center;justify-content:center;flex:none;
+  width:19px;height:19px;border-radius:50%;background:var(--ink);color:#fff;
+  font-family:'Manrope',sans-serif;font-size:10.5px;font-weight:800}
+.w-chain-arrow{color:var(--ink);opacity:.4;font-size:15px}
+.w-sample{position:relative;z-index:1;background:var(--mint);border:2.5px dashed var(--ink);border-radius:12px;
+  padding:18px 38px;font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:600;line-height:1.65}
+.w-sample .w-quote{position:absolute;font-family:Georgia,serif;font-size:38px;font-weight:800;
+  color:#23284A5c;line-height:1;pointer-events:none;user-select:none}
+.w-sample .w-quote.open{top:6px;left:10px}
+.w-sample .w-quote.close{bottom:-8px;right:10px}
+@media (max-width:560px){.w-topic-badge{font-size:15px;padding:8px 14px}}
+
+/* ── Luyện Viết: khung nhập + gạch lỗi chính tả ──────────────── */
+.write-box{display:block;width:100%;min-height:170px;border:var(--bd);border-radius:12px;
+  padding:16px;font:600 15px/1.6 'JetBrains Mono',monospace;background:#fff;box-sizing:border-box;
+  outline:none;white-space:pre-wrap;word-break:break-word;margin-bottom:16px}
+.write-box:focus{box-shadow:4px 4px 0 var(--ink)}
+.write-box:empty:before{content:attr(data-placeholder);color:var(--muted);font-weight:500}
+.sp-err{background:var(--pink);border:1.5px solid var(--red);border-radius:5px;padding:0 2px}
 </style>
 </head>
 <body>
@@ -485,12 +554,30 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 <symbol id="i-sound" viewBox="0 0 24 24"><path d="M4.5 9.5v5h3.5l4.5 4V5.5l-4.5 4z" fill="currentColor" stroke="none"/><path d="M15.5 9.2a4 4 0 0 1 0 5.6M18 6.8a7.4 7.4 0 0 1 0 10.4"/></symbol>
 <symbol id="i-edit" viewBox="0 0 24 24"><path d="M14.5 5.5l4 4L8 20H4v-4z"/><path d="M12.5 7.5l4 4"/></symbol>
 <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><path d="M12 11.9h.01" stroke-width="2.6"/></symbol>
+<symbol id="i-flower-big" viewBox="0 0 24 24">
+  <circle cx="12" cy="10" r="3"/>
+  <path d="M12 4c1.8 0 3 1.6 3 3.2S13.8 10 12 10s-3-1.6-3-2.8S10.2 4 12 4z"/>
+  <path d="M12 16c1.8 0 3-1.6 3-3.2S13.8 10 12 10s-3 1.6-3 2.8S10.2 16 12 16z"/>
+  <path d="M6 10c0-1.8 1.6-3 3.2-3S12 8.2 12 10s-1.6 3-2.8 3S6 11.8 6 10z"/>
+  <path d="M18 10c0 1.8-1.6 3-3.2 3S12 11.8 12 10s1.6-3 2.8-3S18 8.2 18 10z"/>
+  <path d="M12 16v4"/>
+</symbol>
+<symbol id="i-clover" viewBox="0 0 24 24">
+  <path d="M12 12c0-2.5-2-4.5-4.5-4.5S3 9.5 3 12s2 4.5 4.5 4.5S12 14.5 12 12z"/>
+  <path d="M12 12c0-2.5 2-4.5 4.5-4.5S21 9.5 21 12s-2 4.5-4.5 4.5S12 14.5 12 12z"/>
+  <path d="M12 12c-2.5 0-4.5-2-4.5-4.5S9.5 3 12 3s4.5 2 4.5 4.5S14.5 12 12 12z"/>
+  <path d="M12 20v-8"/>
+</symbol>
+<symbol id="i-tree" viewBox="0 0 24 24">
+  <circle cx="12" cy="9.5" r="6.5"/>
+  <path d="M12 16v5M9.5 21h5"/>
+</symbol>
 </defs></svg>
 <div class="login-overlay" id="loginOverlay">
   <div class="login-card">
     <div class="login-logo">
       <div class="logo-badge"><svg class="ic"><use href="#i-book"/></svg></div>
-      <h1>Sổ Từ</h1>
+      <h1>Sổ Ngữ</h1>
     </div>
     <div id="loginSteps"></div>
   </div>
@@ -502,82 +589,93 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
     <div class="logo">
       <div class="logo-badge"><svg class="ic"><use href="#i-book"/></svg></div>
       <div>
-        <h1>Sổ Từ</h1>
+        <h1>Sổ Ngữ</h1>
       </div>
     </div>
     <div class="head-stats">
-      <div class="chip c-mint"><svg class="ic"><use href="#i-book"/></svg> <span class="num" id="stTotal">0</span> từ</div>
-      <div class="chip c-peach"><svg class="ic"><use href="#i-star"/></svg> <span class="num" id="stSaved">0</span> đang học</div>
-      <div class="chip c-sky"><svg class="ic"><use href="#i-clock"/></svg> <span class="num" id="stDue">0</span> đến hạn</div>
-      <button class="chip c-lav" id="userChip" style="cursor:pointer;font-family:inherit;font-size:13px" title="Đổi người dùng">
+      <div class="chip c-mint" id="chipTotal"><svg class="ic"><use href="#i-book"/></svg> <span class="num" id="stTotal">0</span> <span id="stTotalLbl"></span></div>
+      <div class="chip c-peach" id="chipSaved"><svg class="ic"><use href="#i-star"/></svg> <span class="num" id="stSaved">0</span> <span id="stSavedLbl"></span></div>
+      <div class="chip c-sky" id="chipDue"><svg class="ic"><use href="#i-clock"/></svg> <span class="num" id="stDue">0</span> <span id="stDueLbl"></span></div>
+      <div class="chip c-lav" id="chipSentTotal" style="display:none"><svg class="ic"><use href="#i-note"/></svg> <span class="num" id="stSentTotal">0</span> <span id="stSentLbl"></span></div>
+      <div class="head-seg" id="langSwitch">
+        <button data-lang="vi" id="langViBtn"></button>
+        <button data-lang="en" id="langEnBtn"></button>
+      </div>
+      <button class="chip c-lav" id="userChip" style="cursor:pointer;font-family:inherit;font-size:13px">
         <svg class="ic"><use href="#i-user"/></svg> <span class="num" id="userName"></span>
         <span class="sync-dot" id="syncDot"></span>
       </button>
     </div>
   </header>
 
-  <nav class="tabs">
-    <button class="tab-btn active" data-tab="notes"><svg class="ic"><use href="#i-note"/></svg>Ghi chú</button>
-    <button class="tab-btn" data-tab="quiz"><svg class="ic"><use href="#i-keys"/></svg>Luyện gõ</button>
-    <button class="tab-btn" data-tab="flash"><svg class="ic"><use href="#i-cards"/></svg>Flashcard<span class="tab-badge" id="dueBadge" style="display:none">0</span></button>
-    <button class="tab-btn" data-tab="focus"><svg class="ic"><use href="#i-flower"/></svg>Tập trung</button>
+  <nav class="tabs" id="tabsNav">
+    <button class="tab-btn active" data-tab="notes" data-mode="vocab"><svg class="ic"><use href="#i-note"/></svg><span class="tlabel"></span></button>
+    <button class="tab-btn" data-tab="quiz" data-mode="vocab"><svg class="ic"><use href="#i-keys"/></svg><span class="tlabel"></span></button>
+    <button class="tab-btn" data-tab="flash" data-mode="vocab"><svg class="ic"><use href="#i-cards"/></svg><span class="tlabel"></span><span class="tab-badge" id="dueBadge" style="display:none">0</span></button>
+    <button class="tab-btn" data-tab="outline" data-mode="writing" style="display:none"><svg class="ic"><use href="#i-note"/></svg><span class="tlabel"></span></button>
+    <button class="tab-btn" data-tab="write" data-mode="writing" style="display:none"><svg class="ic"><use href="#i-edit"/></svg><span class="tlabel"></span></button>
+    <button class="tab-btn" data-tab="focus"><svg class="ic"><use href="#i-flower"/></svg><span class="tlabel"></span></button>
+    <div class="mode-switch" id="modeSwitch">
+      <button data-mode="vocab" class="on" id="modeVocabBtn"></button>
+      <button data-mode="writing" id="modeWritingBtn"></button>
+    </div>
   </nav>
 
   <!-- ════════ TAB 1: GHI CHÚ ════════ -->
   <section class="tab-page active" id="tab-notes">
 
     <div class="panel">
-      <div class="panel-title"><span class="dot" style="background:var(--peach)"></span>Thêm từ mới</div>
+      <div class="panel-title"><span class="dot" style="background:var(--peach)"></span><span id="nAddTitle"></span></div>
       <div class="form-grid">
         <div class="fg col-3">
-          <label>Từ / Cụm từ</label>
+          <label id="nWordLbl"></label>
           <input id="fWord" class="mono" placeholder="book">
         </div>
         <div class="fg col-3">
-          <label>Nhóm (gõ mới hoặc chọn gợi ý)</label>
-          <input id="fGroup" list="groupList" placeholder="ví dụ: Mô tả ánh sáng">
+          <label id="nGroupLbl"></label>
+          <input id="fGroup" list="groupList" placeholder="">
           <datalist id="groupList"></datalist>
         </div>
         <div class="fg col-3">
-          <label>Loại từ</label>
+          <label id="nPosLbl"></label>
           <input id="fPos" placeholder="n, v, adj, phrase…">
         </div>
         <div class="fg col-3">
-          <label>Nghĩa</label>
+          <label id="nMeaningLbl"></label>
           <input id="fMeaning" placeholder="quyển vở">
         </div>
         <div class="fg col-3">
-          <label>Đơn / Cụm</label>
+          <label id="nKindLbl"></label>
           <div class="seg" id="fKind">
-            <button type="button" data-kind="đơn" class="on">Từ đơn</button>
-            <button type="button" data-kind="cụm">Cụm / câu</button>
+            <button type="button" data-kind="đơn" class="on" id="nKindSingle"></button>
+            <button type="button" data-kind="cụm" id="nKindPhrase"></button>
           </div>
         </div>
-        <div class="fg col-6">
-          <label>Đặt câu</label>
+        <div class="fg col-9">
+          <label id="nSentenceLbl"></label>
           <input id="fSentence" class="mono" placeholder="this is my book">
         </div>
-        <div class="fg col-6">
-          <label>Chú thích</label>
-          <input id="fNote" placeholder="book có thể có nhiều nghĩa">
+        <div class="fg col-12">
+          <label id="nNoteLbl"></label>
+          <input id="fNote" placeholder="">
         </div>
         <div class="col-12" style="display:flex;gap:10px;flex-wrap:wrap">
-          <button class="btn primary" id="btnAdd"><svg class="ic"><use href="#i-plus"/></svg>Thêm vào sổ</button>
-          <button class="btn ghost" id="btnClear">Xoá form</button>
+          <button class="btn primary" id="btnAdd"><svg class="ic"><use href="#i-plus"/></svg><span id="nAddBtn"></span></button>
+          <button class="btn ghost" id="btnClear"><span id="nClearBtn"></span></button>
         </div>
       </div>
     </div>
 
     <div class="panel">
-      <div class="panel-title"><span class="dot" style="background:var(--mint)"></span>Sổ từ vựng</div>
+      <div class="panel-title"><span class="dot" style="background:var(--mint)"></span><span id="nListTitle"></span></div>
       <div class="toolbar">
-        <input type="search" id="search" placeholder="Tìm từ, nghĩa…">
-        <select class="themed" id="groupFilter" title="Lọc theo nhóm">
-          <option value="">Tất cả nhóm</option>
+        <input type="search" id="search" placeholder="">
+        <select class="themed" id="groupFilter">
+          <option value="" id="nAllGroups"></option>
         </select>
-        <button class="btn lav sm" id="btnBulkGroup" title="Gán nhóm cho toàn bộ từ đang hiển thị bên dưới"><svg class="ic"><use href="#i-pin"/></svg>Gán nhóm</button>
-        <button class="btn sky sm" id="btnImport"><svg class="ic"><use href="#i-in"/></svg>Nhập file note</button>
-        <button class="btn lemon sm" id="btnExport"><svg class="ic"><use href="#i-out"/></svg>Xuất file note</button>
+        <button class="btn lav sm" id="btnBulkGroup"><svg class="ic"><use href="#i-pin"/></svg><span id="nBulkGroupBtn"></span></button>
+        <button class="btn sky sm" id="btnImport"><svg class="ic"><use href="#i-in"/></svg><span id="nImportBtn"></span></button>
+        <button class="btn lemon sm" id="btnExport"><svg class="ic"><use href="#i-out"/></svg><span id="nExportBtn"></span></button>
         <input type="file" id="fileInput" accept=".txt,.note,.csv" hidden>
       </div>
       <div class="table-wrap">
@@ -585,21 +683,18 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
           <thead>
             <tr>
               <th><svg class="ic" style="width:13px;height:13px"><use href="#i-star"/></svg></th>
-              <th class="sortable" data-sort="word">Từ<span class="arrow"></span></th>
-              <th>Loại</th><th>Nghĩa</th><th>Đặt câu</th>
-              <th>Chú thích</th>
-              <th class="sortable" data-sort="kind">Đơn/Cụm<span class="arrow"></span></th>
-              <th class="sortable" data-sort="acc">Độ chính xác<span class="arrow"></span></th>
-              <th class="sortable" data-sort="lv">Mức độ<span class="arrow"></span></th><th></th>
+              <th class="sortable" data-sort="word"><span id="thWord"></span><span class="arrow"></span></th>
+              <th><span id="thPos"></span></th><th><span id="thMeaning"></span></th><th><span id="thSentence"></span></th>
+              <th><span id="thNote"></span></th>
+              <th class="sortable" data-sort="kind"><span id="thKind"></span><span class="arrow"></span></th>
+              <th class="sortable" data-sort="acc"><span id="thAcc"></span><span class="arrow"></span></th>
+              <th class="sortable" data-sort="lv"><span id="thLv"></span><span class="arrow"></span></th><th></th>
             </tr>
           </thead>
           <tbody id="wordTbody"></tbody>
         </table>
       </div>
-      <p class="muted" style="margin-top:10px;font-size:12.5px">
-        Định dạng file note: mỗi dòng <span class="mono">từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm</span>.
-        Thêm từ trên UI sẽ tự cập nhật vào sổ — bấm <b>Xuất file note</b> để đồng bộ ra file.
-      </p>
+      <p class="muted" style="margin-top:10px;font-size:12.5px" id="nFormatNote"></p>
     </div>
   </section>
 
@@ -607,11 +702,11 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
   <section class="tab-page" id="tab-quiz">
     <div class="quiz-stage">
       <div class="q-meta">
-        <select class="themed" id="quizGroup" title="Chọn nhóm để luyện">
-          <option value="">Tất cả nhóm</option>
+        <select class="themed" id="quizGroup">
+          <option value="" id="qAllGroups"></option>
         </select>
-        <label class="switch-row"><input type="checkbox" id="quizSavedOnly"> Chỉ luyện từ <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg> đang học</label>
-        <span class="chip" style="margin-left:auto"><svg class="ic" style="color:#E5484D"><use href="#i-flame"/></svg> chuỗi đúng: <span class="num" id="quizStreak">0</span></span>
+        <label class="switch-row"><input type="checkbox" id="quizSavedOnly"> <span id="qSavedOnlyLbl"></span> <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg></label>
+        <span class="chip" style="margin-left:auto"><svg class="ic" style="color:#E5484D"><use href="#i-flame"/></svg> <span id="qStreakLbl"></span> <span class="num" id="quizStreak">0</span></span>
       </div>
       <div id="quizArea"></div>
     </div>
@@ -621,12 +716,54 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
   <section class="tab-page" id="tab-flash">
     <div class="fc-stage">
       <div class="q-meta" style="justify-content:center">
-        <select class="themed" id="fcGroup" title="Chọn nhóm để ôn">
-          <option value="">Tất cả nhóm</option>
+        <select class="themed" id="fcGroup">
+          <option value="" id="fAllGroups"></option>
         </select>
-        <label class="switch-row"><input type="checkbox" id="fcSavedOnly"> Chỉ ôn từ <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg> đang học</label>
+        <label class="switch-row"><input type="checkbox" id="fcSavedOnly"> <span id="fSavedOnlyLbl"></span> <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg></label>
       </div>
       <div id="fcArea"></div>
+    </div>
+  </section>
+
+  <!-- ════════ TAB: MẪU CÂU (Writing Mode — Sổ dàn ý) ════════ -->
+  <section class="tab-page" id="tab-outline">
+    <div class="panel">
+      <div class="panel-title"><span class="dot" style="background:var(--peach)"></span><span id="oAddTitle"></span></div>
+      <div class="form-grid">
+        <div class="fg col-4"><label id="oTopicLbl"></label><input id="sTopic" placeholder="Education"></div>
+        <div class="fg col-8"><label id="oChainLbl"></label><input id="sChain" class="mono" placeholder="online learning, flexible schedule, better time management"></div>
+        <div class="fg col-12"><label id="oSentLbl"></label><input id="sSentence" class="mono" placeholder="Shifting toward online learning gives students total control over their schedules…"></div>
+        <div class="col-12" style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn primary" id="btnSentAdd"><svg class="ic"><use href="#i-plus"/></svg><span id="oAddBtn"></span></button>
+          <button class="btn ghost" id="btnSentClear"><span id="oClearBtn"></span></button>
+        </div>
+      </div>
+    </div>
+    <div class="panel">
+      <div class="panel-title"><span class="dot" style="background:var(--mint)"></span><span id="oListTitle"></span></div>
+      <div class="toolbar">
+        <input type="search" id="sentSearch" placeholder="">
+        <select class="themed" id="topicFilter"></select>
+        <button class="btn sky sm" id="btnSentImport"><svg class="ic"><use href="#i-in"/></svg><span id="oImportBtn"></span></button>
+        <button class="btn lemon sm" id="btnSentExport"><svg class="ic"><use href="#i-out"/></svg><span id="oExportBtn"></span></button>
+        <input type="file" id="sentFileInput" accept=".txt,.note,.csv" hidden>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th><span id="oThTopic"></span></th><th><span id="oThChain"></span></th><th><span id="oThSentence"></span></th><th></th>
+          </tr></thead>
+          <tbody id="sentTbody"></tbody>
+        </table>
+      </div>
+      <p class="muted" style="margin-top:10px;font-size:12.5px" id="oFormatNote"></p>
+    </div>
+  </section>
+
+  <!-- ════════ TAB: LUYỆN VIẾT (Writing Mode) ════════ -->
+  <section class="tab-page" id="tab-write">
+    <div class="quiz-stage">
+      <div id="writeArea"></div>
     </div>
   </section>
 
@@ -634,18 +771,18 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
   <section class="tab-page" id="tab-focus">
     <div class="focus-stage">
       <div class="focus-top" id="durRow">
-        <button class="dur-chip" data-min="15">15 phút</button>
-        <button class="dur-chip on" data-min="20">20 phút</button>
-        <button class="dur-chip" data-min="30">30 phút</button>
-        <button class="dur-chip" data-min="45">45 phút</button>
+        <button class="dur-chip" data-min="15"></button>
+        <button class="dur-chip on" data-min="20"></button>
+        <button class="dur-chip" data-min="30"></button>
+        <button class="dur-chip" data-min="45"></button>
       </div>
       <div class="away-banner" id="awayBanner">
         <svg class="ic"><use href="#i-flame"/></svg>
-        <span id="awayMsg">Bạn vừa rời cửa sổ — cây đang chờ bạn đấy!</span>
+        <span id="awayMsg"></span>
       </div>
       <div class="focus-panel">
         <div class="focus-time" id="focusTime">20:00</div>
-        <div class="focus-sub" id="focusSub">Chọn thời lượng rồi bắt đầu — học đủ giờ, hoa hướng dương sẽ nở</div>
+        <div class="focus-sub" id="focusSub"></div>
         <div class="focus-bar"><div class="focus-fill" id="focusFill"></div></div>
 
         <div class="sf-wrap">
@@ -689,10 +826,13 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
         </div>
 
         <div class="focus-actions">
-          <button class="btn mint" id="focusStart"><svg class="ic"><use href="#i-play"/></svg>Bắt đầu</button>
-          <button class="btn lemon" id="focusPause" style="display:none"><svg class="ic"><use href="#i-pause"/></svg>Tạm dừng</button>
-          <button class="btn pink" id="focusStop" style="display:none"><svg class="ic"><use href="#i-stop"/></svg>Kết thúc</button>
+          <button class="btn mint" id="focusStart"><svg class="ic"><use href="#i-play"/></svg><span id="focusStartLbl"></span></button>
+          <button class="btn lemon" id="focusPause" style="display:none"><svg class="ic"><use href="#i-pause"/></svg><span id="focusPauseLbl"></span></button>
+          <button class="btn pink" id="focusStop" style="display:none"><svg class="ic"><use href="#i-stop"/></svg><span id="focusStopLbl"></span></button>
         </div>
+      </div>
+      <div class="panel" style="margin-top:18px">
+        <div class="panel-title"><span class="dot" style="background:var(--lemon)"></span><span id="gardenTitle"></span></div>
         <div class="garden" id="garden"></div>
       </div>
     </div>
@@ -703,7 +843,7 @@ select.themed:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 
 <script>
 /* ═══════════════════════════════════════════════════════════
-   SỔ TỪ — Flashcard học từ vựng
+   SỔ NGỮ — Flashcard học từ vựng & luyện viết
    MỤC LỤC:
      §1  Cấu hình & người dùng        §6  Tab Ghi chú (bảng, nhập/xuất)
      §2  Dữ liệu mặc định & parser    §7  Tab Luyện gõ
@@ -748,7 +888,7 @@ async function saveUserList(){
   try{ localStorage.setItem(USERS_KEY, JSON.stringify(userList)); }catch(e){}
   if(cloudOn()){
     try{ await cloudPut('meta/users', userList); }
-    catch(e){ toast('Không lưu được danh sách người dùng lên mạng'); }
+    catch(e){ toast(t('cloudUsersErr')); }
   }
 }
 
@@ -775,11 +915,29 @@ async function markLogin(){
 }
 function lastLoginLabel(u){
   const ts = lastLogins[u];
-  if(!ts) return 'Chưa đăng nhập';
+  if(!ts) return t('neverLoggedIn');
   const days = Math.floor((Date.now() - ts) / 86400000);
-  if(days <= 0) return 'Hôm nay';
-  if(days === 1) return 'Hôm qua';
-  return days + ' ngày trước';
+  if(days <= 0) return t('today');
+  if(days === 1) return t('yesterday');
+  return t('daysAgo', days);
+}
+/* Xoá vĩnh viễn một tài khoản: khỏi danh sách người dùng, mật khẩu, mốc đăng
+   nhập, và toàn bộ dữ liệu (từ vựng, mẫu câu, vườn hoa) trên máy lẫn trên
+   mây — 'users/<tên>' trên Firebase chứa cả words/sentences_v2/garden nên
+   một lệnh xoá là đủ cho tất cả. */
+async function deleteUserAccount(user){
+  userList = userList.filter(u => u !== user);
+  await saveUserList();
+  await putAuth(user, null);
+  delete lastLogins[user];
+  try{ localStorage.setItem(LASTLOGIN_KEY, JSON.stringify(lastLogins)); }catch(e){}
+  try{ localStorage.removeItem('soTu_v3_' + user); }catch(e){}
+  try{ localStorage.removeItem('soTuSentences_v4_' + user); }catch(e){}
+  try{ localStorage.removeItem('soTuGarden_' + user); }catch(e){}
+  if(cloudOn()){
+    try{ await cloudDelete('users/' + user); }catch(e){}
+    try{ await cloudDelete('meta/lastLogin/' + user); }catch(e){}
+  }
 }
 let currentUser = null;
 const lsKey  = () => 'soTu_v3_' + currentUser;
@@ -790,8 +948,284 @@ const now = () => Date.now();
 const DAY = 86400000;
 const I = n => `<svg class="ic"><use href="#i-${n}"/></svg>`;
 
+/* ═══════════════════════════════════════════════════════════
+   ĐA NGÔN NGỮ (VI / EN)
+   ═══════════════════════════════════════════════════════════ */
+let LANG = (()=>{ try{ return localStorage.getItem('soTuLang_v1') || 'vi'; }catch(e){ return 'vi'; } })();
+let appMode = (()=>{ try{ return localStorage.getItem('soTuMode_v1') || 'vocab'; }catch(e){ return 'vocab'; } })();
+const I18N = {
+vi:{
+  appTitle:'Sổ Ngữ · Flashcard học từ vựng', switchUser:'Đổi người dùng',
+  langNameVi:'Tiếng Việt', langNameEn:'Tiếng Anh',
+  modeVocab:'Học Từ', modeWriting:'Luyện Viết',
+  statWords:'từ', statLearning:'đang học', statDue:'đến hạn', statTemplates:'mẫu câu',
+  save:'Lưu', cancel:'Huỷ', edit:'Chỉnh sửa', delete:'Xoá',
+  tab_notes:'Ghi chú', tab_quiz:'Luyện gõ', tab_flash:'Flashcard', tab_outline:'Mẫu Câu', tab_write:'Luyện Viết', tab_focus:'Tập trung',
+  nAddTitle:'Thêm từ mới', nWordLbl:'Từ / Cụm từ', nGroupLbl:'Nhóm', nGroupPh:'ví dụ: Mô tả ánh sáng',
+  nPosLbl:'Loại từ', nMeaningLbl:'Nghĩa', nKindLbl:'Đơn / Cụm', nKindSingle:'Từ đơn', nKindPhrase:'Cụm / câu',
+  nSentenceLbl:'Đặt câu', nNoteLbl:'Chú thích', nNotePh:'book có thể có nhiều nghĩa',
+  nAddBtn:'Thêm vào sổ', nClearBtn:'Xoá form', nListTitle:'Sổ từ vựng', nSearchPh:'Tìm từ, nghĩa…',
+  nAllGroups:'Tất cả nhóm', nGroupFilterTitle:'Lọc theo nhóm', nBulkGroupTitle:'Gán nhóm cho toàn bộ từ đang hiển thị bên dưới',
+  nBulkGroupBtn:'Gán nhóm', nImportBtn:'Nhập file note', nExportBtn:'Xuất file note',
+  thWord:'Từ', thPos:'Loại', thMeaning:'Nghĩa', thSentence:'Đặt câu', thNote:'Chú thích',
+  thKind:'Đơn/Cụm', thAcc:'Độ chính xác', thLv:'Mức độ',
+  lvNew:'Mới', lvLearn:'Đang học', lvKnown:'Quen', lvMaster:'Vững', priorityTitle:n=>`Điểm ưu tiên: ${n}`,
+  saveToLearning:'Lưu vào danh sách đang học', listenTitle:'Nghe phát âm',
+  nFormatNote:'Định dạng file note: mỗi dòng <span class="mono">từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm</span>. Thêm từ trên UI sẽ tự cập nhật vào sổ — bấm <b>Xuất file note</b> để đồng bộ ra file.',
+  toastNeedWordMeaning:'Cần ít nhất "Từ" và "Nghĩa"', toastDupWord:'Từ này đã có trong sổ',
+  toastAdded:w=>`Đã thêm "${w}" vào sổ`, toastIpaFound:(w,ipa)=>`Đã tra phiên âm: ${w} ${ipa}`,
+  toastWordMeaningEmpty:'Từ và nghĩa không được để trống', toastUpdated:w=>`Đã cập nhật "${w}"`,
+  optNoGroup:'Chưa phân nhóm', toastNoneShown:'Không có từ nào đang hiển thị',
+  bulkGroupPrompt:n=>`Gán nhóm cho ${n} từ đang hiển thị (để trống = bỏ nhóm):`,
+  toastGroupSet:(n,g)=>`Đã xếp ${n} từ vào nhóm ${g}`, toastGroupCleared:n=>`Đã bỏ nhóm của ${n} từ`,
+  editWordLbl:'Từ / cụm', editHelp:'Enter để lưu · Esc để huỷ · thống kê học của từ được giữ nguyên',
+  confirmDelete:w=>`Xoá "${w}" khỏi sổ?`, toastDeleted:w=>`Đã xoá "${w}"`,
+  toastLearning:w=>`Đang học "${w}"`, toastUnstarred:w=>`Đã bỏ lưu "${w}"`,
+  toastImportDone:(n,sk)=>`Nhập xong: +${n} từ${sk?`, bỏ qua ${sk} dòng`:''}`,
+  toastEmptyBook:'Sổ đang trống', toastExported:'Đã xuất notes.txt',
+  emptyWords:'Chưa có từ nào — thêm từ mới hoặc nhập file note nhé',
+  speakUnsupported:'Trình duyệt không hỗ trợ đọc',
+  cloudSaveErr:'Không đồng bộ được lên mạng — dữ liệu vẫn lưu trên máy này',
+  cloudUsersErr:'Không lưu được danh sách người dùng lên mạng',
+  cloudAuthErr:'Không lưu được mật khẩu lên mạng — chỉ lưu trên máy này',
+  memoryOnlyWarn:'Trình duyệt chặn lưu trữ — dữ liệu chỉ giữ trong phiên này, hãy dùng Xuất file note',
+  errGeneric:m=>`Lỗi: ${m}`,
+  qAllGroups:'Tất cả nhóm', qSavedOnlyLbl:'Chỉ luyện từ đang học', qStreakLbl:'chuỗi đúng:',
+  emptyQuiz:extra=>`Chưa có từ để luyện — thêm từ ở tab Ghi chú${extra}`, qExtraSaved:' hoặc bỏ lọc từ đang học',
+  qLabelSingle:'Nhập từng chữ cái của từ có nghĩa là…', qLabelPhrase:'Sắp xếp các từ thành cụm/câu có nghĩa là…',
+  qHintStart:(c,n)=>`Bắt đầu bằng "${c}" · ${n} chữ cái`, qHintFirstWord:w=>`Từ đầu tiên: "${w}"`,
+  qExample:'Ví dụ:', qTilesHelp:'Gõ trực tiếp trên bàn phím hoặc bấm chữ cái · Backspace để xoá · tự kiểm tra khi điền đủ',
+  qModeChips:'Ghép từ', qModeType:'Gõ bàn phím',
+  qPhrasePh:'Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài',
+  qAnsPlaceholder:'Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ',
+  qHintBtn:'Gợi ý', qCheckBtn:'Kiểm tra', qSkipBtn:'Bỏ qua',
+  qCorrect:'Chính xác!', qWrong:'Chưa đúng. Đáp án:', qNextWord:'Từ tiếp theo', qHintUsedSuffix:'· có gợi ý',
+  fAllGroups:'Tất cả nhóm', fSavedOnlyLbl:'Chỉ ôn từ đang học',
+  emptyFc:extra=>`Chưa có thẻ nào — thêm từ ở tab Ghi chú${extra}`,
+  fcForgot:'Quên', fcKnew:'Nhớ', fcMoreWordsHelp:'Thêm nhiều từ hơn để có câu hỏi trắc nghiệm nhé',
+  fcTapAnswered:'Chạm để lật thẻ xem ví dụ + ghi chú', fcTapChoose:'Chọn nghĩa đúng bên dưới', fcTapBack:'Chạm để lật lại mặt trước',
+  fcCorrect:'Chính xác!', fcWrongAns:m=>`Chưa đúng — đáp án: ${m}`, fcNextCard:'Thẻ tiếp theo',
+  fcSeen:'Đã gặp', fcCorrectPct:'đúng', fcNewCard:'thẻ mới', fcReviewIn:d=>`lịch ôn lại sau ~${d}`,
+  fcToday:'hôm nay', fcDays:n=>`${n} ngày`, fcDueNow:'đến hạn ôn',
+  durLabel:m=>`${m} phút`,
+  awayDefault:'Bạn vừa rời cửa sổ — cây đang chờ bạn đấy!',
+  focusSubDefault:'Chọn thời lượng rồi bắt đầu — học đủ giờ, hoa hướng dương sẽ nở',
+  focusStart:'Bắt đầu', focusResume:'Tiếp tục', focusPause:'Tạm dừng', focusStop:'Kết thúc',
+  focusDurChanged:m=>`Học đủ ${m} phút, hoa hướng dương sẽ nở`,
+  focusRunning:'Đang tập trung — rời cửa sổ chuông sẽ reng tới khi bạn quay lại',
+  focusPaused:'Đang tạm dừng — bấm Tiếp tục khi sẵn sàng',
+  focusEndedEarly:'Đã kết thúc sớm — cây sẽ lớn lại từ đầu ở phiên sau',
+  focusDoneSub:m=>`Hoa hướng dương đã nở — bạn vừa học trọn ${m} phút!`,
+  toastFocusDone:m=>`Hoàn thành phiên tập trung ${m} phút — thêm 1 hoa vào vườn`,
+  notifTitle:'Sổ Ngữ — quay lại tập trung nào!', notifBody:m=>`Phiên ${m} phút đang chạy, cây hướng dương đang chờ bạn.`,
+  awayOnce:'Bạn vừa rời cửa sổ 1 lần — cố giữ mạch tập trung nhé!',
+  awayMany:n=>`Đã rời cửa sổ ${n} lần trong phiên này — cây vẫn đang lớn, gắng lên!`,
+  titleFocusing:tt=>`(${tt}) Sổ Ngữ — đang tập trung`,
+  gardenTitle:'Vườn hoa', gTier_small:'Hoa nhỏ', gTier_big:'Hoa lớn', gTier_luck:'Cỏ may mắn', gTier_diamond:'Cây',
+  gardenEmptyBed:'Luống hoa còn trống — hoàn thành một phiên tập trung để gieo bông hoa đầu tiên',
+  mergeMsgBig:'5 bông hoa nhỏ đã ghép thành 1 bông hoa lớn!', mergeMsgLuck:'5 bông hoa lớn đã ghép thành 1 cỏ may mắn!',
+  mergeMsgDiamond:'5 cỏ may mắn đã ghép thành 1 cây trong vườn!',
+  oAddTitle:'Thêm mẫu mới', oTopicLbl:'Chủ đề', oChainLbl:'Chuỗi logic', oSentLbl:'Câu mẫu',
+  oAddBtn:'Thêm vào sổ', oClearBtn:'Xoá form', oListTitle:'Sổ dàn ý', oSearchPh:'Tìm theo chủ đề…',
+  oImportBtn:'Nhập file note', oExportBtn:'Xuất file note',
+  oThTopic:'Chủ đề', oThChain:'Chuỗi logic', oThSentence:'Câu mẫu',
+  oFormatNote:'Định dạng file note: mỗi dòng <span class="mono">chủ đề | chuỗi logic | câu mẫu</span>. Bấm <b>Xuất file note</b> để đồng bộ ra file.',
+  allTopics:'Tất cả chủ đề', sentNeedFields:'Cần ít nhất "Chủ đề" và "Câu mẫu"',
+  sentAdded:tp=>`Đã thêm mẫu câu vào chủ đề "${tp}"`, sentUpdated:'Đã cập nhật mẫu câu',
+  sentDeleteConfirm:'Xoá mẫu câu này khỏi sổ?', sentDeleted:'Đã xoá mẫu câu',
+  sentEmpty:'Chưa có mẫu câu nào — thêm mẫu mới hoặc nhập file note nhé',
+  sentImported:(n,sk)=>`Nhập xong: +${n} mẫu${sk?`, bỏ qua ${sk} dòng`:''}`,
+  sentEmptyExport:'Sổ dàn ý đang trống', sentExported:'Đã xuất sentences.txt',
+  writeEmpty:'Chưa có mẫu câu nào — thêm mẫu ở tab Mẫu Câu', writeTopicLbl:'Chủ đề', writeNoTopic:'(chưa có chủ đề)',
+  writeChainLbl:'Chuỗi logic', writeSampleLbl:'Câu mẫu',
+  writePlaceholder:'Viết câu của riêng bạn dựa theo cấu trúc trên rồi nhấn Enter để kiểm tra chính tả…',
+  writeCheckBtn:'Kiểm tra chính tả', writeNextBtn:'Câu tiếp theo',
+  writeEmptyInput:'Hãy viết một câu trước đã', writeChecking:'Đang kiểm tra chính tả…',
+  writeCheckFailed:'Không kiểm tra được chính tả — hãy thử lại (cần kết nối mạng)',
+  writeErrorsFound:n=>`Phát hiện ${n} lỗi chính tả — từ được khoanh đỏ bên trên`, writeNoErrors:'Không phát hiện lỗi chính tả nào!',
+  loadingUsers:'Đang tải danh sách người dùng…', pickUserSub:'Chọn người dùng để mở sổ tay của bạn', addPerson:'Thêm người',
+  deleteAccountTitle:'Xoá tài khoản này',
+  confirmDeleteAccount:u=>`Xoá vĩnh viễn tài khoản "${u}" cùng toàn bộ từ vựng, mẫu câu và vườn hoa? Không thể hoàn tác.`,
+  toastAccountDeleted:u=>`Đã xoá tài khoản "${u}"`,
+  loginNoteNoCloud:'Chưa bật đồng bộ mạng — sổ tay lưu riêng trên từng trình duyệt',
+  neverLoggedIn:'Chưa đăng nhập', today:'Hôm nay', yesterday:'Hôm qua', daysAgo:n=>`${n} ngày trước`,
+  newUserSub:'Tạo người dùng mới — sổ tay bắt đầu trống', newUserNameLbl:'Tên hiển thị (tối đa 12 ký tự)', newUserNamePh:'ví dụ: Lan',
+  errEnterName:'Hãy nhập tên', errNameChars:'Tên không được chứa . # $ [ ] /', errNameTaken:'Tên này đã có rồi',
+  backBtn:'‹ Quay lại', createUserBtn:'Tạo người dùng', checking:'Đang kiểm tra…',
+  setupSub:'Lần đầu đăng nhập — hãy tạo mật khẩu', newPwLbl:'Nhập mật khẩu mới', newPw2Lbl:'Nhập lại mật khẩu mới',
+  secQLbl:'Câu hỏi đặc biệt (dùng khi quên mật khẩu)', secQPh:'ví dụ: Tên con mèo đầu tiên của bạn?', secALbl:'Câu trả lời',
+  backOtherUser:'‹ Chọn người khác', createAndEnter:'Tạo và vào sổ',
+  errPwLen:'Mật khẩu cần ít nhất 4 ký tự', errPwMismatch:'Hai mật khẩu chưa khớp nhau',
+  errFillSecQ:'Hãy điền câu hỏi đặc biệt và câu trả lời',
+  loginSub:'Nhập mật khẩu để mở sổ tay', pwLbl:'Mật khẩu', errPwWrong:'Mật khẩu chưa đúng, thử lại nhé',
+  forgotPw:'Quên mật khẩu?', loginBtn:'Đăng nhập',
+  forgotSub:'Trả lời câu hỏi đặc biệt để đặt lại mật khẩu', errAnsWrong:'Câu trả lời chưa đúng', continueBtn:'Tiếp tục',
+  toastVerified:'Đã xác minh — hãy tạo mật khẩu mới', openingBook:u=>`Đang mở sổ tay của ${u}…`,
+},
+en:{
+  appTitle:'LangBook · Vocabulary Flashcards', switchUser:'Switch user',
+  langNameVi:'Vietnamese', langNameEn:'English',
+  modeVocab:'Vocabulary', modeWriting:'Writing',
+  statWords:'words', statLearning:'learning', statDue:'due', statTemplates:'templates',
+  save:'Save', cancel:'Cancel', edit:'Edit', delete:'Delete',
+  tab_notes:'Notes', tab_quiz:'Typing', tab_flash:'Flashcards', tab_outline:'Sentence Bank', tab_write:'Writing', tab_focus:'Focus',
+  nAddTitle:'Add new word', nWordLbl:'Word / Phrase', nGroupLbl:'Group', nGroupPh:'e.g. Describing light',
+  nPosLbl:'Part of speech', nMeaningLbl:'Meaning', nKindLbl:'Single / Phrase', nKindSingle:'Single', nKindPhrase:'Phrase',
+  nSentenceLbl:'Example sentence', nNoteLbl:'Note', nNotePh:'book can have multiple meanings',
+  nAddBtn:'Add to book', nClearBtn:'Clear form', nListTitle:'Vocabulary book', nSearchPh:'Search word, meaning…',
+  nAllGroups:'All groups', nGroupFilterTitle:'Filter by group', nBulkGroupTitle:'Assign a group to every word shown below',
+  nBulkGroupBtn:'Assign group', nImportBtn:'Import note file', nExportBtn:'Export note file',
+  thWord:'Word', thPos:'Type', thMeaning:'Meaning', thSentence:'Sentence', thNote:'Note',
+  thKind:'Single/Phrase', thAcc:'Accuracy', thLv:'Level',
+  lvNew:'New', lvLearn:'Learning', lvKnown:'Familiar', lvMaster:'Mastered', priorityTitle:n=>`Priority score: ${n}`,
+  saveToLearning:'Save to learning list', listenTitle:'Listen to pronunciation',
+  nFormatNote:'Note file format: each line is <span class="mono">word | part of speech | meaning | sentence | note | single/phrase</span>. Adding words in the UI updates the book automatically — click <b>Export note file</b> to sync it out to a file.',
+  toastNeedWordMeaning:'At least "Word" and "Meaning" are required', toastDupWord:'This word is already in your book',
+  toastAdded:w=>`Added "${w}" to your book`, toastIpaFound:(w,ipa)=>`Found pronunciation: ${w} ${ipa}`,
+  toastWordMeaningEmpty:'Word and meaning cannot be empty', toastUpdated:w=>`Updated "${w}"`,
+  optNoGroup:'No group', toastNoneShown:'No words are currently shown',
+  bulkGroupPrompt:n=>`Assign a group to ${n} shown words (leave blank to clear):`,
+  toastGroupSet:(n,g)=>`Moved ${n} words into group ${g}`, toastGroupCleared:n=>`Cleared the group of ${n} words`,
+  editWordLbl:'Word / phrase', editHelp:"Enter to save · Esc to cancel · the word's learning stats are kept",
+  confirmDelete:w=>`Delete "${w}" from your book?`, toastDeleted:w=>`Deleted "${w}"`,
+  toastLearning:w=>`Now learning "${w}"`, toastUnstarred:w=>`Unsaved "${w}"`,
+  toastImportDone:(n,sk)=>`Import done: +${n} words${sk?`, skipped ${sk} lines`:''}`,
+  toastEmptyBook:'Your book is empty', toastExported:'Exported notes.txt',
+  emptyWords:'No words yet — add a new word or import a note file',
+  speakUnsupported:"Your browser doesn't support text-to-speech",
+  cloudSaveErr:"Couldn't sync to the cloud — data is still saved on this device",
+  cloudUsersErr:"Couldn't save the user list to the cloud",
+  cloudAuthErr:"Couldn't save the password to the cloud — saved on this device only",
+  memoryOnlyWarn:'Your browser is blocking storage — data only lasts this session, please use Export note file',
+  errGeneric:m=>`Error: ${m}`,
+  qAllGroups:'All groups', qSavedOnlyLbl:'Only practice words being learned', qStreakLbl:'streak:',
+  emptyQuiz:extra=>`No words to practice yet — add words in the Notes tab${extra}`, qExtraSaved:' or clear the "being learned" filter',
+  qLabelSingle:'Type each letter of the word meaning…', qLabelPhrase:'Arrange the words into a phrase/sentence meaning…',
+  qHintStart:(c,n)=>`Starts with "${c}" · ${n} letters`, qHintFirstWord:w=>`First word: "${w}"`,
+  qExample:'Example:', qTilesHelp:'Type directly on your keyboard or tap a letter · Backspace to delete · auto-checks once complete',
+  qModeChips:'Arrange words', qModeType:'Type',
+  qPhrasePh:'Type the whole phrase/sentence then press Enter — auto-checks once long enough',
+  qAnsPlaceholder:'Tap the words below in the right order — auto-checks once complete',
+  qHintBtn:'Hint', qCheckBtn:'Check', qSkipBtn:'Skip',
+  qCorrect:'Correct!', qWrong:'Not quite. Answer:', qNextWord:'Next word', qHintUsedSuffix:'· hint used',
+  fAllGroups:'All groups', fSavedOnlyLbl:'Only review words being learned',
+  emptyFc:extra=>`No cards yet — add words in the Notes tab${extra}`,
+  fcForgot:'Forgot', fcKnew:'Knew it', fcMoreWordsHelp:'Add more words to unlock multiple-choice questions',
+  fcTapAnswered:'Tap to flip the card for the example + note', fcTapChoose:'Choose the correct meaning below', fcTapBack:'Tap to flip back to the front',
+  fcCorrect:'Correct!', fcWrongAns:m=>`Not quite — answer: ${m}`, fcNextCard:'Next card',
+  fcSeen:'Seen', fcCorrectPct:'correct', fcNewCard:'new card', fcReviewIn:d=>`next review in ~${d}`,
+  fcToday:'today', fcDays:n=>`${n} days`, fcDueNow:'due now',
+  durLabel:m=>`${m} min`,
+  awayDefault:'You just left the window — your plant is waiting for you!',
+  focusSubDefault:'Pick a duration and start — study the full time and the sunflower will bloom',
+  focusStart:'Start', focusResume:'Resume', focusPause:'Pause', focusStop:'End',
+  focusDurChanged:m=>`Study the full ${m} minutes and the sunflower will bloom`,
+  focusRunning:'Focusing — leaving the window will ring a bell until you come back',
+  focusPaused:'Paused — click Resume when ready',
+  focusEndedEarly:'Ended early — the plant will grow from scratch next session',
+  focusDoneSub:m=>`The sunflower has bloomed — you just studied a full ${m} minutes!`,
+  toastFocusDone:m=>`Completed a ${m}-minute focus session — +1 flower in your garden`,
+  notifTitle:'LangBook — come back and focus!', notifBody:m=>`Your ${m}-minute session is running, the sunflower is waiting for you.`,
+  awayOnce:'You left the window once — try to keep your focus streak!',
+  awayMany:n=>`You've left the window ${n} times this session — the plant is still growing, keep going!`,
+  titleFocusing:tt=>`(${tt}) LangBook — focusing`,
+  gardenTitle:'Garden', gTier_small:'Small flower', gTier_big:'Big flower', gTier_luck:'Lucky clover', gTier_diamond:'Tree',
+  gardenEmptyBed:'The garden bed is empty — finish a focus session to plant your first flower',
+  mergeMsgBig:'5 small flowers merged into 1 big flower!', mergeMsgLuck:'5 big flowers merged into 1 lucky clover!',
+  mergeMsgDiamond:'5 lucky clovers merged into 1 tree in your garden!',
+  oAddTitle:'Add new template', oTopicLbl:'Topic', oChainLbl:'Logic chain', oSentLbl:'Sample sentence',
+  oAddBtn:'Add to book', oClearBtn:'Clear form', oListTitle:'Sentence bank', oSearchPh:'Search by topic…',
+  oImportBtn:'Import note file', oExportBtn:'Export note file',
+  oThTopic:'Topic', oThChain:'Logic chain', oThSentence:'Sample sentence',
+  oFormatNote:'Note file format: each line is <span class="mono">topic | logic chain | sample sentence</span>. Click <b>Export note file</b> to sync it out to a file.',
+  allTopics:'All topics', sentNeedFields:'At least "Topic" and "Sample sentence" are required',
+  sentAdded:tp=>`Added a template to topic "${tp}"`, sentUpdated:'Template updated',
+  sentDeleteConfirm:'Delete this template from your book?', sentDeleted:'Template deleted',
+  sentEmpty:'No templates yet — add a new one or import a note file',
+  sentImported:(n,sk)=>`Import done: +${n} templates${sk?`, skipped ${sk} lines`:''}`,
+  sentEmptyExport:'Your sentence bank is empty', sentExported:'Exported sentences.txt',
+  writeEmpty:'No templates yet — add one in the Sentence Bank tab', writeTopicLbl:'Topic', writeNoTopic:'(no topic)',
+  writeChainLbl:'Logic chain', writeSampleLbl:'Sample sentence',
+  writePlaceholder:'Write your own sentence based on the structure above, then press Enter to check spelling…',
+  writeCheckBtn:'Check spelling', writeNextBtn:'Next sentence',
+  writeEmptyInput:'Write a sentence first', writeChecking:'Checking spelling…',
+  writeCheckFailed:"Couldn't check spelling — please try again (requires an internet connection)",
+  writeErrorsFound:n=>`Found ${n} misspelled word${n>1?'s':''} — highlighted in red above`, writeNoErrors:'No spelling errors found!',
+  loadingUsers:'Loading user list…', pickUserSub:'Pick a user to open your book', addPerson:'Add person',
+  deleteAccountTitle:'Delete this account',
+  confirmDeleteAccount:u=>`Permanently delete the account "${u}" along with all its words, sentence templates, and garden? This cannot be undone.`,
+  toastAccountDeleted:u=>`Deleted account "${u}"`,
+  loginNoteNoCloud:'Cloud sync is off — your book is saved separately per browser',
+  neverLoggedIn:'Never logged in', today:'Today', yesterday:'Yesterday', daysAgo:n=>`${n} days ago`,
+  newUserSub:'Create a new user — their book starts empty', newUserNameLbl:'Display name (max 12 characters)', newUserNamePh:'e.g. Lan',
+  errEnterName:'Please enter a name', errNameChars:'The name cannot contain . # $ [ ] /', errNameTaken:'This name is already taken',
+  backBtn:'‹ Back', createUserBtn:'Create user', checking:'Checking…',
+  setupSub:"First time signing in — let's create a password", newPwLbl:'Enter a new password', newPw2Lbl:'Confirm the new password',
+  secQLbl:'Security question (used if you forget your password)', secQPh:"e.g. What was your first cat's name?", secALbl:'Answer',
+  backOtherUser:'‹ Choose another user', createAndEnter:'Create and enter',
+  errPwLen:'Password must be at least 4 characters', errPwMismatch:"The two passwords don't match",
+  errFillSecQ:'Please fill in the security question and answer',
+  loginSub:'Enter your password to open your book', pwLbl:'Password', errPwWrong:"That password isn't right, try again",
+  forgotPw:'Forgot password?', loginBtn:'Log in',
+  forgotSub:'Answer the security question to reset your password', errAnsWrong:"That answer isn't right", continueBtn:'Continue',
+  toastVerified:'Verified — please create a new password', openingBook:u=>`Opening ${u}'s book…`,
+},
+};
+function t(key, ...args){
+  const dict = I18N[LANG] || I18N.vi;
+  const v = (key in dict) ? dict[key] : (I18N.vi[key] !== undefined ? I18N.vi[key] : key);
+  return typeof v === 'function' ? v(...args) : v;
+}
+const I18N_BINDINGS = [
+  ['stTotalLbl','text','statWords'], ['stSavedLbl','text','statLearning'], ['stDueLbl','text','statDue'], ['stSentLbl','text','statTemplates'],
+  ['nAddTitle','text','nAddTitle'], ['nWordLbl','text','nWordLbl'], ['nGroupLbl','text','nGroupLbl'], ['fGroup','placeholder','nGroupPh'],
+  ['nPosLbl','text','nPosLbl'], ['nMeaningLbl','text','nMeaningLbl'], ['nKindLbl','text','nKindLbl'],
+  ['nKindSingle','text','nKindSingle'], ['nKindPhrase','text','nKindPhrase'],
+  ['nSentenceLbl','text','nSentenceLbl'], ['nNoteLbl','text','nNoteLbl'], ['fNote','placeholder','nNotePh'],
+  ['nAddBtn','text','nAddBtn'], ['nClearBtn','text','nClearBtn'], ['nListTitle','text','nListTitle'], ['search','placeholder','nSearchPh'],
+  ['nAllGroups','text','nAllGroups'], ['groupFilter','title','nGroupFilterTitle'], ['btnBulkGroup','title','nBulkGroupTitle'],
+  ['nBulkGroupBtn','text','nBulkGroupBtn'], ['nImportBtn','text','nImportBtn'], ['nExportBtn','text','nExportBtn'],
+  ['thWord','text','thWord'], ['thPos','text','thPos'], ['thMeaning','text','thMeaning'], ['thSentence','text','thSentence'],
+  ['thNote','text','thNote'], ['thKind','text','thKind'], ['thAcc','text','thAcc'], ['thLv','text','thLv'],
+  ['nFormatNote','html','nFormatNote'],
+  ['qAllGroups','text','qAllGroups'], ['qSavedOnlyLbl','text','qSavedOnlyLbl'], ['qStreakLbl','text','qStreakLbl'],
+  ['fAllGroups','text','fAllGroups'], ['fSavedOnlyLbl','text','fSavedOnlyLbl'],
+  ['oAddTitle','text','oAddTitle'], ['oTopicLbl','text','oTopicLbl'], ['oChainLbl','text','oChainLbl'], ['oSentLbl','text','oSentLbl'],
+  ['oAddBtn','text','oAddBtn'], ['oClearBtn','text','oClearBtn'], ['oListTitle','text','oListTitle'], ['sentSearch','placeholder','oSearchPh'],
+  ['oImportBtn','text','oImportBtn'], ['oExportBtn','text','oExportBtn'],
+  ['oThTopic','text','oThTopic'], ['oThChain','text','oThChain'], ['oThSentence','text','oThSentence'], ['oFormatNote','html','oFormatNote'],
+  ['awayMsg','text','awayDefault'], ['focusSub','text','focusSubDefault'],
+  ['focusPauseLbl','text','focusPause'], ['focusStopLbl','text','focusStop'], ['gardenTitle','text','gardenTitle'],
+];
+function applyI18n(){
+  document.title = t('appTitle');
+  $$('.tab-btn[data-tab]').forEach(b=>{
+    const lbl = b.querySelector('.tlabel');
+    if(lbl) lbl.textContent = t('tab_' + b.dataset.tab);
+  });
+  $('#langViBtn').textContent = t('langNameVi');
+  $('#langEnBtn').textContent = t('langNameEn');
+  $$('#langSwitch button').forEach(b => b.classList.toggle('on', b.dataset.lang===LANG));
+  $('#modeVocabBtn').textContent = t('modeVocab');
+  $('#modeWritingBtn').textContent = t('modeWriting');
+  $$('#modeSwitch button').forEach(b => b.classList.toggle('on', b.dataset.mode===appMode));
+  $$('#durRow .dur-chip').forEach(b => b.textContent = t('durLabel', +b.dataset.min));
+  for(const [id, prop, key] of I18N_BINDINGS){
+    const el = document.getElementById(id); if(!el) continue;
+    const val = t(key);
+    if(prop==='text') el.textContent = val;
+    else if(prop==='placeholder') el.setAttribute('placeholder', val);
+    else if(prop==='title') el.title = val;
+    else if(prop==='html') el.innerHTML = val;
+  }
+  $('#userChip').title = t('switchUser');
+  if(typeof renderStats === 'function' && words) renderStats();
+}
+let currentLoginStep = null;
+
 /* ── State ───────────────────────────────────────────────── */
 let words = [];
+let sentences = [];
 let memoryOnly = false;
 
 function uid(){ return 'w' + Math.random().toString(36).slice(2,9) + now().toString(36).slice(-4); }
@@ -843,6 +1277,217 @@ function parseNoteText(text, existing){
 
 /* Danh sách từ mặc định (được nhúng từ notes.txt) */
 
+/* ═══════════════════════════════════════════════════════════
+   TAB MẪU CÂU / LUYỆN VIẾT — dữ liệu Sổ dàn ý
+   ═══════════════════════════════════════════════════════════ */
+function makeSentence(topic, chain, sentence){
+  return { id:uid(), topic:(topic||'').trim(), chain:(chain||'').trim(), sentence:(sentence||'').trim() };
+}
+function normalizeSentence(s){
+  if(typeof s.topic !== 'string') s.topic = '';
+  if(typeof s.chain !== 'string') s.chain = '';
+  if(typeof s.sentence !== 'string') s.sentence = '';
+}
+const topicsOf = () => [...new Set(sentences.map(s => s.topic).filter(Boolean))].sort((a,b) => a.localeCompare(b));
+
+function parseSentenceText(text, existing){
+  const entries = [];
+  let skipped = 0;
+  const dupKey = s => (s.topic + '¦' + s.sentence).toLowerCase();
+  const seen = new Set((existing||[]).map(dupKey));
+  text.split(/\r?\n/).forEach(line=>{
+    line = line.trim();
+    if(!line || line.startsWith('#')) return;
+    const parts = line.split('|').map(s=>s.trim());
+    if(parts.length < 3 || !parts[0] || !parts[2]){ skipped++; return; }
+    const [topic, chain, sentence] = parts;
+    const s = makeSentence(topic, chain, sentence);
+    if(seen.has(dupKey(s))){ skipped++; return; }
+    seen.add(dupKey(s));
+    entries.push(s);
+  });
+  return { entries, skipped };
+}
+
+const sentLsKey = () => 'soTuSentences_v4_' + currentUser;
+async function loadSentences(){
+  sentences = null;
+  if(cloudOn()){
+    try{
+      const cs = await cloudGet('users/' + currentUser + '/sentences_v2');
+      if(Array.isArray(cs) && cs.length){
+        sentences = cs;
+        try{ localStorage.setItem(sentLsKey(), JSON.stringify(sentences)); }catch(e){}
+      }
+    }catch(e){}
+  }
+  if(!sentences){
+    try{
+      const raw = localStorage.getItem(sentLsKey());
+      if(raw) sentences = JSON.parse(raw);
+    }catch(e){}
+  }
+  if(!sentences){
+    sentences = parseSentenceText(SENTENCES_SEED_TEXT, []).entries;
+    saveSentences();
+  }
+  for(const s of sentences) normalizeSentence(s);
+}
+let sentSyncT = null;
+function cloudSaveSentences(immediate){
+  if(!cloudOn() || !currentUser) return;
+  clearTimeout(sentSyncT);
+  const doPut = async () => { try{ await cloudPut('users/' + currentUser + '/sentences_v2', sentences); }catch(e){} };
+  if(immediate) doPut(); else sentSyncT = setTimeout(doPut, 1200);
+}
+function saveSentences(){
+  if(!currentUser || !sentences) return;
+  try{ localStorage.setItem(sentLsKey(), JSON.stringify(sentences)); }catch(e){}
+  cloudSaveSentences();
+}
+
+const SENTENCES_SEED_TEXT = `# Luyện Viết — file note (chủ đề | chuỗi logic | câu mẫu)
+Education | online learning, flexible schedule, save time | Online learning offers a flexible schedule, which helps students save a lot of time.
+Education | heavy exams, high stress, bad health | Heavy exam pressure causes high stress and harms students' health.
+Education | practical skills, good jobs, high income | Learning practical skills leads to good jobs and a stable income.
+Education | reading books, broaden knowledge, smart choices | Reading books regularly broadens our knowledge and leads to smarter choices.
+Education | group study, teamwork skills, better results | Group studying builds strong teamwork skills and brings better results.
+Education | small classes, close attention, clear understanding | Smaller classes give students more close attention for a clearer understanding.
+Education | critical thinking, solve problems, smart decisions | Critical thinking helps people solve daily problems and make smart decisions.
+Education | online courses, easy access, low cost | Online courses provide easy access to knowledge at a very low cost.
+Education | school sports, physical health, active lifestyle | School sports improve physical health and encourage an active lifestyle.
+Education | daily homework, good habits, steady progress | Doing homework every day builds good study habits and steady progress.
+Education | digital tools, quick search, fast learning | Digital tools allow quick information searches, making learning much faster.
+Education | art classes, creative expression, happy mind | Art classes encourage creative expression and keep the mind happy and relaxed.
+Education | too much homework, tired students, low focus | Too much homework makes students tired and leads to low focus in class.
+Education | foreign languages, job opportunities, global friends | Learning foreign languages opens up job opportunities and helps make global friends.
+Education | school rules, safe environment, good behavior | Clear school rules create a safe environment and teach good behavior.
+Education | parent support, strong motivation, high scores | Parent support gives children strong motivation to get high scores.
+Education | school trips, real experience, wide view | School trips offer real-world experiences and give students a wider view of life.
+Education | short breaks, rest mind, better focus | Taking short breaks rests the mind and brings better focus to studying.
+Education | money lessons, smart spending, clear savings | Basic money lessons teach smart spending and build clear savings.
+Education | simple memorization, quick forget, poor results | Simple memorization leads to quick forgetting and poor long-term results.
+Technology | social media, keep in touch, close friends | Social media makes it easy to keep in touch with close friends.
+Technology | smart phones, easy life, quick service | Smart phones bring an easy life and provide quick daily services.
+Technology | online shopping, save time, wide choice | Online shopping saves time and gives buyers a wide choice of items.
+Technology | AI tools, fast work, free time | AI tools help finish work fast, giving people more free time.
+Technology | video calls, face talk, strong bonds | Video calls allow face-to-face talks, keeping family bonds strong.
+Technology | computer games, relax mind, fun time | Playing computer games helps relax the mind and offers fun free time.
+Technology | screen time, bad eyes, poor sleep | Too much screen time hurts the eyes and causes poor sleep.
+Technology | online map, easy travel, no get lost | Online maps make travel easy so people never get lost.
+Technology | smart devices, save energy, low bills | Smart home devices save energy and lead to low utility bills.
+Technology | food apps, fast delivery, hot meals | Food apps provide fast delivery for hot and ready meals.
+Technology | phone use, lose focus, bad work | Constant phone use makes people lose focus and ruins their work.
+Technology | health apps, track steps, fit body | Health apps help track daily steps and keep the body fit.
+Technology | digital payment, quick pay, safe cash | Digital payment allows quick checkouts without carrying cash.
+Technology | work emails, fast reply, clear plans | Quick email replies help teams make clear plans fast.
+Technology | online news, fast info, wide view | Online news gives fast updates and a wide view of the world.
+Technology | smart car, safe drive, less crash | Smart cars ensure a safer drive and lead to fewer crashes.
+Technology | online storage, safe files, easy find | Online storage keeps files safe and makes them easy to find.
+Technology | tech use, learn fast, bright future | Good tech use helps kids learn fast for a bright future.
+Technology | cheap flights, easy travel, new lands | Cheap flights make travel easy to explore new lands.
+Technology | fake news, wrong choice, bad trust | Fake news leads to wrong choices and breaks public trust.
+Work & Career | flexible hours, happy staff, long stay | Flexible work hours keep staff happy and make them stay longer.
+Work & Career | home office, no travel, calm mind | Working from home saves travel time and keeps the mind calm.
+Work & Career | hard work, quick rise, good pay | Hard work leads to quick career growth and good pay.
+Work & Career | boss help, clear goals, good job | Boss support gives clear work goals and leads to a good job.
+Work & Career | team chat, good ideas, fast work | Good team chat brings new ideas and makes work fast.
+Work & Career | bad boss, high stress, quick quit | A bad boss causes high stress and makes staff quit fast.
+Work & Career | fair pay, hard work, high output | Fair pay makes workers work hard and brings high output.
+Work & Career | new skills, smart work, job safety | Learning new skills ensures smart work and high job safety.
+Work & Career | long hours, tired body, low work | Long work hours tire the body and cause low work quality.
+Work & Career | good network, nice job, safe life | A good professional network helps find nice jobs and safe lives.
+Work & Career | four-day week, rest time, fresh mind | A four-day workweek gives enough rest time for a fresh mind.
+Work & Career | clear tasks, smart plans, fast win | Clear work tasks help make smart plans for fast success.
+Work & Career | office chat, make friends, nice day | Office chat helps make friends and keeps the workday nice.
+Work & Career | free lunch, good health, happy staff | Free office lunches keep staff healthy and happy.
+Work & Career | hard tasks, build skill, high post | Hard tasks build strong skills for higher job posts.
+Work & Career | smart plan, save time, clear aim | A smart work plan saves time and hits clear aims.
+Work & Career | quiet office, deep focus, top work | A quiet office allows deep focus and brings top-quality work.
+Work & Career | new tech, fast work, smart help | New work tech makes tasks fast and offers smart help.
+Work & Career | right rest, clear head, sharp work | Right rest times keep the head clear for sharp work.
+Work & Career | big goals, hard push, win prize | Big work goals need a hard push to win great prizes.
+Society & Lifestyle | big city, high cost, money stress | Big cities have high living costs and cause money stress.
+Society & Lifestyle | fast food, poor health, body fat | Eating fast food hurts health and adds body fat.
+Society & Lifestyle | daily walk, fit body, fresh mind | A daily walk keeps the body fit and the mind fresh.
+Society & Lifestyle | green food, clean body, long life | Eating clean, green food keeps the body healthy for a long life.
+Society & Lifestyle | bus ride, less cars, clean air | Taking buses means fewer cars and much cleaner air.
+Society & Lifestyle | kind help, safe town, warm home | Kind neighbor help makes towns safe and homes warm.
+Society & Lifestyle | old age, need care, slow growth | An aging population needs more care and slows down economic growth.
+Society & Lifestyle | free help, warm heart, glad mind | Doing free help work warms the heart and gladdens the mind.
+Society & Lifestyle | simple life, less things, calm mind | A simple life with fewer things brings a calm mind.
+Society & Lifestyle | clean parks, fresh air, happy kids | Clean parks offer fresh air and make kids happy.
+Society & Lifestyle | quiet home, low noise, deep sleep | A quiet home has low noise and brings deep sleep.
+Society & Lifestyle | equal rights, fair chance, good life | Equal rights give everyone a fair chance at a good life.
+Society & Lifestyle | rich poor gap, bad trust, city risk | A big wealth gap breaks trust and brings city risks.
+Society & Lifestyle | travel move, see world, open mind | Moving places to travel lets people see the world and open their minds.
+Society & Lifestyle | late work, no sleep, sick body | Working late with no sleep makes the body sick.
+Society & Lifestyle | safe home, good sleep, glad life | A safe home brings good sleep and a glad life.
+Society & Lifestyle | doctor care, fast heal, safe life | Good doctor care helps people heal fast and live safe lives.
+Society & Lifestyle | street lights, safe road, late walk | Bright street lights make roads safe for late walks.
+Society & Lifestyle | cheap clothes, throw fast, trash pile | Buying cheap clothes to throw fast makes big trash piles.
+Society & Lifestyle | slow life, calm days, deep joy | A slow life brings calm days and deep joy.
+Environment | dirty smoke, warm earth, bad storms | Dirty air smoke warms the earth and causes bad storms.
+Environment | cut trees, lose home, rare birds die | Cutting down trees destroys homes, making rare birds die.
+Environment | green power, clean earth, safe future | Using green power keeps the earth clean for a safe future.
+Environment | plastic bags, dirty sea, dead fish | Plastic bags make the sea dirty and kill fish.
+Environment | sort trash, clean ground, low waste | Sorting trash keeps the ground clean and leads to low waste.
+Environment | dirty water, sick fish, bad health | Dirty water makes fish sick and harms public health.
+Environment | plant trees, fresh air, cool earth | Planting trees brings fresh air and cools the earth.
+Environment | clean farms, safe food, long life | Clean organic farms provide safe food for a long life.
+Environment | green trips, save earth, safe life | Eco-trips help save the earth and keep nature safe.
+Environment | single plastic, fast use, bad trash | Single-use plastics offer fast use but create bad trash.
+Environment | free bikes, less gas, fresh town | Free bike shares use less gas and keep towns fresh.
+Environment | catch fish fast, empty sea, no food | Catching fish too fast empties the sea of food.
+Environment | roof plants, cool room, low bill | Roof plants cool down rooms and lower electric bills.
+Environment | sun power, save cash, clean town | Using sun power saves cash and keeps towns clean.
+Environment | save water, dry land safe, good food | Saving water keeps dry lands safe and grows good food.
+Environment | clear laws, clean air, safe life | Clear environmental laws keep the air clean and life safe.
+Environment | meat food, warm earth, fast change | Eating too much meat warms the earth and speeds up climate change.
+Environment | green schools, smart kids, safe earth | Green school lessons teach smart kids to save the earth.
+Environment | use twice, less buy, clean land | Using items twice means buying less and keeping land clean.
+Environment | clean rivers, fresh fish, nice town | Clean rivers have fresh fish and make towns nice.
+Culture, Travel & Arts | trip tour, broad mind, know world | Travel tours broaden the mind and help people know the world.
+Culture, Travel & Arts | mass trips, loud crowds, lost beauty | Mass trips bring loud crowds and make places lose their beauty.
+Culture, Travel & Arts | old museums, deep roots, proud past | Old museums show deep roots and make people proud of the past.
+Culture, Travel & Arts | learn speech, talk fast, make friends | Learning speech skills helps talk fast and make foreign friends.
+Culture, Travel & Arts | art work, free mind, calm soul | Art work frees the mind and calms the soul.
+Culture, Travel & Arts | town feasts, close bonds, high joy | Town feasts build close bonds and bring high joy.
+Culture, Travel & Arts | old books, clear past, smart choice | Reading old books shows the clear past for smart choices.
+Culture, Travel & Arts | low cost trips, see more, glad mind | Low-cost trips let people see more and keep minds glad.
+Culture, Travel & Arts | big trade, same look, lost roots | Big global trade makes places look the same and lose roots.
+Culture, Travel & Arts | good food tour, save shop, love life | Good food tours help local shops and make life lovely.
+Culture, Travel & Arts | wall art, cool street, bright mind | Street wall art makes roads cool and brightens minds.
+Culture, Travel & Arts | read well, feel more, wide view | Reading good books builds deep feelings and a wide view.
+Culture, Travel & Arts | lone trip, stand tall, strong growth | Lone travel helps people stand tall and grow strong.
+Culture, Travel & Arts | old crafts, live well, keep roots | Old crafts give makers a living and keep cultural roots.
+Culture, Travel & Arts | long stays, deep look, true feel | Long stays give deep looks and true feelings of a place.
+Culture, Travel & Arts | music school, smart brain, high marks | Music school builds smart brains and helps get high marks.
+Culture, Travel & Arts | packed towns, bad rooms, sad locals | Packed tourist towns ruin rooms and make locals sad.
+Culture, Travel & Arts | film shows, real life, clear talk | Film shows reflect real life and start clear talks.
+Culture, Travel & Arts | home stays, true life, nice friends | Home stays offer true local life and nice friends.
+Culture, Travel & Arts | old ways, safe earth, smart life | Old traditional ways teach smart and safe life skills.
+Personal Experiences | fix wrong, grow strong, win goal | Fixing big mistakes makes people grow strong to win goals.
+Personal Experiences | write notes, clear head, calm mind | Writing daily notes keeps the head clear and the mind calm.
+Personal Experiences | kid game, life love, good job choice | Kid games turn into life loves and help choose good jobs.
+Personal Experiences | step out, brave heart, fast growth | Stepping out of comfort zones builds brave hearts and fast growth.
+Personal Experiences | money tight, smart save, safe life | Tight money teaches smart saving for a safe life.
+Personal Experiences | read daily, know more, smart acts | Reading daily helps people know more and do smart acts.
+Personal Experiences | help folk, warm heart, glad soul | Helping other folk warms the heart and gladdens the soul.
+Personal Experiences | bad friends, cut off, high worth | Cutting off bad friends raises self-worth and brings peace.
+Personal Experiences | learn skill, smart brain, high hope | Learning a new skill trains the brain and brings high hope.
+Personal Experiences | rise early, quiet time, top work | Rising early gives quiet time for top-quality work.
+Personal Experiences | speech fear, face all, brave talk | Facing public speech fear makes people brave talkers.
+Personal Experiences | simple life, save cash, free mind | A simple life saves cash and frees the mind.
+Personal Experiences | off phone, look round, deep love | Putting phones off helps people look round and love deeply.
+Personal Experiences | team play, good help, strong lead | Team play teaches good help and builds strong leaders.
+Personal Experiences | pet home, daily care, warm love | Pets in homes need daily care and bring warm love.
+Personal Experiences | live lone, find self, free mind | Living alone helps people find themselves and free their minds.
+Personal Experiences | bad work loss, new plan, bright path | Work loss forces a new plan for a bright path.
+Personal Experiences | put cash, safe fund, free mind | Putting cash in safe funds brings a free mind.
+Personal Experiences | bad trip, quick mind, smart fix | Bad travel experiences train quick minds and smart fixes.
+Personal Experiences | slow calm, feel peace, glad days | Slow calm moments bring deep peace and glad days.`;
+
 /* ── Băm mật khẩu (SHA-256, có fallback khi mở bằng file://) ── */
 async function hashText(text, salt){
   const input = salt + '::' + text;
@@ -881,7 +1526,7 @@ async function putAuth(user, rec){
   setLocalAuth(user, rec);
   if(cloudOn()){
     try{ await cloudPut('auth/' + user, rec); }
-    catch(e){ toast('Không lưu được mật khẩu lên mạng — chỉ lưu trên máy này'); }
+    catch(e){ toast(t('cloudAuthErr')); }
   }
 }
 
@@ -894,6 +1539,10 @@ async function cloudGet(path){
 }
 async function cloudPut(path, data){
   const r = await fetch(CLOUD_URL + '/' + path + '.json', { method:'PUT', body: JSON.stringify(data) });
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+}
+async function cloudDelete(path){
+  const r = await fetch(CLOUD_URL + '/' + path + '.json', { method:'DELETE' });
   if(!r.ok) throw new Error('HTTP ' + r.status);
 }
 let syncT = null, syncWarned = false;
@@ -909,7 +1558,7 @@ function cloudSaveWords(immediate){
     try{ await cloudPut('users/' + currentUser + '/words', words); setSyncDot('ok'); syncWarned = false; }
     catch(e){
       setSyncDot('err');
-      if(!syncWarned){ toast('Không đồng bộ được lên mạng — dữ liệu vẫn lưu trên máy này'); syncWarned = true; }
+      if(!syncWarned){ toast(t('cloudSaveErr')); syncWarned = true; }
     }
   };
   if(immediate) doPut(); else syncT = setTimeout(doPut, 1200);
@@ -937,8 +1586,8 @@ async function loadUser(){
   if(cloudOn()){                                   // vườn hoa trên mây
     try{
       const g = await cloudGet('users/' + currentUser + '/garden');
-      if(typeof g === 'number' && g >= 0){
-        try{ localStorage.setItem('soTuGarden_' + currentUser, String(g)); }catch(e){}
+      if(g != null){
+        try{ localStorage.setItem('soTuGarden_' + currentUser, JSON.stringify(g)); }catch(e){}
       }
     }catch(e){}
   }
@@ -1025,7 +1674,7 @@ async function prefetchPhonetics(){
 
 function speakTTS(text){
   try{
-    if(!('speechSynthesis' in window)) { toast('Trình duyệt không hỗ trợ đọc'); return; }
+    if(!('speechSynthesis' in window)) { toast(t('speakUnsupported')); return; }
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
     u.lang = 'en-US'; u.rate = 0.92;
@@ -1062,14 +1711,14 @@ function accuracy(w){ return w.stats.seen ? w.stats.correct / w.stats.seen : 0; 
    - encoding theo ngữ cảnh: từ luôn đi kèm câu ví dụ
    - phản hồi tức thì + theo dõi tiến độ: huy hiệu giai đoạn  */
 function masteryOf(w){
-  if(!w.stats.seen)            return { label:'Mới',      cls:'lv-new'    };
+  if(!w.stats.seen)            return { label:t('lvNew'),    cls:'lv-new'    };
   const iv = w.stats.interval || 0;
-  if(iv < 3)                   return { label:'Đang học', cls:'lv-learn'  };
-  if(iv < 14)                  return { label:'Quen',     cls:'lv-known'  };
-  return                              { label:'Vững',     cls:'lv-master' };
+  if(iv < 3)                   return { label:t('lvLearn'),  cls:'lv-learn'  };
+  if(iv < 14)                  return { label:t('lvKnown'),  cls:'lv-known'  };
+  return                              { label:t('lvMaster'), cls:'lv-master' };
 }
 const lvBadge = w => { const m = masteryOf(w);
-  return `<span class="lv ${m.cls}" title="Điểm ưu tiên: ${Math.round(priorityScore(w))}">${m.label}</span>`; };
+  return `<span class="lv ${m.cls}" title="${t('priorityTitle', Math.round(priorityScore(w)))}">${m.label}</span>`; };
 
 function clozeHtml(w){            // câu ví dụ với từ bị che — mặt trước thẻ
   if(!w.sentence) return '';
@@ -1124,8 +1773,11 @@ function pickWord(pool){
   return cands[cands.length-1];
 }
 
-/* grade: 0 = quên/sai · 1 = mơ hồ · 2 = nhớ/đúng */
-function applyGrade(w, grade, timeMs){
+/* grade: 0 = quên/sai · 1 = mơ hồ · 2 = nhớ/đúng
+   charCount (tuỳ chọn): số ký tự đã gõ trong Luyện gõ — dùng để chuẩn hoá
+   tốc độ theo ms/ký tự thay vì thời gian gõ tuyệt đối, tránh thiên vị
+   từ ngắn (vốn gõ nhanh hơn từ dài dù mức độ thuộc từ là như nhau) */
+function applyGrade(w, grade, timeMs, charCount){
   if(!w.stats) w.stats = newStats();
   const s = w.stats;
   if(!Array.isArray(s.times)) s.times = [];
@@ -1147,7 +1799,9 @@ function applyGrade(w, grade, timeMs){
     s.due = now() + s.interval * DAY;
   }else{
     s.correct++; s.streak++;
-    if(timeMs && timeMs < 3000) s.ease = Math.min(2.9, s.ease + 0.08); // trả lời nhanh
+    const perChar = charCount ? timeMs / charCount : null;
+    const isFast = perChar != null ? perChar < 180 : (timeMs && timeMs < 3000);
+    if(isFast) s.ease = Math.min(2.9, s.ease + 0.08); // trả lời nhanh (chuẩn hoá theo độ dài nếu có)
     else s.ease = Math.min(2.8, s.ease + 0.03);
     s.interval = s.interval < 0.5 ? 1 : s.interval * s.ease;
     s.interval *= (0.95 + Math.random()*0.1);     // fuzz nhẹ chống dồn lịch
@@ -1177,18 +1831,18 @@ $('#fWord').addEventListener('input', e=>{
 $('#btnAdd').addEventListener('click', ()=>{
   const word = $('#fWord').value.trim();
   const meaning = $('#fMeaning').value.trim();
-  if(!word || !meaning){ toast('Cần ít nhất "Từ" và "Nghĩa"'); return; }
+  if(!word || !meaning){ toast(t('toastNeedWordMeaning')); return; }
   const dup = words.find(w => w.word.toLowerCase() === word.toLowerCase()
                            && w.meaning.toLowerCase() === meaning.toLowerCase());
-  if(dup){ toast('Từ này đã có trong sổ'); return; }
+  if(dup){ toast(t('toastDupWord')); return; }
   words.push(makeWord(word, $('#fPos').value, meaning, $('#fSentence').value, $('#fNote').value, formKind,
                       false, $('#fGroup').value));
   save(); renderTable(); renderStats(); clearForm();
-  toast(`Đã thêm "${word}" vào sổ`);
+  toast(t('toastAdded', word));
   const justAdded = words[words.length - 1];
   if(justAdded.kind === 'đơn'){
     fetchPhonetics(justAdded).then(ok => { if(ok){ renderTable();
-      toast(`Đã tra phiên âm: ${justAdded.word} ${justAdded.ipa}`); } });
+      toast(t('toastIpaFound', justAdded.word, justAdded.ipa)); } });
   }
 });
 ['fWord','fPos','fMeaning','fSentence','fNote','fGroup'].forEach(id =>
@@ -1209,7 +1863,7 @@ let editingId = null;
 
 function saveEdit(w){
   const word = $('#eWord').value.trim(), meaning = $('#eMeaning').value.trim();
-  if(!word || !meaning){ toast('Từ và nghĩa không được để trống'); return; }
+  if(!word || !meaning){ toast(t('toastWordMeaningEmpty')); return; }
   const wordChanged = word.toLowerCase() !== w.word.toLowerCase();
   w.word = word;
   w.pos = $('#ePos').value.trim();
@@ -1220,7 +1874,7 @@ function saveEdit(w){
   w.group = $('#eGroup').value.trim();
   if(wordChanged || w.kind === 'cụm'){ w.ipa = ''; w.audio = ''; ipaFailed.delete(w.id); }
   save(); editingId = null; renderTable(); renderStats();
-  toast(`Đã cập nhật "${w.word}"`);
+  toast(t('toastUpdated', w.word));
   if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
 }
 const lvRank = w => !w.stats.seen ? 0 : (w.stats.interval||0) < 3 ? 1 : (w.stats.interval||0) < 14 ? 2 : 3;
@@ -1246,9 +1900,9 @@ function renderTable(){
     });
   }
   const gSel = $('#groupFilter'), keep = gSel.value;
-  gSel.innerHTML = '<option value="">Tất cả nhóm</option>'
+  gSel.innerHTML = `<option value="">${t('nAllGroups')}</option>`
     + groupsOf().map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('')
-    + '<option value="∅">Chưa phân nhóm</option>';
+    + `<option value="∅">${t('optNoGroup')}</option>`;
   gSel.value = [...gSel.options].some(o => o.value === keep) ? keep : '';
   $('#groupList').innerHTML = groupsOf().map(g => `<option value="${esc(g)}">`).join('');
   $$('th.sortable').forEach(th => {
@@ -1256,7 +1910,7 @@ function renderTable(){
       th.dataset.sort === sortBy ? (sortDir > 0 ? '▲' : '▼') : '';
   });
   if(!list.length){
-    tb.innerHTML = `<tr><td colspan="10"><div class="empty">${I('leaf')}<br>Chưa có từ nào — thêm từ mới hoặc nhập file note nhé</div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="10"><div class="empty">${I('leaf')}<br>${t('emptyWords')}</div></td></tr>`;
     return;
   }
   tb.innerHTML = list.map(w=>{
@@ -1264,27 +1918,27 @@ function renderTable(){
     if(w.id === editingId){
       return `<tr class="edit-row"><td colspan="10">
         <div class="edit-grid">
-          <label>Từ / cụm<input id="eWord" value="${esc(w.word)}"></label>
-          <label>Loại từ<input id="ePos" value="${esc(w.pos)}"></label>
-          <label>Nghĩa<input id="eMeaning" value="${esc(w.meaning)}"></label>
-          <label>Đặt câu<input id="eSentence" value="${esc(w.sentence)}"></label>
-          <label>Chú thích<input id="eNote" value="${esc(w.note)}"></label>
-          <label>Đơn/Cụm<select id="eKind" class="themed">
+          <label>${t('editWordLbl')}<input id="eWord" value="${esc(w.word)}"></label>
+          <label>${t('nPosLbl')}<input id="ePos" value="${esc(w.pos)}"></label>
+          <label>${t('nMeaningLbl')}<input id="eMeaning" value="${esc(w.meaning)}"></label>
+          <label>${t('nSentenceLbl')}<input id="eSentence" value="${esc(w.sentence)}"></label>
+          <label>${t('nNoteLbl')}<input id="eNote" value="${esc(w.note)}"></label>
+          <label>${t('thKind')}<select id="eKind" class="themed">
             <option value="đơn" ${w.kind==='đơn'?'selected':''}>đơn</option>
             <option value="cụm" ${w.kind==='cụm'?'selected':''}>cụm</option></select></label>
-          <label>Nhóm<input id="eGroup" value="${esc(w.group)}" list="groupList"></label>
+          <label>${t('nGroupLbl')}<input id="eGroup" value="${esc(w.group)}" list="groupList"></label>
           <span class="edit-actions">
-            <button class="btn mint sm" data-act="saveEdit" data-id="${w.id}">${I('check')}Lưu</button>
-            <button class="btn ghost sm" data-act="cancelEdit" data-id="${w.id}">Huỷ</button>
+            <button class="btn mint sm" data-act="saveEdit" data-id="${w.id}">${I('check')}${t('save')}</button>
+            <button class="btn ghost sm" data-act="cancelEdit" data-id="${w.id}">${t('cancel')}</button>
           </span>
         </div>
-        <p class="muted" style="font-size:11.5px;margin:8px 0 0">Enter để lưu · Esc để huỷ · thống kê học của từ được giữ nguyên</p>
+        <p class="muted" style="font-size:11.5px;margin:8px 0 0">${t('editHelp')}</p>
       </td></tr>`;
     }
     return `<tr>
-      <td><button class="star-btn ${w.saved?'on':''}" data-act="star" data-id="${w.id}" title="Lưu vào danh sách đang học">${I('star')}</button></td>
+      <td><button class="star-btn ${w.saved?'on':''}" data-act="star" data-id="${w.id}" title="${t('saveToLearning')}">${I('star')}</button></td>
       <td><div style="display:flex;align-items:center;gap:7px">
-        <button class="speak-btn sm" data-act="say" data-id="${w.id}" title="Nghe phát âm">${I('sound')}</button>
+        <button class="speak-btn sm" data-act="say" data-id="${w.id}" title="${t('listenTitle')}">${I('sound')}</button>
         <div><span class="w">${esc(w.word)}</span>
           ${w.kind === 'đơn' && w.ipa ? `<br><span class="tb-ipa">${esc(w.ipa)}</span>` : ''}</div>
       </div></td>
@@ -1299,8 +1953,8 @@ function renderTable(){
       </td>
       <td>${lvBadge(w)}</td>
       <td style="white-space:nowrap">
-        <button class="icon-btn" data-act="edit" data-id="${w.id}" title="Chỉnh sửa">${I('edit')}</button>
-        <button class="icon-btn" data-act="del" data-id="${w.id}" title="Xoá từ">${I('trash')}</button></td>
+        <button class="icon-btn" data-act="edit" data-id="${w.id}" title="${t('edit')}">${I('edit')}</button>
+        <button class="icon-btn" data-act="del" data-id="${w.id}" title="${t('delete')}">${I('trash')}</button></td>
     </tr>`;
   }).join('');
 }
@@ -1313,12 +1967,12 @@ $('#btnBulkGroup').addEventListener('click', () => {
     (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
         || (w.note||'').toLowerCase().includes(q))
     && (gf === '' || (gf === '∅' ? !w.group : w.group === gf)));
-  if(!list.length){ toast('Không có từ nào đang hiển thị'); return; }
-  const g = prompt('Gán nhóm cho ' + list.length + ' từ đang hiển thị (để trống = bỏ nhóm):', '');
+  if(!list.length){ toast(t('toastNoneShown')); return; }
+  const g = prompt(t('bulkGroupPrompt', list.length), '');
   if(g === null) return;
   list.forEach(w => w.group = g.trim());
   save(); renderTable();
-  toast(g.trim() ? `Đã xếp ${list.length} từ vào nhóm ${g.trim()}` : `Đã bỏ nhóm của ${list.length} từ`);
+  toast(g.trim() ? t('toastGroupSet', list.length, g.trim()) : t('toastGroupCleared', list.length));
 });
 $('#wordTbody').addEventListener('keydown', e => {
   if(!e.target.closest('.edit-row')) return;
@@ -1358,12 +2012,12 @@ $('#wordTbody').addEventListener('click', e=>{
     if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
   }else if(b.dataset.act==='star'){
     w.saved = !w.saved; save(); renderTable(); renderStats();
-    toast(w.saved ? `Đang học "${w.word}"` : `Đã bỏ lưu "${w.word}"`);
+    toast(w.saved ? t('toastLearning', w.word) : t('toastUnstarred', w.word));
   }else if(b.dataset.act==='del'){
-    if(confirm(`Xoá "${w.word}" khỏi sổ?`)){
+    if(confirm(t('confirmDelete', w.word))){
       words = words.filter(x=>x.id!==w.id);
       save(); renderTable(); renderStats();
-      toast(`Đã xoá "${w.word}"`);
+      toast(t('toastDeleted', w.word));
     }
   }
 });
@@ -1377,15 +2031,15 @@ $('#fileInput').addEventListener('change', e=>{
     const { entries, skipped } = parseNoteText(reader.result, words);
     words.push(...entries);
     save(); renderTable(); renderStats();
-    toast(`Nhập xong: +${entries.length} từ${skipped?`, bỏ qua ${skipped} dòng`:''}`);
+    toast(t('toastImportDone', entries.length, skipped));
     e.target.value = '';
   };
   reader.readAsText(f, 'utf-8');
 });
 
 $('#btnExport').addEventListener('click', ()=>{
-  if(!words.length){ toast('Sổ đang trống'); return; }
-  const header = '# Sổ Từ — file note (từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm | nhóm)\n';
+  if(!words.length){ toast(t('toastEmptyBook')); return; }
+  const header = '# Sổ Ngữ — file note (từ | loại từ | nghĩa | đặt câu | chú thích | đơn/cụm | nhóm)\n';
   const body = words.map(w =>
     [w.word, w.pos, w.meaning, w.sentence, w.note, w.kind, w.group || ''].join(' | ')).join('\n');
   const blob = new Blob([header + body + '\n'], {type:'text/plain;charset=utf-8'});
@@ -1394,8 +2048,235 @@ $('#btnExport').addEventListener('click', ()=>{
   a.download = 'notes.txt';
   a.click();
   URL.revokeObjectURL(a.href);
-  toast('Đã xuất notes.txt');
+  toast(t('toastExported'));
 });
+
+/* ═══════════════════════════════════════════════════════════
+   TAB MẪU CÂU (Sổ dàn ý) — CRUD + nhập/xuất
+   ═══════════════════════════════════════════════════════════ */
+$('#btnSentAdd').addEventListener('click', ()=>{
+  const topic = $('#sTopic').value.trim();
+  const chain = $('#sChain').value.trim();
+  const sentence = $('#sSentence').value.trim();
+  if(!topic || !sentence){ toast(t('sentNeedFields')); return; }
+  sentences.push(makeSentence(topic, chain, sentence));
+  saveSentences(); renderSentTable(); renderStats(); clearSentForm();
+  toast(t('sentAdded', topic));
+});
+['sTopic','sChain','sSentence'].forEach(id =>
+  $('#' + id).addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); $('#btnSentAdd').click(); }
+  }));
+function clearSentForm(){
+  ['sTopic','sChain','sSentence'].forEach(id=>$('#'+id).value='');
+  $('#sTopic').focus();
+}
+$('#btnSentClear').addEventListener('click', clearSentForm);
+
+let sentEditingId = null;
+function renderSentTable(){
+  const q = ($('#sentSearch').value||'').toLowerCase();
+  const tf = $('#topicFilter').value;
+  let list = sentences.filter(s =>
+    (!q || s.topic.toLowerCase().includes(q) || s.chain.toLowerCase().includes(q) || s.sentence.toLowerCase().includes(q))
+    && (!tf || s.topic === tf));
+  const tSel = $('#topicFilter'), keep = tSel.value;
+  tSel.innerHTML = `<option value="">${t('allTopics')}</option>` + topicsOf().map(tp=>`<option value="${esc(tp)}">${esc(tp)}</option>`).join('');
+  tSel.value = [...tSel.options].some(o=>o.value===keep) ? keep : '';
+  const tb = $('#sentTbody');
+  if(!list.length){
+    tb.innerHTML = `<tr><td colspan="4"><div class="empty">${I('leaf')}<br>${t('sentEmpty')}</div></td></tr>`;
+    return;
+  }
+  tb.innerHTML = list.map(s=>{
+    if(s.id === sentEditingId){
+      return `<tr class="edit-row"><td colspan="4">
+        <div class="edit-grid">
+          <label>${t('oTopicLbl')}<input id="esTopic" value="${esc(s.topic)}"></label>
+          <label>${t('oChainLbl')}<input id="esChain" value="${esc(s.chain)}"></label>
+          <label>${t('oSentLbl')}<input id="esSentence" value="${esc(s.sentence)}"></label>
+          <span class="edit-actions">
+            <button class="btn mint sm" data-act="saveEdit" data-id="${s.id}">${I('check')}${t('save')}</button>
+            <button class="btn ghost sm" data-act="cancelEdit" data-id="${s.id}">${t('cancel')}</button>
+          </span>
+        </div>
+        <p class="muted" style="font-size:11.5px;margin:8px 0 0">${t('editHelp')}</p>
+      </td></tr>`;
+    }
+    return `<tr>
+      <td><span class="grp">${esc(s.topic)}</span></td>
+      <td class="muted" style="font-size:12.5px">${esc(s.chain)}</td>
+      <td class="mono" style="font-size:12.5px">${esc(s.sentence)}</td>
+      <td style="white-space:nowrap">
+        <button class="icon-btn" data-act="edit" data-id="${s.id}" title="${t('edit')}">${I('edit')}</button>
+        <button class="icon-btn" data-act="del" data-id="${s.id}" title="${t('delete')}">${I('trash')}</button></td>
+    </tr>`;
+  }).join('');
+}
+$('#sentSearch').addEventListener('input', renderSentTable);
+$('#topicFilter').addEventListener('change', renderSentTable);
+$('#sentTbody').addEventListener('keydown', e=>{
+  if(!e.target.closest('.edit-row')) return;
+  if(e.key === 'Enter'){
+    e.preventDefault();
+    const s = sentences.find(x=>x.id===sentEditingId);
+    if(s) saveSentEdit(s);
+  }else if(e.key === 'Escape'){
+    sentEditingId = null; renderSentTable();
+  }
+});
+function saveSentEdit(s){
+  const topic = $('#esTopic').value.trim(), sentence = $('#esSentence').value.trim();
+  if(!topic || !sentence){ toast(t('sentNeedFields')); return; }
+  s.topic = topic; s.chain = $('#esChain').value.trim(); s.sentence = sentence;
+  saveSentences(); sentEditingId = null; renderSentTable();
+  toast(t('sentUpdated'));
+}
+$('#sentTbody').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  const s = sentences.find(x=>x.id===b.dataset.id); if(!s) return;
+  if(b.dataset.act==='edit'){
+    sentEditingId = s.id; renderSentTable();
+    const f = $('#esTopic'); if(f){ f.focus(); f.select(); }
+  }else if(b.dataset.act==='cancelEdit'){
+    sentEditingId = null; renderSentTable();
+  }else if(b.dataset.act==='saveEdit'){
+    saveSentEdit(s);
+  }else if(b.dataset.act==='del'){
+    if(confirm(t('sentDeleteConfirm'))){
+      sentences = sentences.filter(x=>x.id!==s.id);
+      saveSentences(); renderSentTable(); renderStats();
+      toast(t('sentDeleted'));
+    }
+  }
+});
+
+$('#btnSentImport').addEventListener('click', ()=>$('#sentFileInput').click());
+$('#sentFileInput').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    const { entries, skipped } = parseSentenceText(reader.result, sentences);
+    sentences.push(...entries);
+    saveSentences(); renderSentTable(); renderStats();
+    toast(t('sentImported', entries.length, skipped));
+    e.target.value = '';
+  };
+  reader.readAsText(f, 'utf-8');
+});
+$('#btnSentExport').addEventListener('click', ()=>{
+  if(!sentences.length){ toast(t('sentEmptyExport')); return; }
+  const header = '# Luyện Viết — file note (chủ đề | chuỗi logic | câu mẫu)\n';
+  const body = sentences.map(s => [s.topic, s.chain, s.sentence].join(' | ')).join('\n');
+  const blob = new Blob([header + body + '\n'], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'sentences.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast(t('sentExported'));
+});
+
+/* ═══════════════════════════════════════════════════════════
+   TAB LUYỆN VIẾT — viết câu tự do + kiểm tra chính tả (LanguageTool)
+   ═══════════════════════════════════════════════════════════ */
+let writeState = null;
+let lastWriteId = null;
+
+function startWrite(){
+  const area = $('#writeArea');
+  if(!sentences.length){
+    area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>${t('writeEmpty')}</div></div>`;
+    writeState = null; return;
+  }
+  let cands = sentences.filter(s => s.id !== lastWriteId);
+  if(!cands.length) cands = sentences;
+  const s = cands[Math.floor(Math.random() * cands.length)];
+  lastWriteId = s.id;
+  writeState = { s };
+  renderWrite();
+}
+
+function topicColor(topic){
+  let h = 0;
+  for(const ch of (topic || '?')) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  return PALETTE[h % PALETTE.length];
+}
+function renderWrite(){
+  const { s } = writeState;
+  const chainChips = (s.chain || '').split(',').map(x => x.trim()).filter(Boolean);
+  $('#writeArea').innerHTML = `
+    <div class="w-card">
+      <div class="w-topic-row">
+        <span class="w-topic-badge" style="background:${topicColor(s.topic)}">${I('pin')}${esc(s.topic || t('writeNoTopic'))}</span>
+      </div>
+      ${chainChips.length ? `<div class="w-chain">${chainChips.map((c,i) =>
+        (i ? '<span class="w-chain-arrow">→</span>' : '')
+        + `<span class="w-chain-chip" style="background:${PALETTE[i % PALETTE.length]}">`
+        + `<span class="num">${i+1}</span>${esc(c)}</span>`).join('')}</div>` : ''}
+      <div class="w-sample"><span class="w-quote open">“</span>${esc(s.sentence)}<span class="w-quote close">”</span></div>
+    </div>
+    <div class="write-box" id="writeBox" contenteditable="true" data-placeholder="${esc(t('writePlaceholder'))}"></div>
+    <div class="quiz-actions">
+      <button class="btn primary" id="btnWriteCheck">${I('check')}${t('writeCheckBtn')}</button>
+      <button class="btn ghost" id="btnWriteNext">${t('writeNextBtn')} ${I('next')}</button>
+    </div>
+    <div class="feedback" id="writeFb"></div>`;
+  const box = $('#writeBox');
+  box.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); checkWrite(); }
+  });
+  $('#btnWriteCheck').addEventListener('click', checkWrite);
+  $('#btnWriteNext').addEventListener('click', startWrite);
+  box.focus();
+}
+
+async function checkWrite(){
+  const box = $('#writeBox');
+  const text = (box.innerText || '').trim();
+  const fb = $('#writeFb');
+  if(!text){ toast(t('writeEmptyInput')); return; }
+  fb.className = 'feedback show'; fb.textContent = t('writeChecking');
+  try{
+    const params = new URLSearchParams({ text, language: 'en-US' });
+    const r = await fetch('https://api.languagetool.org/v2/check', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: params,
+    });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    const matches = (data.matches || []).filter(m => m.rule && m.rule.issueType === 'misspelling');
+    renderWriteResult(text, matches);
+  }catch(e){
+    fb.className = 'feedback show bad';
+    fb.textContent = t('writeCheckFailed');
+  }
+}
+
+function renderWriteResult(text, matches){
+  const box = $('#writeBox');
+  matches = matches.slice().sort((a,b) => a.offset - b.offset);
+  let html = '', pos = 0;
+  for(const m of matches){
+    if(m.offset < pos) continue;
+    html += esc(text.slice(pos, m.offset));
+    html += '<span class="sp-err">' + esc(text.slice(m.offset, m.offset + m.length)) + '</span>';
+    pos = m.offset + m.length;
+  }
+  html += esc(text.slice(pos));
+  box.innerHTML = html || esc(text);
+  try{
+    const range = document.createRange(), sel = window.getSelection();
+    range.selectNodeContents(box); range.collapse(false);
+    sel.removeAllRanges(); sel.addRange(range);
+  }catch(e){}
+  const fb = $('#writeFb');
+  fb.className = 'feedback show ' + (matches.length ? 'bad' : 'good');
+  fb.innerHTML = matches.length
+    ? `${I('x')} ${t('writeErrorsFound', matches.length)}`
+    : `${I('check')} ${t('writeNoErrors')}`;
+}
 
 /* ═══════════════════════════════════════════════════════════
    TAB LUYỆN GÕ
@@ -1405,7 +2286,7 @@ let quizStreak = 0;
 
 function fillGroupSelect(sel){
   const keep = sel.value;
-  sel.innerHTML = '<option value="">Tất cả nhóm</option>'
+  sel.innerHTML = `<option value="">${t('nAllGroups')}</option>`
     + groupsOf().map(g => `<option value="${esc(g)}">${esc(g)}</option>`).join('');
   sel.value = [...sel.options].some(o => o.value === keep) ? keep : '';
 }
@@ -1420,7 +2301,7 @@ function startQuiz(){
   const area = $('#quizArea');
   if(!pool.length){
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
-      Chưa có từ để luyện — thêm từ ở tab Ghi chú${$('#quizSavedOnly').checked?' hoặc bỏ lọc từ đang học':''}</div></div>`;
+      ${t('emptyQuiz', $('#quizSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     quiz = null; return;
   }
   const w = pickWord(pool);
@@ -1450,16 +2331,16 @@ function renderQuiz(){
   const {w} = quiz;
   const hint = quiz.hintUsed
     ? `<div class="hintline">${I('bulb')} ${w.kind==='đơn'
-        ? `Bắt đầu bằng "<b class="mono">${esc(w.word[0])}</b>" · ${w.word.replace(/ /g,'').length} chữ cái`
-        : `Từ đầu tiên: "<b class="mono">${esc(w.word.split(/\s+/)[0])}</b>"`}
+        ? t('qHintStart', esc(w.word[0]), w.word.replace(/ /g,'').length)
+        : t('qHintFirstWord', esc(w.word.split(/\s+/)[0]))}
         ${w.note?` · ${esc(w.note)}`:''}</div>`
     : '';
   const promptHtml = `
     <div class="q-prompt">
-      <div class="label">${w.kind==='đơn'?'Nhập từng chữ cái của từ có nghĩa là…':'Sắp xếp các từ thành cụm/câu có nghĩa là…'}</div>
+      <div class="label">${w.kind==='đơn'?t('qLabelSingle'):t('qLabelPhrase')}</div>
       <div class="meaning">${esc(w.meaning)} ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''} ${w.saved?`<svg class="ic" style="fill:#FFC83D;width:18px;height:18px"><use href="#i-star"/></svg>`:''}</div>
       ${w.kind==='cụm' && w.sentence && w.sentence.toLowerCase()!==w.word.toLowerCase()
-        ? `<div class="hintline">Ví dụ: <span class="mono">${esc(w.sentence)}</span></div>` : ''}
+        ? `<div class="hintline">${t('qExample')} <span class="mono">${esc(w.sentence)}</span></div>` : ''}
       ${hint}
     </div>`;
 
@@ -1470,23 +2351,23 @@ function renderQuiz(){
       <div class="chips" id="chips">${quiz.shuffled.map((o,idx)=>
         `<span class="chip-w letter ${quiz.pickedIdx.includes(idx)?'used':''}" data-idx="${idx}">${esc(o.ch)}</span>`).join('')}
       </div>
-      <p class="muted" style="text-align:center;font-size:12px;margin-bottom:14px">Gõ trực tiếp trên bàn phím hoặc bấm chữ cái · Backspace để xoá · tự kiểm tra khi điền đủ</p>`;
+      <p class="muted" style="text-align:center;font-size:12px;margin-bottom:14px">${t('qTilesHelp')}</p>`;
   }else{
     const pills = `
       <div class="mode-pills">
-        <button class="mode-pill ${quiz.phraseMode==='chips'?'on':''}" data-pm="chips">Ghép từ</button>
-        <button class="mode-pill ${quiz.phraseMode==='type'?'on':''}" data-pm="type">Gõ bàn phím</button>
+        <button class="mode-pill ${quiz.phraseMode==='chips'?'on':''}" data-pm="chips">${t('qModeChips')}</button>
+        <button class="mode-pill ${quiz.phraseMode==='type'?'on':''}" data-pm="type">${t('qModeType')}</button>
       </div>`;
     if(quiz.phraseMode === 'type'){
       bodyHtml = pills + `
         <input class="phrase-input" id="phraseInput" autocomplete="off" spellcheck="false"
-          placeholder="Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài"
+          placeholder="${esc(t('qPhrasePh'))}"
           value="${esc(quiz.typedPhrase)}">`;
     }else{
       bodyHtml = pills + `
         <div class="answer-line" id="ansLine">${quiz.pickedIdx.length
           ? quiz.pickedIdx.map((idx,k)=>`<span class="chip-w" data-k="${k}">${esc(quiz.shuffled[idx].t)}</span>`).join('')
-          : '<span class="placeholder">Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ</span>'}
+          : `<span class="placeholder">${t('qAnsPlaceholder')}</span>`}
         </div>
         <div class="chips" id="chips">${quiz.shuffled.map((o,idx)=>
           `<span class="chip-w ${quiz.pickedIdx.includes(idx)?'used':''}" data-idx="${idx}">${esc(o.t)}</span>`).join('')}
@@ -1498,9 +2379,9 @@ function renderQuiz(){
     ${promptHtml}
     ${bodyHtml}
     <div class="quiz-actions">
-      <button class="btn lemon" id="btnHint" ${quiz.hintUsed?'disabled':''}>${I('bulb')}Gợi ý</button>
-      <button class="btn primary" id="btnCheck">${I('check')}Kiểm tra</button>
-      <button class="btn ghost" id="btnSkip">Bỏ qua ${I('next')}</button>
+      <button class="btn lemon" id="btnHint" ${quiz.hintUsed?'disabled':''}>${I('bulb')}${t('qHintBtn')}</button>
+      <button class="btn primary" id="btnCheck">${I('check')}${t('qCheckBtn')}</button>
+      <button class="btn ghost" id="btnSkip">${t('qSkipBtn')} ${I('next')}</button>
     </div>
     <div class="feedback" id="quizFb"></div>`;
 
@@ -1611,23 +2492,27 @@ function checkQuiz(){
     userAns = quiz.pickedIdx.map(i=>quiz.shuffled[i].t).join(' ');
     correct = userAns.toLowerCase() === w.word.toLowerCase();
   }
+  const charCount = w.kind === 'đơn'
+    ? w.word.replace(/ /g,'').length
+    : normPhrase(w.word).replace(/\s/g,'').length;
   const fb = $('#quizFb');
   if(correct){
     quizStreak++;
-    applyGrade(w, quiz.hintUsed ? 1 : 2, timeMs);
+    applyGrade(w, quiz.hintUsed ? 1 : 2, timeMs, charCount);
+    const wpm = charCount ? Math.round((charCount/5) / (timeMs/60000)) : null;
     fb.className = 'feedback show good';
-    fb.innerHTML = `${I('check')} Chính xác! <span class="ans">${esc(w.word)}</span>
+    fb.innerHTML = `${I('check')} ${t('qCorrect')} <span class="ans">${esc(w.word)}</span>
       ${w.sentence?` — <span class="mono">${esc(w.sentence)}</span>`:''}
-      <span class="muted">(${(timeMs/1000).toFixed(1)}s${quiz.hintUsed?' · có gợi ý':''})</span>`;
+      <span class="muted">(${(timeMs/1000).toFixed(1)}s${wpm?` · ~${wpm} WPM`:''}${quiz.hintUsed?' '+t('qHintUsedSuffix'):''})</span>`;
     $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('ok'));
     setTimeout(startQuiz, 1400);
   }else{
     quizStreak = 0;
-    applyGrade(w, 0, timeMs);
+    applyGrade(w, 0, timeMs, charCount);
     fb.className = 'feedback show bad';
-    fb.innerHTML = `${I('x')} Chưa đúng. Đáp án: <span class="ans">${esc(w.word)}</span>
+    fb.innerHTML = `${I('x')} ${t('qWrong')} <span class="ans">${esc(w.word)}</span>
       ${w.note?`<br>${I('pin')} ${esc(w.note)}`:''}<br>
-      <button class="btn sm mint" style="margin-top:8px" onclick="startQuiz()">Từ tiếp theo ${I('next')}</button>`;
+      <button class="btn sm mint" style="margin-top:8px" onclick="startQuiz()">${t('qNextWord')} ${I('next')}</button>`;
     $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('bad'));
   }
   $('#quizStreak').textContent = quizStreak;
@@ -1670,7 +2555,7 @@ function startFc(){
   const area = $('#fcArea');
   if(!pool.length){
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
-      Chưa có thẻ nào — thêm từ ở tab Ghi chú${$('#fcSavedOnly').checked?' hoặc bỏ lọc từ đang học':''}</div></div>`;
+      ${t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     fc = null; return;
   }
   const w = pickWord(pool);
@@ -1696,10 +2581,10 @@ function renderFc(){
           <span class="key">${i+1}</span><span>${esc(m)}</span></button>`;
       }).join('')}</div>`
     : `<div style="display:flex;gap:12px;justify-content:center;margin-bottom:16px">
-        <button class="btn pink" id="fbForgot">${I('x')}Quên</button>
-        <button class="btn mint" id="fbKnew">${I('check')}Nhớ</button>
+        <button class="btn pink" id="fbForgot">${I('x')}${t('fcForgot')}</button>
+        <button class="btn mint" id="fbKnew">${I('check')}${t('fcKnew')}</button>
       </div>
-      <p class="muted" style="font-size:12.5px;margin-bottom:14px">Thêm nhiều từ hơn để có câu hỏi trắc nghiệm nhé</p>`;
+      <p class="muted" style="font-size:12.5px;margin-bottom:14px">${t('fcMoreWordsHelp')}</p>`;
 
   $('#fcArea').innerHTML = `
     <div class="fc-scene">
@@ -1710,34 +2595,34 @@ function renderFc(){
             <span class="kind-tag ${w.kind==='đơn'?'kind-don':'kind-cum'}">${w.kind}</span>
             ${w.group?`<span class="grp" style="cursor:default">${esc(w.group)}</span>`:''}
           </div>
-          <button class="fc-star ${w.saved?'on':''}" id="fcStar" title="Lưu vào danh sách đang học">${I('star')}</button>
+          <button class="fc-star ${w.saved?'on':''}" id="fcStar" title="${t('saveToLearning')}">${I('star')}</button>
           <div class="fc-word ${w.word.length>55?'len-xlong':w.word.length>35?'len-long':w.word.length>19?'len-med':''}">${esc(w.word)}</div>
           <div class="fc-ipa" id="fcIpa">
-            <button class="speak-btn" id="fcSpeak" title="Nghe phát âm">${I('sound')}</button>
+            <button class="speak-btn" id="fcSpeak" title="${t('listenTitle')}">${I('sound')}</button>
             <span id="fcIpaText">${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span>
           </div>
           ${answered ? (fc.picked === fc.correctIdx
-              ? `<div class="fc-verdict ok">${I('check')} Chính xác!</div>`
-              : `<div class="fc-verdict bad">${I('x')} Chưa đúng — đáp án: <b>${esc(w.meaning)}</b></div>`)
+              ? `<div class="fc-verdict ok">${I('check')} ${t('fcCorrect')}</div>`
+              : `<div class="fc-verdict bad">${I('x')} ${t('fcWrongAns', '<b>'+esc(w.meaning)+'</b>')}</div>`)
             : (clozeHtml(w) ? `<div class="fc-cloze">${clozeHtml(w)}</div>` : '')}
           <span class="fc-lv">${lvBadge(w)}</span>
-          <div class="fc-tap">${answered ? 'Chạm để lật thẻ xem ví dụ + ghi chú' : 'Chọn nghĩa đúng bên dưới'}</div>
+          <div class="fc-tap">${answered ? t('fcTapAnswered') : t('fcTapChoose')}</div>
         </div>
         <div class="fc-face fc-back">
           <div class="fc-meaning">${esc(w.meaning)}</div>
           ${w.sentence?`<div class="fc-sentence">${highlightHtml(w)}</div>`:''}
           ${w.note?`<div class="fc-note">${I('pin')} ${esc(w.note)}</div>`:''}
-          <div class="fc-tap">Chạm để lật lại mặt trước</div>
+          <div class="fc-tap">${t('fcTapBack')}</div>
         </div>
       </div>
     </div>
     ${optsHtml}
     ${answered ? `<div style="margin-bottom:6px">
-      <button class="btn primary" id="fcNext">Thẻ tiếp theo ${I('next')}</button></div>` : ''}
+      <button class="btn primary" id="fcNext">${t('fcNextCard')} ${I('next')}</button></div>` : ''}
     <div class="fc-progress">
-      Đã gặp <b class="mono">${w.stats.seen}</b> lần · đúng <b class="mono">${w.stats.seen?Math.round(accuracy(w)*100):0}%</b>
-      · ${w.stats.interval ? `lịch ôn lại sau ~<b class="mono">${w.stats.interval<1?'hôm nay':Math.round(w.stats.interval)+' ngày'}</b>` : 'thẻ mới'}
-      ${dueIn<=0 && w.stats.seen ? ' · <b style="color:var(--red)">đến hạn ôn</b>' : ''}
+      ${t('fcSeen')} <b class="mono">${w.stats.seen}</b> · <b class="mono">${w.stats.seen?Math.round(accuracy(w)*100):0}%</b> ${t('fcCorrectPct')}
+      · ${w.stats.interval ? t('fcReviewIn', `<b class="mono">${w.stats.interval<1?t('fcToday'):t('fcDays', Math.round(w.stats.interval))}</b>`) : t('fcNewCard')}
+      ${dueIn<=0 && w.stats.seen ? ` · <b style="color:var(--red)">${t('fcDueNow')}</b>` : ''}
     </div>`;
 
   const spk = $('#fcSpeak');
@@ -1754,7 +2639,7 @@ function renderFc(){
   $('#fcStar').addEventListener('click', ()=>{
     w.saved = !w.saved; save(); renderStats();
     $('#fcStar').classList.toggle('on', w.saved);            // đổi sao tại chỗ
-    toast(w.saved ? `Đang học "${w.word}"` : `Đã bỏ lưu "${w.word}"`);
+    toast(w.saved ? t('toastLearning', w.word) : t('toastUnstarred', w.word));
   });
   const optsEl = $('#fcOpts');
   if(optsEl) optsEl.addEventListener('click', e=>{
@@ -1777,7 +2662,7 @@ function answerFc(i){
   if(!fc || fc.answered) return;
   fc.picked = i;
   fc.answered = true;
-  const t = now() - fc.startAt;
+  const elapsed = now() - fc.startAt;
   const correct = i === fc.correctIdx;
 
   /* Phản hồi tại chỗ — đổi trực tiếp các phần tử đang hiển thị,
@@ -1795,11 +2680,11 @@ function answerFc(i){
     const v = document.createElement('div');
     v.className = 'fc-verdict ' + (correct ? 'ok' : 'bad');
     v.innerHTML = correct
-      ? I('check') + ' Chính xác!'
-      : I('x') + ' Chưa đúng — đáp án: <b>' + esc(fc.w.meaning) + '</b>';
+      ? I('check') + ' ' + t('fcCorrect')
+      : I('x') + ' ' + t('fcWrongAns', '<b>'+esc(fc.w.meaning)+'</b>');
     const tap = front.querySelector('.fc-tap');
     front.insertBefore(v, tap);
-    if(tap) tap.textContent = 'Chạm để lật thẻ xem ví dụ + ghi chú';
+    if(tap) tap.textContent = t('fcTapAnswered');
   }
   const optsEl = $('#fcOpts');
   if(optsEl && !$('#fcNext')){
@@ -1807,13 +2692,13 @@ function answerFc(i){
     d.style.cssText = 'margin:14px 0 6px;text-align:center';
     const btn = document.createElement('button');
     btn.className = 'btn primary'; btn.id = 'fcNext';
-    btn.innerHTML = 'Thẻ tiếp theo ' + I('next');
+    btn.innerHTML = t('fcNextCard') + ' ' + I('next');
     btn.addEventListener('click', startFc);
     d.appendChild(btn);
     optsEl.after(d);
   }
 
-  applyGrade(fc.w, correct ? (t < 7000 ? 2 : 1) : 0, t);   // chấm điểm SAU khi đã hiện kết quả
+  applyGrade(fc.w, correct ? (elapsed < 7000 ? 2 : 1) : 0, elapsed);   // chấm điểm SAU khi đã hiện kết quả
 }
 
 /* Phím tắt cho flashcard: 1–4 chọn đáp án, Enter/Space sang thẻ kế */
@@ -1839,25 +2724,113 @@ let focusMin = 20;
 let audioCtx = null;
 let lastChime = 0;
 
+/* Vườn hoa: hoa nhỏ là số phiên tập trung đã hoàn thành — CHỈ TĂNG, không bao
+   giờ bị trừ/biến mất. Hoa lớn / cỏ may mắn / cây là huy hiệu thưởng THÊM,
+   tính (không lưu riêng) từ tổng hoa nhỏ theo mốc mỗi 5: cứ mỗi 5 hoa nhỏ có
+   thêm 1 hoa lớn, mỗi 5 hoa lớn có thêm 1 cỏ may mắn, mỗi 5 cỏ may mắn có
+   thêm 1 cây — tất cả cộng dồn song song, không bậc nào tiêu hao bậc dưới. */
 function gardenKey(){ return 'soTuGarden_' + currentUser; }
-let garden = 0;
+let garden = { small:0 };
+function gardenDerived(small){
+  const big = Math.floor(small / 5);
+  const luck = Math.floor(big / 5);
+  const diamond = Math.floor(luck / 5);
+  return { big, luck, diamond };
+}
 function loadGarden(){
-  garden = 0;
-  try{ garden = +(localStorage.getItem(gardenKey()) || 0) || 0; }catch(e){}
+  garden = { small:0 };
+  try{
+    const raw = localStorage.getItem(gardenKey());
+    if(raw){
+      const v = JSON.parse(raw);
+      if(typeof v === 'number'){
+        garden.small = v;                                            // bản rất cũ: số nguyên đơn
+      }else if(v && typeof v === 'object'){
+        // quy đổi mọi định dạng cũ (kể cả bản gộp-trừ trước đây) về tổng hoa
+        // nhỏ tương đương, để không ai bị mất tiến độ khi đổi sang cách tính mới
+        garden.small = (v.small||0) + 5*(v.big||0) + 25*(v.luck||0) + 125*(v.diamond||0);
+      }
+    }
+  }catch(e){}
 }
 function saveGarden(){
-  try{ localStorage.setItem(gardenKey(), String(garden)); }catch(e){}
+  try{ localStorage.setItem(gardenKey(), JSON.stringify(garden)); }catch(e){}
   if(cloudOn() && currentUser){
     cloudPut('users/' + currentUser + '/garden', garden).catch(()=>{});
   }
 }
+function gardenAddFlower(){
+  const before = gardenDerived(garden.small);
+  garden.small++;
+  const after = gardenDerived(garden.small);
+  const merges = [];
+  if(after.big > before.big) merges.push('mergeMsgBig');
+  if(after.luck > before.luck) merges.push('mergeMsgLuck');
+  if(after.diamond > before.diamond) merges.push('mergeMsgDiamond');
+  saveGarden();
+  return merges;
+}
+/* Số giả-ngẫu-nhiên ổn định theo seed chuỗi — dùng để xáo trộn ô lưới và
+   rung nhẹ (jitter) vị trí từng bông hoa, không đổi qua các lần render */
+function seededRand(seed){
+  let h = 0;
+  for(const ch of String(seed)) h = (h * 31 + ch.codePointAt(0)) >>> 0;
+  h = (h ^ (h >>> 15)) >>> 0;
+  return (h % 10000) / 10000;
+}
+function seededShuffle(arr, seedBase){
+  const a = arr.slice();
+  for(let i = a.length - 1; i > 0; i--){
+    const j = Math.floor(seededRand(seedBase + '_' + i) * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+/* Luống chia thành lưới ô cố định — mỗi bông hoa chiếm 1 ô riêng (rung nhẹ vị
+   trí trong ô) nên không bao giờ chồng lên nhau; thứ tự ô được xáo trộn theo
+   người dùng để trông tự nhiên/ngẫu nhiên chứ không xếp hàng thẳng tắp */
+const G_COLS = 4, G_ROWS = 3;   // 12 ô = tối đa 4 nhỏ + 4 lớn + 4 may mắn cùng lúc
 function renderGarden(){
   const g = $('#garden'); if(!g) return;
-  const icons = Array.from({length: Math.min(garden, 10)},
-    () => `<svg class="ic"><use href="#i-flower"/></svg>`).join('');
-  g.innerHTML = garden
-    ? `Vườn của ${currentUser}: ${icons} <span class="mono">${garden}</span> hoa đã nở`
-    : 'Vườn còn trống — hoàn thành một phiên tập trung để trồng bông hoa đầu tiên';
+  const { big, luck, diamond } = gardenDerived(garden.small);
+  /* Hiện ĐỦ toàn bộ số hoa thật (không cắt bớt, không gộp "+N"). Luống chỉ
+     có 12 ô cố định để rải đều — hoa thứ 13 trở đi sẽ quay lại dùng ô đã có
+     hoa khác (chồng lên nhau là chấp nhận được) thay vì bị giấu bớt đi. */
+  const specs = [
+    ['small','i-flower', garden.small, '#C98A12', 21],
+    ['big','i-flower-big', big, '#E5484D', 28],
+    ['luck','i-clover', luck, '#13A35B', 25],
+  ];
+  const sprouts = [];
+  specs.forEach(([key, icon, count, color, size]) => {
+    for(let i = 0; i < count; i++) sprouts.push({ seed: currentUser + '_' + key + i, icon, color, size });
+  });
+  const cellOrder = seededShuffle(
+    Array.from({ length: G_COLS * G_ROWS }, (_, i) => i), (currentUser || '') + '_gcells');
+  const cellW = 92 / G_COLS, cellH = 76 / G_ROWS;
+  let bedHtml = '';
+  sprouts.forEach((sp, idx) => {
+    const cell = cellOrder[idx % cellOrder.length];
+    const col = cell % G_COLS, row = Math.floor(cell / G_COLS);
+    const jx = 0.15 + seededRand(sp.seed + 'x') * 0.7;   // rung trong ô; khi ô bị dùng lại (>12 hoa)
+    const jy = 0.15 + seededRand(sp.seed + 'y') * 0.7;   // độ rung khác nhau giúp các hoa không trùng khít
+    const rot = (seededRand(sp.seed + 'r') * 30 - 15).toFixed(1);
+    const left = (4 + col * cellW + cellW * jx).toFixed(1);
+    const top = (10 + row * cellH + cellH * jy).toFixed(1);
+    bedHtml += `<span class="g-sprout" style="left:${left}%;top:${top}%;transform:rotate(${rot}deg);color:${sp.color}">
+      <svg class="ic" style="width:${sp.size}px;height:${sp.size}px"><use href="#${sp.icon}"/></svg></span>`;
+  });
+  const bed = sprouts.length
+    ? `<div class="g-bed">${bedHtml}</div>`
+    : `<div class="g-bed"><div class="g-bed-empty">${I('leaf')}<br>${t('gardenEmptyBed')}</div></div>`;
+  const legend = `
+    <div class="g-legend">
+      <span class="g-legend-item"><svg class="ic" style="color:#C98A12"><use href="#i-flower"/></svg>${garden.small} ${t('gTier_small')}</span>
+      <span class="g-legend-item"><svg class="ic" style="color:#E5484D"><use href="#i-flower-big"/></svg>${big} ${t('gTier_big')}</span>
+      <span class="g-legend-item"><svg class="ic" style="color:#13A35B"><use href="#i-clover"/></svg>${luck} ${t('gTier_luck')}</span>
+      <span class="g-legend-item special"><svg class="ic" style="color:#1E5EFF"><use href="#i-tree"/></svg>${diamond} ${t('gTier_diamond')}</span>
+    </div>`;
+  g.innerHTML = bed + legend;
 }
 
 /* Chuông nhỏ bằng Web Audio — không cần file âm thanh */
@@ -1919,7 +2892,7 @@ function renderFocus(){
   $('#focusFill').style.width = focus ? Math.min(100, focus.elapsed / focus.target * 100) + '%' : '0%';
   $('#focusStart').style.display = focus && focus.running ? 'none' : '';
   $('#focusStart').innerHTML = focus && !focus.running
-    ? I('play') + 'Tiếp tục' : I('play') + 'Bắt đầu';
+    ? I('play') + t('focusResume') : I('play') + t('focusStart');
   $('#focusPause').style.display = focus && focus.running ? '' : 'none';
   $('#focusStop').style.display = focus ? '' : 'none';
   $$('#durRow .dur-chip').forEach(c => c.disabled = !!focus);
@@ -1940,14 +2913,14 @@ function startFocus(){
   focus = { target: focusMin * 60, elapsed: 0, running: true, tick: null };
   awayCount = 0;
   askNotifPermission();
-  $('#focusSub').textContent = 'Đang tập trung — rời cửa sổ chuông sẽ reng tới khi bạn quay lại';
+  $('#focusSub').textContent = t('focusRunning');
   focusTickStart(); renderFocus();
 }
 function pauseFocus(){
   if(!focus) return;
   focus.running = false; clearInterval(focus.tick);
   stopAwayAlarm(false);
-  $('#focusSub').textContent = 'Đang tạm dừng — bấm Tiếp tục khi sẵn sàng';
+  $('#focusSub').textContent = t('focusPaused');
   renderFocus();
 }
 function stopFocus(silent){
@@ -1955,7 +2928,7 @@ function stopFocus(silent){
   stopAwayAlarm(false);
   focus = null;
   setTitle();
-  if(!silent) $('#focusSub').textContent = 'Đã kết thúc sớm — cây sẽ lớn lại từ đầu ở phiên sau';
+  if(!silent) $('#focusSub').textContent = t('focusEndedEarly');
   renderFocus();
 }
 function focusDone(){
@@ -1966,14 +2939,15 @@ function focusDone(){
   setTitle();
   confettiBurst();
   chime('done');
-  garden++; saveGarden(); renderGarden();
-  $('#focusSub').textContent = 'Hoa hướng dương đã nở — bạn vừa học trọn ' + focusMin + ' phút!';
-  toast('Hoàn thành phiên tập trung ' + focusMin + ' phút — thêm 1 hoa vào vườn');
+  const merges = gardenAddFlower(); renderGarden();
+  $('#focusSub').textContent = t('focusDoneSub', focusMin);
+  toast(t('toastFocusDone', focusMin));
+  merges.forEach((key, i) => setTimeout(() => toast(t(key)), 2400 * (i + 1)));
   focus = null;
   $$('#durRow .dur-chip').forEach(c => c.disabled = false);
   $('#focusStop').style.display = 'none';
   $('#focusStart').style.display = '';
-  $('#focusStart').innerHTML = I('play') + 'Bắt đầu';
+  $('#focusStart').innerHTML = I('play') + t('focusStart');
   setTitle();
 }
 
@@ -1992,8 +2966,8 @@ function showAwayNotif(){
   if(!('Notification' in window) || Notification.permission !== 'granted') return;
   try{
     if(awayNotif) awayNotif.close();
-    awayNotif = new Notification('Sổ Từ — quay lại tập trung nào!', {
-      body: 'Phiên ' + focusMin + ' phút đang chạy, cây hướng dương đang chờ bạn.',
+    awayNotif = new Notification(t('notifTitle'), {
+      body: t('notifBody', focusMin),
       tag: 'soTuFocus', requireInteraction: true,
     });
     awayNotif.onclick = () => { try{ window.focus(); }catch(e){} awayNotif.close(); };
@@ -2011,9 +2985,7 @@ function stopAwayAlarm(returned){
   if(awayNotif){ try{ awayNotif.close(); }catch(e){} awayNotif = null; }
   if(returned && focus){
     const bn = $('#awayBanner');
-    $('#awayMsg').textContent = awayCount === 1
-      ? 'Bạn vừa rời cửa sổ 1 lần — cố giữ mạch tập trung nhé!'
-      : 'Đã rời cửa sổ ' + awayCount + ' lần trong phiên này — cây vẫn đang lớn, gắng lên!';
+    $('#awayMsg').textContent = awayCount === 1 ? t('awayOnce') : t('awayMany', awayCount);
     bn.classList.add('show');
     setTimeout(() => bn.classList.remove('show'), 6000);
   }
@@ -2031,8 +3003,8 @@ window.addEventListener('focus', () => { if(awayT) stopAwayAlarm(true); });
 /* Đếm ngược trên tiêu đề tab + chặn lỡ tay đóng trang giữa phiên */
 function setTitle(){
   document.title = focus
-    ? '(' + fmtMMSS(Math.max(0, focus.target - focus.elapsed)) + ') Sổ Từ — đang tập trung'
-    : 'Sổ Từ';
+    ? t('titleFocusing', fmtMMSS(Math.max(0, focus.target - focus.elapsed)))
+    : t('appTitle');
 }
 window.addEventListener('beforeunload', e => {
   if(focus && focus.running){ e.preventDefault(); e.returnValue = ''; }
@@ -2042,7 +3014,7 @@ $('#durRow').addEventListener('click', e => {
   const c = e.target.closest('.dur-chip'); if(!c || focus) return;
   focusMin = +c.dataset.min;
   $$('#durRow .dur-chip').forEach(x => x.classList.toggle('on', x === c));
-  $('#focusSub').textContent = 'Học đủ ' + focusMin + ' phút, hoa hướng dương sẽ nở';
+  $('#focusSub').textContent = t('focusDurChanged', focusMin);
   renderFocus();
 });
 $('#focusStart').addEventListener('click', startFocus);
@@ -2050,22 +3022,74 @@ $('#focusPause').addEventListener('click', pauseFocus);
 $('#focusStop').addEventListener('click', () => stopFocus(false));
 
 /* ═══════════════════════════════════════════════════════════
-   TABS + STATS
+   TABS + CHẾ ĐỘ (Học Từ / Luyện Viết) + NGÔN NGỮ + STATS
    ═══════════════════════════════════════════════════════════ */
-$$('.tab-btn').forEach(b=>b.addEventListener('click', ()=>{
-  $$('.tab-btn').forEach(x=>x.classList.toggle('active', x===b));
-  $$('.tab-page').forEach(p=>p.classList.toggle('active', p.id==='tab-'+b.dataset.tab));
-  if(b.dataset.tab==='quiz'){ fillGroupSelect($('#quizGroup')); startQuiz(); }
-  if(b.dataset.tab==='flash'){ fillGroupSelect($('#fcGroup')); startFc(); }
-  if(b.dataset.tab==='notes') renderTable();
-  if(b.dataset.tab==='focus'){ renderFocus(); renderGarden(); }
-}));
+function activateTab(btn){
+  if(!btn) return;
+  $$('.tab-btn').forEach(x=>x.classList.toggle('active', x===btn));
+  $$('.tab-page').forEach(p=>p.classList.toggle('active', p.id==='tab-'+btn.dataset.tab));
+  const tab = btn.dataset.tab;
+  if(tab==='quiz'){ fillGroupSelect($('#quizGroup')); startQuiz(); }
+  if(tab==='flash'){ fillGroupSelect($('#fcGroup')); startFc(); }
+  if(tab==='notes') renderTable();
+  if(tab==='focus'){ renderFocus(); renderGarden(); }
+  if(tab==='outline') renderSentTable();
+  if(tab==='write') startWrite();
+}
+$$('.tab-btn').forEach(b=>b.addEventListener('click', ()=>activateTab(b)));
+
+function setMode(m, skipTabJump){
+  appMode = m;
+  try{ localStorage.setItem('soTuMode_v1', m); }catch(e){}
+  $$('#modeSwitch button').forEach(b => b.classList.toggle('on', b.dataset.mode===m));
+  $$('.tab-btn[data-mode]').forEach(b => b.style.display = b.dataset.mode===m ? '' : 'none');
+  $('#chipTotal').style.display = m==='vocab' ? '' : 'none';
+  $('#chipSaved').style.display = m==='vocab' ? '' : 'none';
+  $('#chipDue').style.display = m==='vocab' ? '' : 'none';
+  $('#chipSentTotal').style.display = m==='writing' ? '' : 'none';
+  if(!skipTabJump){
+    const activeTab = $('.tab-btn.active');
+    const activeIsFocus = activeTab && activeTab.dataset.tab === 'focus';
+    if(!activeIsFocus){
+      activateTab($(`.tab-btn[data-tab="${m==='vocab'?'notes':'outline'}"]`));
+    }
+  }
+}
+$('#modeSwitch').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.mode === appMode) return;
+  setMode(b.dataset.mode);
+});
+
+function refreshCurrentView(){
+  const activeTab = $('.tab-btn.active'); if(!activeTab) return;
+  const tab = activeTab.dataset.tab;
+  if(tab==='notes') renderTable();
+  else if(tab==='quiz'){ fillGroupSelect($('#quizGroup')); if(quiz) renderQuiz(); else startQuiz(); }
+  else if(tab==='flash'){ fillGroupSelect($('#fcGroup')); if(fc) renderFc(); else startFc(); }
+  else if(tab==='outline') renderSentTable();
+  else if(tab==='write'){ if(writeState) renderWrite(); else startWrite(); }
+  else if(tab==='focus'){ renderFocus(); renderGarden(); }
+}
+function setLang(l){
+  LANG = l;
+  try{ localStorage.setItem('soTuLang_v1', l); }catch(e){}
+  applyI18n();
+  if($('#loginOverlay').style.display !== 'none' && currentLoginStep) currentLoginStep();
+  else refreshCurrentView();
+}
+$('#langSwitch').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.lang === LANG) return;
+  setLang(b.dataset.lang);
+});
 
 function renderStats(){
   const due = words.filter(w => w.stats.seen > 0 && w.stats.due <= now()).length;
   $('#stTotal').textContent = words.length;
   $('#stSaved').textContent = words.filter(w => w.saved).length;
   $('#stDue').textContent = due;
+  $('#stSentTotal').textContent = sentences ? sentences.length : 0;
   const b = $('#dueBadge');
   b.style.display = due ? '' : 'none';
   b.textContent = due > 99 ? '99+' : due;
@@ -2076,44 +3100,59 @@ const loginSteps = () => $('#loginSteps');
 const avatarHtml = u => `<span class="user-avatar" style="background:${userColor(u)}">${esc(u[0]||'?')}</span>`;
 
 async function renderPick(){
-  loginSteps().innerHTML = '<p class="login-sub">Đang tải danh sách người dùng…</p>';
+  currentLoginStep = renderPick;
+  loginSteps().innerHTML = `<p class="login-sub">${t('loadingUsers')}</p>`;
   await loadUserList();
   await loadLastLogins();
   loginSteps().innerHTML = `
-    <p class="login-sub">Chọn người dùng để mở sổ tay của bạn</p>
+    <p class="login-sub">${t('pickUserSub')}</p>
     <div class="user-grid many">
       ${userList.map(u => `
-        <button class="user-card" data-user="${esc(u)}">${avatarHtml(u)}${esc(u)}
-          <span class="user-last">${lastLoginLabel(u)}</span></button>`).join('')}
+        <div class="user-card" data-user="${esc(u)}">
+          <button class="user-del" data-del="${esc(u)}" title="${t('deleteAccountTitle')}">${I('trash')}</button>
+          ${avatarHtml(u)}${esc(u)}
+          <span class="user-last">${lastLoginLabel(u)}</span>
+        </div>`).join('')}
       <button class="user-card add" id="addUserBtn">
-        <span class="user-avatar">${I('plus')}</span>Thêm người</button>
+        <span class="user-avatar">${I('plus')}</span>${t('addPerson')}</button>
     </div>
-    ${cloudOn() ? '' : '<p class="login-note">Chưa bật đồng bộ mạng — sổ tay lưu riêng trên từng trình duyệt</p>'}`;
-  $$('#loginSteps .user-card[data-user]').forEach(b =>
-    b.addEventListener('click', () => pickUser(b.dataset.user)));
+    ${cloudOn() ? '' : `<p class="login-note">${t('loginNoteNoCloud')}</p>`}`;
+  $$('#loginSteps .user-card[data-user]').forEach(card =>
+    card.addEventListener('click', e => {
+      if(e.target.closest('.user-del')) return;
+      pickUser(card.dataset.user);
+    }));
+  $$('#loginSteps .user-del').forEach(btn =>
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const u = btn.dataset.del;
+      if(!confirm(t('confirmDeleteAccount', u))) return;
+      deleteUserAccount(u).then(() => { toast(t('toastAccountDeleted', u)); renderPick(); });
+    }));
   $('#addUserBtn').addEventListener('click', renderAddUser);
 }
 
 function renderAddUser(){
+  currentLoginStep = renderAddUser;
   loginSteps().innerHTML = `
-    <p class="login-sub">Tạo người dùng mới — sổ tay bắt đầu trống</p>
+    <p class="login-sub">${t('newUserSub')}</p>
     <div class="login-form">
-      <div class="fg"><label>Tên hiển thị (tối đa 12 ký tự)</label>
-        <input type="text" id="lgNewName" maxlength="12" placeholder="ví dụ: Lan"></div>
+      <div class="fg"><label>${t('newUserNameLbl')}</label>
+        <input type="text" id="lgNewName" maxlength="12" placeholder="${esc(t('newUserNamePh'))}"></div>
       <p class="login-err" id="lgErr"></p>
       <div class="login-actions">
-        <button class="login-back" id="lgBack">‹ Quay lại</button>
-        <button class="btn mint sm" id="lgAddGo">${I('plus')}Tạo người dùng</button>
+        <button class="login-back" id="lgBack">${t('backBtn')}</button>
+        <button class="btn mint sm" id="lgAddGo">${I('plus')}${t('createUserBtn')}</button>
       </div>
     </div>`;
   $('#lgBack').addEventListener('click', renderPick);
   const go = async () => {
     const name = $('#lgNewName').value.trim();
     const err = $('#lgErr');
-    if(!name){ err.textContent = 'Hãy nhập tên'; return; }
-    if(/[.#$\[\]\/]/.test(name)){ err.textContent = 'Tên không được chứa . # $ [ ] /'; return; }
+    if(!name){ err.textContent = t('errEnterName'); return; }
+    if(/[.#$\[\]\/]/.test(name)){ err.textContent = t('errNameChars'); return; }
     if(userList.some(u => u.toLowerCase() === name.toLowerCase())){
-      err.textContent = 'Tên này đã có rồi'; return; }
+      err.textContent = t('errNameTaken'); return; }
     userList.push(name);
     await saveUserList();
     pickUser(name);            // người mới → đi thẳng vào bước tạo mật khẩu
@@ -2125,29 +3164,30 @@ function renderAddUser(){
 
 async function pickUser(u){
   currentUser = u;
-  loginSteps().innerHTML = '<p class="login-sub">Đang kiểm tra…</p>';
+  loginSteps().innerHTML = `<p class="login-sub">${t('checking')}</p>`;
   const rec = await getAuth(u);
   if(rec) renderLogin(rec); else renderSetup();
 }
 
 /* Lần đầu: tạo mật khẩu mới + câu hỏi đặc biệt */
 function renderSetup(){
+  currentLoginStep = renderSetup;
   loginSteps().innerHTML = `
     <div class="login-who">${avatarHtml(currentUser)}<div><b>${currentUser}</b>
-      <p class="login-sub" style="margin:2px 0 0">Lần đầu đăng nhập — hãy tạo mật khẩu</p></div></div>
+      <p class="login-sub" style="margin:2px 0 0">${t('setupSub')}</p></div></div>
     <div class="login-form">
-      <div class="fg"><label>Nhập mật khẩu mới</label>
+      <div class="fg"><label>${t('newPwLbl')}</label>
         <input type="password" id="lgPw1" autocomplete="new-password"></div>
-      <div class="fg"><label>Nhập lại mật khẩu mới</label>
+      <div class="fg"><label>${t('newPw2Lbl')}</label>
         <input type="password" id="lgPw2" autocomplete="new-password"></div>
-      <div class="fg"><label>Câu hỏi đặc biệt (dùng khi quên mật khẩu)</label>
-        <input type="text" id="lgQ" placeholder="ví dụ: Tên con mèo đầu tiên của bạn?"></div>
-      <div class="fg"><label>Câu trả lời</label>
+      <div class="fg"><label>${t('secQLbl')}</label>
+        <input type="text" id="lgQ" placeholder="${esc(t('secQPh'))}"></div>
+      <div class="fg"><label>${t('secALbl')}</label>
         <input type="text" id="lgA"></div>
       <p class="login-err" id="lgErr"></p>
       <div class="login-actions">
-        <button class="login-back" id="lgBack">‹ Chọn người khác</button>
-        <button class="btn mint sm" id="lgCreate"><svg class="ic"><use href="#i-check"/></svg>Tạo và vào sổ</button>
+        <button class="login-back" id="lgBack">${t('backOtherUser')}</button>
+        <button class="btn mint sm" id="lgCreate"><svg class="ic"><use href="#i-check"/></svg>${t('createAndEnter')}</button>
       </div>
     </div>`;
   $('#lgBack').addEventListener('click', renderPick);
@@ -2160,9 +3200,9 @@ async function doSetup(){
   const pw1 = $('#lgPw1').value, pw2 = $('#lgPw2').value;
   const q = $('#lgQ').value.trim(), a = $('#lgA').value.trim();
   const err = $('#lgErr');
-  if(pw1.length < 4)        { err.textContent = 'Mật khẩu cần ít nhất 4 ký tự'; return; }
-  if(pw1 !== pw2)           { err.textContent = 'Hai mật khẩu chưa khớp nhau'; return; }
-  if(!q || !a)              { err.textContent = 'Hãy điền câu hỏi đặc biệt và câu trả lời'; return; }
+  if(pw1.length < 4)        { err.textContent = t('errPwLen'); return; }
+  if(pw1 !== pw2)           { err.textContent = t('errPwMismatch'); return; }
+  if(!q || !a)              { err.textContent = t('errFillSecQ'); return; }
   err.textContent = '';
   const salt = newSalt();
   const rec = {
@@ -2177,18 +3217,19 @@ async function doSetup(){
 
 /* Lần sau: nhập mật khẩu + quên mật khẩu */
 function renderLogin(rec){
+  currentLoginStep = () => renderLogin(rec);
   loginSteps().innerHTML = `
     <div class="login-who">${avatarHtml(currentUser)}<div><b>${currentUser}</b>
-      <p class="login-sub" style="margin:2px 0 0">Nhập mật khẩu để mở sổ tay</p></div></div>
+      <p class="login-sub" style="margin:2px 0 0">${t('loginSub')}</p></div></div>
     <div class="login-form">
-      <div class="fg"><label>Mật khẩu</label>
+      <div class="fg"><label>${t('pwLbl')}</label>
         <input type="password" id="lgPw" autocomplete="current-password"></div>
       <p class="login-err" id="lgErr"></p>
       <div class="login-actions">
-        <button class="login-back" id="lgBack">‹ Chọn người khác</button>
+        <button class="login-back" id="lgBack">${t('backOtherUser')}</button>
         <div>
-          <button class="login-link" id="lgForgot">Quên mật khẩu?</button>
-          <button class="btn sky sm" id="lgGo"><svg class="ic"><use href="#i-lock"/></svg>Đăng nhập</button>
+          <button class="login-link" id="lgForgot">${t('forgotPw')}</button>
+          <button class="btn sky sm" id="lgGo"><svg class="ic"><use href="#i-lock"/></svg>${t('loginBtn')}</button>
         </div>
       </div>
     </div>`;
@@ -2197,7 +3238,7 @@ function renderLogin(rec){
   const go = async () => {
     const h = await hashText($('#lgPw').value, rec.salt);
     if(h === rec.pwHash) enterApp();
-    else $('#lgErr').textContent = 'Mật khẩu chưa đúng, thử lại nhé';
+    else $('#lgErr').textContent = t('errPwWrong');
   };
   $('#lgGo').addEventListener('click', go);
   $('#lgPw').addEventListener('keydown', e => { if(e.key === 'Enter') go(); });
@@ -2206,26 +3247,27 @@ function renderLogin(rec){
 
 /* Quên mật khẩu: trả lời câu hỏi đặc biệt → quay lại tạo mật khẩu mới */
 function renderForgot(rec){
+  currentLoginStep = () => renderForgot(rec);
   loginSteps().innerHTML = `
     <div class="login-who">${avatarHtml(currentUser)}<div><b>${currentUser}</b>
-      <p class="login-sub" style="margin:2px 0 0">Trả lời câu hỏi đặc biệt để đặt lại mật khẩu</p></div></div>
+      <p class="login-sub" style="margin:2px 0 0">${t('forgotSub')}</p></div></div>
     <div class="login-form">
-      <div class="fg"><label>Câu hỏi đặc biệt</label>
+      <div class="fg"><label>${t('secQLbl')}</label>
         <input type="text" value="${rec.q.replace(/"/g,'&quot;')}" disabled style="background:var(--lemon)"></div>
-      <div class="fg"><label>Câu trả lời</label>
+      <div class="fg"><label>${t('secALbl')}</label>
         <input type="text" id="lgA"></div>
       <p class="login-err" id="lgErr"></p>
       <div class="login-actions">
-        <button class="login-back" id="lgBack">‹ Quay lại</button>
-        <button class="btn peach sm" id="lgReset"><svg class="ic"><use href="#i-next"/></svg>Tiếp tục</button>
+        <button class="login-back" id="lgBack">${t('backBtn')}</button>
+        <button class="btn peach sm" id="lgReset"><svg class="ic"><use href="#i-next"/></svg>${t('continueBtn')}</button>
       </div>
     </div>`;
   $('#lgBack').addEventListener('click', () => renderLogin(rec));
   const reset = async () => {
     const h = await hashText($('#lgA').value.trim().toLowerCase(), rec.salt);
-    if(h !== rec.aHash){ $('#lgErr').textContent = 'Câu trả lời chưa đúng'; return; }
+    if(h !== rec.aHash){ $('#lgErr').textContent = t('errAnsWrong'); return; }
     await putAuth(currentUser, null);   // xoá mật khẩu cũ
-    toast('Đã xác minh — hãy tạo mật khẩu mới');
+    toast(t('toastVerified'));
     renderSetup();                       // quay lại cửa sổ tạo mật khẩu ban đầu
   };
   $('#lgReset').addEventListener('click', reset);
@@ -2235,26 +3277,29 @@ function renderForgot(rec){
 
 /* Vào app sau khi đăng nhập */
 async function enterApp(){
-  loginSteps().innerHTML = '<p class="login-sub">Đang mở sổ tay của ' + currentUser + '…</p>';
+  loginSteps().innerHTML = `<p class="login-sub">${t('openingBook', currentUser)}</p>`;
   await loadUser();
+  await loadSentences();
   markLogin();
   $('#userName').textContent = currentUser;
   $('#loginOverlay').style.display = 'none';
-  quiz = null; fc = null; quizStreak = 0; lastShownId = null;
-  $$('.tab-btn').forEach(x => x.classList.toggle('active', x.dataset.tab === 'notes'));
-  $$('.tab-page').forEach(p => p.classList.toggle('active', p.id === 'tab-notes'));
+  quiz = null; fc = null; quizStreak = 0; lastShownId = null; writeState = null; lastWriteId = null;
+  applyI18n();
+  setMode(appMode, true);
+  activateTab($(`.tab-btn[data-tab="${appMode==='vocab'?'notes':'outline'}"]`));
   loadGarden();
   renderTable();
   renderStats();
   prefetchPhonetics();
-  if(memoryOnly) toast('Trình duyệt chặn lưu trữ — dữ liệu chỉ giữ trong phiên này, hãy dùng Xuất file note');
+  if(memoryOnly) toast(t('memoryOnlyWarn'));
 }
 
 /* Đổi người dùng */
 $('#userChip').addEventListener('click', () => {
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ
-  currentUser = null; words = [];
+  if(sentences) cloudSaveSentences(true);
+  currentUser = null; words = []; sentences = [];
   renderTable(); renderStats();
   setSyncDot('');
   $('#loginOverlay').style.display = 'flex';
@@ -2263,11 +3308,13 @@ $('#userChip').addEventListener('click', () => {
 
 /* Lỗi bất ngờ → hiện toast thay vì đứng im */
 window.addEventListener('error', e => {
-  try{ toast('Lỗi: ' + (e.message || 'không rõ')); }catch(x){}
+  try{ toast(t('errGeneric', e.message || '?')); }catch(x){}
 });
 
 /* ── Khởi động ───────────────────────────────────────────── */
-console.log('Sổ Từ', APP_VERSION);
+console.log('Sổ Ngữ', APP_VERSION);
+setMode(appMode, true);
+applyI18n();
 renderPick();
 </script>
 </body>

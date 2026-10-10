@@ -1650,6 +1650,7 @@ async function fetchPhonetics(w){
    speakWord/playAudio/speakTTS đều trả về Promise — resolve khi ĐỌC XONG
    (hoặc lỗi / quá 8s) để nơi gọi có thể chờ. */
 const audioCache = new Map();
+const badAudio = new Set();            // link audio lỗi/treo trong phiên → bỏ qua, dùng TTS
 let cancelSpeech = null;
 function getAudio(url){
   let a = audioCache.get(url);
@@ -1658,8 +1659,8 @@ function getAudio(url){
 }
 function preloadWordAudio(w){
   if(!w || w.kind !== 'đơn') return;
-  if(w.audio){ getAudio(w.audio); return; }
-  fetchPhonetics(w).then(() => { if(w.audio) getAudio(w.audio); });
+  if(w.audio){ if(!badAudio.has(w.audio)) getAudio(w.audio); return; }
+  fetchPhonetics(w).then(() => { if(w.audio && !badAudio.has(w.audio)) getAudio(w.audio); });
 }
 function stopSpeech(){
   if(cancelSpeech){ const c = cancelSpeech; cancelSpeech = null; c(); }
@@ -1672,31 +1673,41 @@ function playAudio(url, fallbackText){
   return new Promise(resolve => {
     stopSpeech();
     const a = getAudio(url);
-    let done = false, guard;
+    let done = false, guard, startGuard;
     const end = next => {
       if(done) return; done = true;
-      clearTimeout(guard);
+      clearTimeout(guard); clearTimeout(startGuard);
       a.removeEventListener('ended', onEnd);
-      a.removeEventListener('error', onErr);
+      a.removeEventListener('error', fallback);
+      a.removeEventListener('playing', onPlaying);
       if(cancelSpeech === end) cancelSpeech = null;
       resolve(next);
     };
-    const onEnd = () => end();
-    const onErr = () => { if(done) return; cancelSpeech = null; end(speakTTS(fallbackText)); };
+    const fallback = () => {
+      if(done) return;
+      badAudio.add(url);
+      cancelSpeech = null;
+      try{ a.pause(); }catch(e){}
+      end(speakTTS(fallbackText));
+    };
+    const onPlaying = () => clearTimeout(startGuard);
+    const onEnd = () => { (a.duration && a.duration < 0.25) ? fallback() : end(); };
     a.addEventListener('ended', onEnd);
-    a.addEventListener('error', onErr);
+    a.addEventListener('error', fallback);
+    a.addEventListener('playing', onPlaying);
     cancelSpeech = end;
     guard = setTimeout(() => end(), 8000);
+    startGuard = setTimeout(fallback, 1500);
     try{ a.currentTime = 0; }catch(e){}
-    a.play().catch(() => { if(!done) onErr(); });
+    a.play().catch(() => { if(!done) fallback(); });
   });
 }
 function speakWord(w){
   if(w.kind !== 'đơn') return speakTTS(w.word);
-  if(w.audio) return playAudio(w.audio, w.word);
+  if(w.audio && !badAudio.has(w.audio)) return playAudio(w.audio, w.word);
   const p = speakTTS(w.word);
-  fetchPhonetics(w).then(ok => {
-    if(w.audio) getAudio(w.audio);
+  if(!w.audio) fetchPhonetics(w).then(ok => {
+    if(w.audio && !badAudio.has(w.audio)) getAudio(w.audio);
     if(ok){ if(fc && fc.w.id === w.id) updateFcIpa(); renderTable(); }
   });
   return p;

@@ -998,6 +998,7 @@ vi:{
   emptyQuiz:extra=>`Chưa có từ để luyện — thêm từ ở tab Ghi chú${extra}`, qExtraSaved:' hoặc bỏ lọc từ đang học',
   qLabelSingle:'Nhập từng chữ cái của từ có nghĩa là…', qLabelPhrase:'Sắp xếp các từ thành cụm/câu có nghĩa là…',
   qHintStart:(c,n)=>`Bắt đầu bằng "${c}" · ${n} chữ cái`, qHintFirstWord:w=>`Từ đầu tiên: "${w}"`,
+  qHintHalf:(h,n)=>`Một nửa (${Math.ceil(n/2)}/${n} ký tự): "${h}…"`,
   qExample:'Ví dụ:', qTilesHelp:'Gõ trực tiếp trên bàn phím hoặc bấm chữ cái · Backspace để xoá · tự kiểm tra khi điền đủ',
   qModeChips:'Ghép từ', qModeType:'Gõ bàn phím',
   qPhrasePh:'Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài',
@@ -1107,6 +1108,7 @@ en:{
   emptyQuiz:extra=>`No words to practice yet — add words in the Notes tab${extra}`, qExtraSaved:' or clear the "being learned" filter',
   qLabelSingle:'Type each letter of the word meaning…', qLabelPhrase:'Arrange the words into a phrase/sentence meaning…',
   qHintStart:(c,n)=>`Starts with "${c}" · ${n} letters`, qHintFirstWord:w=>`First word: "${w}"`,
+  qHintHalf:(h,n)=>`Half (${Math.ceil(n/2)}/${n} characters): "${h}…"`,
   qExample:'Example:', qTilesHelp:'Type directly on your keyboard or tap a letter · Backspace to delete · auto-checks once complete',
   qModeChips:'Arrange words', qModeType:'Type',
   qPhrasePh:'Type the whole phrase/sentence then press Enter — auto-checks once long enough',
@@ -1644,18 +1646,60 @@ async function fetchPhonetics(w){
   }catch(e){ ipaFailed.add(w.id); return false; }
 }
 
-/* Đọc to: ưu tiên audio từ điển; không có thì dùng giọng đọc trình duyệt */
-function speakWord(w){
-  if(w.kind !== 'đơn'){ speakTTS(w.word); return; }   // cụm: giọng trình duyệt en-US
-  if(w.audio){
-    new Audio(w.audio).play().catch(() => speakTTS(w.word));
-    return;
-  }
-  fetchPhonetics(w).then(ok => {
-    if(w.audio){ new Audio(w.audio).play().catch(() => speakTTS(w.word)); }
-    else speakTTS(w.word);
-    if(ok && fc && fc.w.id === w.id) updateFcIpa();
+/* Đọc to: ưu tiên audio từ điển; không có thì dùng giọng đọc trình duyệt.
+   speakWord/playAudio/speakTTS đều trả về Promise — resolve khi ĐỌC XONG
+   (hoặc lỗi / quá 8s) để nơi gọi có thể chờ. */
+const audioCache = new Map();
+let cancelSpeech = null;
+function getAudio(url){
+  let a = audioCache.get(url);
+  if(!a){ a = new Audio(); a.preload = 'auto'; a.src = url; audioCache.set(url, a); }
+  return a;
+}
+function preloadWordAudio(w){
+  if(!w || w.kind !== 'đơn') return;
+  if(w.audio){ getAudio(w.audio); return; }
+  fetchPhonetics(w).then(() => { if(w.audio) getAudio(w.audio); });
+}
+function stopSpeech(){
+  if(cancelSpeech){ const c = cancelSpeech; cancelSpeech = null; c(); }
+  audioCache.forEach(a => { if(!a.paused) a.pause(); });
+  try{
+    if('speechSynthesis' in window && (speechSynthesis.speaking || speechSynthesis.pending)) speechSynthesis.cancel();
+  }catch(e){}
+}
+function playAudio(url, fallbackText){
+  return new Promise(resolve => {
+    stopSpeech();
+    const a = getAudio(url);
+    let done = false, guard;
+    const end = next => {
+      if(done) return; done = true;
+      clearTimeout(guard);
+      a.removeEventListener('ended', onEnd);
+      a.removeEventListener('error', onErr);
+      if(cancelSpeech === end) cancelSpeech = null;
+      resolve(next);
+    };
+    const onEnd = () => end();
+    const onErr = () => { if(done) return; cancelSpeech = null; end(speakTTS(fallbackText)); };
+    a.addEventListener('ended', onEnd);
+    a.addEventListener('error', onErr);
+    cancelSpeech = end;
+    guard = setTimeout(() => end(), 8000);
+    try{ a.currentTime = 0; }catch(e){}
+    a.play().catch(() => { if(!done) onErr(); });
   });
+}
+function speakWord(w){
+  if(w.kind !== 'đơn') return speakTTS(w.word);
+  if(w.audio) return playAudio(w.audio, w.word);
+  const p = speakTTS(w.word);
+  fetchPhonetics(w).then(ok => {
+    if(w.audio) getAudio(w.audio);
+    if(ok){ if(fc && fc.w.id === w.id) updateFcIpa(); renderTable(); }
+  });
+  return p;
 }
 /* Tra sẵn phiên âm cho mọi từ đơn còn thiếu — chạy nền sau khi đăng nhập,
    cách nhau 300ms để lịch sự với API. IPA hiện ra ngay, không cần bấm loa. */
@@ -1678,17 +1722,36 @@ async function prefetchPhonetics(){
   ipaQueueRunning = false;
 }
 
+let enVoice = null;
+function pickVoice(){
+  if(enVoice) return enVoice;
+  enVoice = speechSynthesis.getVoices().find(v => v.lang === 'en-US')
+         || speechSynthesis.getVoices().find(v => v.lang.startsWith('en-US')) || null;
+  return enVoice;
+}
+if('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', () => { enVoice = null; pickVoice(); });
+
 function speakTTS(text){
-  try{
-    if(!('speechSynthesis' in window)) { toast(t('speakUnsupported')); return; }
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = 'en-US'; u.rate = 0.92;
-    const v = speechSynthesis.getVoices().find(v => v.lang === 'en-US')
-           || speechSynthesis.getVoices().find(v => v.lang.startsWith('en-US'));
-    if(v) u.voice = v;
-    speechSynthesis.speak(u);
-  }catch(e){}
+  return new Promise(resolve => {
+    try{
+      if(!('speechSynthesis' in window)){ toast(t('speakUnsupported')); return resolve(); }
+      stopSpeech();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = 'en-US'; u.rate = 0.92;
+      const v = pickVoice(); if(v) u.voice = v;
+      let done = false, guard;
+      const end = () => {
+        if(done) return; done = true;
+        clearTimeout(guard);
+        if(cancelSpeech === end) cancelSpeech = null;
+        resolve();
+      };
+      u.onend = end; u.onerror = end;
+      cancelSpeech = end;
+      guard = setTimeout(end, 8000);
+      speechSynthesis.speak(u);
+    }catch(e){ resolve(); }
+  });
 }
 function save(){
   if(!currentUser || !words) return;
@@ -1783,7 +1846,7 @@ function pickWord(pool){
    charCount (tuỳ chọn): số ký tự đã gõ trong Luyện gõ — dùng để chuẩn hoá
    tốc độ theo ms/ký tự thay vì thời gian gõ tuyệt đối, tránh thiên vị
    từ ngắn (vốn gõ nhanh hơn từ dài dù mức độ thuộc từ là như nhau) */
-function applyGrade(w, grade, timeMs, charCount){
+function applyGrade(w, grade, timeMs, charCount, hintLevel){
   if(!w.stats) w.stats = newStats();
   const s = w.stats;
   if(!Array.isArray(s.times)) s.times = [];
@@ -1798,6 +1861,11 @@ function applyGrade(w, grade, timeMs, charCount){
     s.ease = Math.max(1.3, s.ease - 0.2);
     s.interval = 0;
     s.due = now() + 10*60*1000;                   // gặp lại sau ~10 phút
+  }else if(grade === 1 && hintLevel >= 2){
+    s.correct++; s.streak = Math.floor(s.streak / 2);
+    s.ease = Math.max(1.3, s.ease - 0.15);
+    s.interval = Math.max(0.3, (s.interval || 0.3) * 0.6);
+    s.due = now() + s.interval * DAY;
   }else if(grade === 1){
     s.correct++; s.streak++;
     s.ease = Math.max(1.3, s.ease - 0.05);
@@ -2000,6 +2068,11 @@ document.querySelector('thead').addEventListener('click', e => {
 });
 
 $('#wordTbody').addEventListener('click', e=>{
+  ['pointerover','touchstart'].forEach(ev => $('#wordTbody').addEventListener(ev, e => {
+    const b = e.target.closest('[data-act="say"]'); if(!b) return;
+    const w = words.find(x => x.id === b.dataset.id);
+    if(w) preloadWordAudio(w);
+  }, {passive:true}));
   const b = e.target.closest('button'); if(!b) return;
   const w = words.find(x=>x.id===b.dataset.id); if(!w) return;
   if(b.dataset.act==='saveEdit'){
@@ -2015,7 +2088,6 @@ $('#wordTbody').addEventListener('click', e=>{
     editingId = null; renderTable();
   }else if(b.dataset.act==='say'){
     speakWord(w);
-    if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
   }else if(b.dataset.act==='star'){
     w.saved = !w.saved; save(); renderTable(); renderStats();
     toast(w.saved ? t('toastLearning', w.word) : t('toastUnstarred', w.word));
@@ -2287,7 +2359,7 @@ function renderWriteResult(text, matches){
 /* ═══════════════════════════════════════════════════════════
    TAB LUYỆN GÕ
    ═══════════════════════════════════════════════════════════ */
-let quiz = null;          // {w, mode, startAt, hintUsed, typed[], pickedIdx[]}
+let quiz = null;          // {w, mode, startAt, hintLevel(0-2), typed[], pickedIdx[]}
 let quizStreak = 0;
 
 function fillGroupSelect(sel){
@@ -2312,9 +2384,10 @@ function startQuiz(){
   }
   const w = pickWord(pool);
   lastShownId = w.id;
-  quiz = { w, mode: w.kind, startAt: now(), hintUsed:false, typed:[], pickedIdx:[],
+  preloadWordAudio(w);
+  quiz = { w, mode: w.kind, startAt: now(), hintLevel:0, typed:[], pickedIdx:[],
            phraseMode: localStorage.getItem('soTuPhraseMode_v1') === 'type' ? 'type' : 'chips',
-           typedPhrase: '' };
+           typedPhrase: '' };           
   if(w.kind === 'đơn'){
     const letters = w.word.toLowerCase().split('');
     quiz.shuffled = shuffle(letters.map((ch,i)=>({ch,i})).filter(x=>x.ch!==' '));
@@ -2335,12 +2408,17 @@ const normPhrase = t => t.toLowerCase().replace(/[.,!?;:"""'’]/g, ' ').replace
 
 function renderQuiz(){
   const {w} = quiz;
-  const hint = quiz.hintUsed
-    ? `<div class="hintline">${I('bulb')} ${w.kind==='đơn'
+  let hint = '';
+  if(quiz.hintLevel >= 1){
+    hint = `<div class="hintline">${I('bulb')} ${w.kind==='đơn'
         ? t('qHintStart', esc(w.word[0]), w.word.replace(/ /g,'').length)
         : t('qHintFirstWord', esc(w.word.split(/\s+/)[0]))}
-        ${w.note?` · ${esc(w.note)}`:''}</div>`
-    : '';
+        ${w.note?` · ${esc(w.note)}`:''}</div>`;
+  }
+  if(quiz.hintLevel >= 2){
+    const full = w.word.trim();
+    hint += `<div class="hintline">${I('bulb')} ${t('qHintHalf', esc(full.slice(0, Math.ceil(full.length/2))), full.length)}</div>`;
+  }
   const promptHtml = `
     <div class="q-prompt">
       <div class="label">${w.kind==='đơn'?t('qLabelSingle'):t('qLabelPhrase')}</div>
@@ -2385,7 +2463,7 @@ function renderQuiz(){
     ${promptHtml}
     ${bodyHtml}
     <div class="quiz-actions">
-      <button class="btn lemon" id="btnHint" ${quiz.hintUsed?'disabled':''}>${I('bulb')}${t('qHintBtn')}</button>
+      <button class="btn lemon" id="btnHint" ${quiz.hintLevel>=2?'disabled':''}>${I('bulb')}${t('qHintBtn')}${quiz.hintLevel?` (${quiz.hintLevel}/2)`:''}</button>
       <button class="btn primary" id="btnCheck">${I('check')}${t('qCheckBtn')}</button>
       <button class="btn ghost" id="btnSkip">${t('qSkipBtn')} ${I('next')}</button>
     </div>
@@ -2393,7 +2471,7 @@ function renderQuiz(){
 
   $('#btnCheck').addEventListener('click', checkQuiz);
   $('#btnSkip').addEventListener('click', ()=>{ applyGrade(quiz.w, 0); startQuiz(); });
-  $('#btnHint').addEventListener('click', ()=>{ quiz.hintUsed = true; renderQuiz(); });
+  $('#btnHint').addEventListener('click', ()=>{ if(quiz.hintLevel < 2){ quiz.hintLevel++; renderQuiz(); } });
   $$('#quizArea .mode-pill').forEach(p => p.addEventListener('click', () => {
     if(quiz.graded || quiz.phraseMode === p.dataset.pm) return;
     quiz.phraseMode = p.dataset.pm;
@@ -2462,7 +2540,7 @@ document.addEventListener('keydown', e=>{
   if(!quiz) return;
   if(!$('#tab-quiz').classList.contains('active')) return;
   if(e.target.matches('input,textarea,select')) return;
-  if(quiz.graded){ if(e.key === 'Enter') startQuiz(); return; }
+  if(quiz.graded){ if(e.key === 'Enter' && !quiz.speaking) startQuiz(); return; }
   if(quiz.mode !== 'đơn') return;
   if(e.key === 'Enter'){ checkQuiz(); return; }
   if(e.key === 'Backspace'){
@@ -2504,14 +2582,18 @@ function checkQuiz(){
   const fb = $('#quizFb');
   if(correct){
     quizStreak++;
-    applyGrade(w, quiz.hintUsed ? 1 : 2, timeMs, charCount);
+    applyGrade(w, quiz.hintLevel ? 1 : 2, timeMs, charCount, quiz.hintLevel);    
     const wpm = charCount ? Math.round((charCount/5) / (timeMs/60000)) : null;
     fb.className = 'feedback show good';
     fb.innerHTML = `${I('check')} ${t('qCorrect')} <span class="ans">${esc(w.word)}</span>
       ${w.sentence?` — <span class="mono">${esc(w.sentence)}</span>`:''}
-      <span class="muted">(${(timeMs/1000).toFixed(1)}s${wpm?` · ~${wpm} WPM`:''}${quiz.hintUsed?' '+t('qHintUsedSuffix'):''})</span>`;
-    $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('ok'));
-    setTimeout(startQuiz, 1400);
+      <span class="muted">(${(timeMs/1000).toFixed(1)}s${wpm?` · ~${wpm} WPM`:''}${quiz.hintLevel?' '+t('qHintUsedSuffix')+(quiz.hintLevel>1?' ×2':''):''})</span>`;
+      $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('ok'));
+    quiz.speaking = true;
+    const cur = quiz;
+    Promise.all([speakWord(w), new Promise(r => setTimeout(r, 1400))]).then(() => {
+      if(quiz === cur) startQuiz();
+    });
   }else{
     quizStreak = 0;
     applyGrade(w, 0, timeMs, charCount);
@@ -2566,6 +2648,7 @@ function startFc(){
   }
   const w = pickWord(pool);
   lastShownId = w.id;
+  preloadWordAudio(w);
   const { opts, correctIdx } = buildOptions(w);
   fc = { w, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
   renderFc();

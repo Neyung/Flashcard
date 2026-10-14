@@ -834,10 +834,6 @@ header{align-items:center}
 .tk-hint.reveal{background:var(--lemon);border:2px dashed var(--ink);border-radius:10px;padding:8px 12px}
 .tk-pattern{font-size:17px;font-weight:800;letter-spacing:1px}
 /* Điền ngữ cảnh */
-.tk-bank{position:sticky;top:8px;z-index:5;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:56px;
-  padding:12px;border:2.5px dashed var(--ink);border-radius:14px;background:#FFFEF6;margin:12px 0 16px;
-  box-shadow:0 6px 0 -2px var(--bg)}
-.tk-bank.over{background:var(--sky)}
 .tk-wchip{display:inline-flex;align-items:center;font:700 14px 'JetBrains Mono',monospace;padding:6px 11px;
   border:2.5px solid var(--ink);border-radius:9px;background:var(--lav);box-shadow:2px 2px 0 var(--ink);cursor:grab;
   user-select:none;-webkit-user-select:none;touch-action:manipulation}
@@ -1621,7 +1617,7 @@ vi:{
   tkDesc_focus:g=>`Tập trung học từ vựng ít nhất ${g} phút trong tab Tập trung.`,
   tkDesc_pron:'Ghi âm từ mới rồi đọc câu ví dụ — được chấm điểm phát âm.',
   tkDesc_listen:'Nghe phát âm và gõ lại chính xác từ vừa nghe.',
-  tkDesc_context:'Kéo thả từ vào đúng chỗ trống trong các câu ví dụ.',
+  tkDesc_context:'Điền đúng từ vào chỗ trống trong các câu ví dụ.',
   tkDesc_write:'Viết đoạn văn dùng đủ 5 từ, được kiểm tra chính tả và ngữ pháp.',
   tkGoal_focus:g=>`Dành ít nhất ${g} phút tập trung học từ vựng trong ngày.`,
   tkGoal_pron:`Từ: trên ${80} điểm để sang câu ví dụ · Câu: trên ${70} điểm để hoàn thành từ.`,
@@ -1678,7 +1674,7 @@ vi:{
   tkLsWrong:'Chưa đúng chính tả — nghe lại và thử lần nữa.', tkLsWrongN:n=>`Đã sai ${n} lần`,
   tkLsDontKnow:'Không biết', tkLsAnswerIs:'Đáp án', tkLsTypeAgain:'Gõ lại đáp án để tiếp tục…', tkLsTypeAgainLbl:'Nghe lại và gõ lại đáp án bên dưới để ghi nhớ',
   tkLsInfo:'Gợi ý (2 mức) giống như ở Luyện gõ: chữ cái đầu + số chữ cái, rồi một nửa từ. "Không biết" sẽ hiện đáp án — gõ lại đúng để hoàn thành từ. Chỉ tính "đúng ngay lần đầu" khi không dùng gợi ý.',
-  tkCtxInstr:'Kéo từ vào chỗ trống, hoặc chạm vào chỗ trống để chọn từ trong danh sách / gõ trực tiếp. Chạm vào từ đã đặt để đổi hoặc gỡ ra.',
+  tkCtxInstr:'Chạm vào chỗ trống để chọn từ trong danh sách hoặc gõ trực tiếp. Chạm vào từ đã điền để đổi hoặc gỡ ra; có thể kéo từ đã điền sang chỗ trống khác.',
   tkCtxPickPh:'Gõ từ hoặc chọn bên dưới…', tkCtxPopHint:'Enter để điền · Esc để đóng', tkCtxRemove:'Gỡ từ', tkCtxSlotTitle:'Chạm để chọn hoặc gõ từ',
   tkCtxNoMatch:'Không có từ này trong danh sách', tkCtxMany:'Có nhiều từ khớp — hãy gõ đầy đủ hoặc chọn bên dưới',
   tkCtxBankEmpty:'Đã dùng hết từ — nhấn Kiểm tra đáp án', tkCtxCheck:'Kiểm tra đáp án',
@@ -1849,7 +1845,7 @@ en:{
   tkDesc_focus:g=>`Study vocabulary for at least ${g} minutes in the Focus tab.`,
   tkDesc_pron:'Record new words, then read an example sentence — scored for pronunciation.',
   tkDesc_listen:'Listen to a word and type it back with exact spelling.',
-  tkDesc_context:'Drag words into the right gaps in example sentences.',
+  tkDesc_context:'Fill the right word into the gaps in example sentences.',
   tkDesc_write:'Write paragraphs using 5 words each, checked for spelling and grammar.',
   tkGoal_focus:g=>`Spend at least ${g} focused minutes on vocabulary today.`,
   tkGoal_pron:'Word: above 80 to move on to the sentence · Sentence: above 70 to finish the word.',
@@ -1906,7 +1902,7 @@ en:{
   tkLsWrong:'Not the right spelling — listen again and retry.', tkLsWrongN:n=>`${n} wrong attempt${n>1?'s':''}`,
   tkLsDontKnow:"I don't know", tkLsAnswerIs:'Answer', tkLsTypeAgain:'Type the answer to continue…', tkLsTypeAgainLbl:'Listen again and type the answer below to remember it',
   tkLsInfo:'Hints (2 levels) work like in Typing: first letter + length, then half the word. "I don\'t know" shows the answer — type it correctly to finish the word. "Right first time" only counts without hints.',
-  tkCtxInstr:'Drag a word into a gap, or tap a gap to pick from the list / type the word. Tap a placed word to change or remove it.',
+  tkCtxInstr:'Tap a gap to pick a word from the list or type it. Tap a filled word to change or remove it; you can also drag a filled word to another gap.',
   tkCtxPickPh:'Type a word or pick below…', tkCtxPopHint:'Enter to fill · Esc to close', tkCtxRemove:'Remove', tkCtxSlotTitle:'Tap to pick or type a word',
   tkCtxNoMatch:'That word is not in the list', tkCtxMany:'Several words match — type it fully or pick below',
   tkCtxBankEmpty:'All words placed — press Check Answers', tkCtxCheck:'Check Answers',
@@ -4002,7 +3998,7 @@ function listenCheck(){
   }
 }
 
-/* ── 4. Điền từ vào câu: kéo thả · chạm chỗ trống để chọn từ hoặc gõ trực tiếp ── */
+/* ── 4. Điền từ vào câu: chạm chỗ trống để chọn từ hoặc gõ trực tiếp ── */
 let ctxSel = -1;     // từ đang được chọn trong ngân hàng (chạm/nhấp)
 let ctxPop = -1;     // chỗ trống đang mở bảng chọn/gõ
 function tkContextBody(x){
@@ -4039,7 +4035,6 @@ function tkContextBody(x){
   return `
     ${tkItemBar(okN, n, 'tkUnitProg_context')}
     <div class="panel tk-ctx">
-      <div class="tk-bank" data-tk="ctxBank">${bank.length ? bank.map(bi => chip(bi, 'bank')).join('') : `<span class="tk-note">${t('tkCtxBankEmpty')}</span>`}</div>
       <ol class="tk-ctx-list">${rows}</ol>
       ${status}
       <div class="tk-actions">
@@ -4656,17 +4651,16 @@ $('#tasksArea').addEventListener('dragstart', e => {
 });
 $('#tasksArea').addEventListener('dragend', e => { const c = e.target.closest('.tk-wchip'); if(c) c.classList.remove('dragging'); });
 $('#tasksArea').addEventListener('dragover', e => {
-  const z = e.target.closest('.tk-slot, .tk-bank'); if(!z) return;
+  const z = e.target.closest('.tk-slot'); if(!z) return;
   e.preventDefault(); z.classList.add('over');
 });
-$('#tasksArea').addEventListener('dragleave', e => { const z = e.target.closest('.tk-slot, .tk-bank'); if(z) z.classList.remove('over'); });
+$('#tasksArea').addEventListener('dragleave', e => { const z = e.target.closest('.tk-slot'); if(z) z.classList.remove('over'); });
 $('#tasksArea').addEventListener('drop', e => {
-  const z = e.target.closest('.tk-slot, .tk-bank'); if(!z) return;
+  const z = e.target.closest('.tk-slot'); if(!z) return;
   e.preventDefault(); z.classList.remove('over');
   const bi = +e.dataTransfer.getData('text/plain');
   if(isNaN(bi)) return;
   const x = tasks.t.context;
-  if(z.classList.contains('tk-bank')){ const s = x.slots.indexOf(bi); if(s >= 0) ctxUnplace(s); return; }
   ctxPlace(bi, +z.dataset.s);
 });
 

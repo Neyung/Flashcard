@@ -589,6 +589,38 @@ header{align-items:center}
 .tk-mode-min{display:flex;align-items:center;gap:5px;font:800 12.5px 'JetBrains Mono',monospace}
 .tk-mode-min .ic{width:13px;height:13px}
 .tk-mode-cnt{font-size:11.5px;font-weight:600;opacity:.75;line-height:1.4}
+.tk-mode-sub{display:flex;align-items:center;gap:6px;margin:-4px 0 12px;font-size:12.5px;font-weight:700;color:var(--muted)}
+.tk-mode-sub .ic{width:14px;height:14px}
+.tk-mode-act{display:flex;justify-content:flex-end;margin-top:12px}
+.tk-mode-act .btn[disabled]{opacity:.55;cursor:not-allowed}
+.tk-mode-panel.is-pick .tk-mode.on{background:var(--ink);color:#fff;transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--sky)}
+.tk-mode-panel.nudge{animation:shake .45s}
+.tk-mode-panel.is-set{--mc:var(--sky);position:relative;overflow:hidden;padding:16px 18px;
+  background:linear-gradient(120deg,var(--mc) 0%,#fff 58%)}
+.tk-mode-panel.is-set.m-quick{--mc:var(--lemon)}
+.tk-mode-panel.is-set.m-deep{--mc:var(--lav)}
+.tk-ms-deco{position:absolute;right:-18px;bottom:-26px;width:130px;height:130px;opacity:.09;pointer-events:none;transform:rotate(-12deg)}
+.tk-ms-row{position:relative;display:flex;align-items:center;gap:14px}
+.tk-ms-badge{flex:none;width:52px;height:52px;border:var(--bd);border-radius:16px;background:#fff;display:grid;place-items:center;
+  box-shadow:3px 3px 0 var(--ink);transform:rotate(-4deg)}
+.tk-ms-badge .ic{width:26px;height:26px}
+.tk-ms-main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
+.tk-mode-k{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;color:#23284ACC}
+.tk-ms-name{display:flex;align-items:center;flex-wrap:wrap;gap:10px;font-weight:800;font-size:22px;letter-spacing:-.3px}
+.tk-ms-min{display:inline-flex;align-items:center;gap:5px;font:800 12.5px 'JetBrains Mono',monospace;border:2px solid var(--ink);
+  border-radius:999px;padding:2px 10px;background:#fff}
+.tk-ms-min .ic{width:13px;height:13px}
+.tk-ms-lock{flex:none;display:flex;align-items:center;gap:8px;border:2px solid var(--ink);border-radius:12px;padding:6px 12px;
+  background:var(--ink);color:#fff;font-size:12px;font-weight:800;margin-right:40px}
+.tk-ms-lock .ic{width:15px;height:15px}
+.tk-ms-lock small{display:block;font-size:10.5px;font-weight:700;opacity:.7}
+.tk-ms-chips{position:relative;display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.tk-ms-chip{display:inline-flex;align-items:center;gap:7px;border:2px solid var(--ink);border-radius:999px;padding:3px 12px 3px 3px;
+  background:#fff;font-size:12.5px;font-weight:800;box-shadow:2px 2px 0 var(--ink)}
+.tk-ms-ci{width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center}
+.tk-ms-ci .ic{width:13px;height:13px}
+.tk-list.is-waiting .tk-card{opacity:.6}
+@media (max-width:640px){.tk-ms-row{flex-wrap:wrap}.tk-ms-lock{margin:4px 0 0 66px}.tk-ms-name{font-size:19px}}
 .tk-list{display:flex;flex-direction:column;gap:12px;margin-top:18px}
 .tk-card{display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;color:var(--ink);
   border:var(--bd);border-radius:14px;background:var(--paper);box-shadow:var(--shadow-sm);padding:13px 16px;
@@ -703,6 +735,13 @@ header{align-items:center}
 .tk-stk-ok .ic{width:12px;height:12px;stroke-width:3.4}
 .tk-stk.used{transform:rotate(0) translateY(-2px)}
 .tk-stk.used .tk-stk-ok{transform:scale(1)}
+.tk-stk.long{display:flex;flex-direction:column;gap:7px;max-width:100%;font-size:14px;line-height:1.45;transform:rotate(calc(var(--r) / 4))}
+.tk-stk.long.used{transform:rotate(0) translateY(-2px)}
+.tk-kcs{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+.tk-kc{white-space:nowrap;font:700 11px 'JetBrains Mono',monospace;border:1.5px dashed var(--ink);border-radius:6px;padding:1px 6px;background:#ffffffB3;opacity:.75}
+.tk-kc.ok{border-style:solid;background:#fff;opacity:1}
+.tk-kc.ok:before{content:"✓ ";color:var(--green)}
+.tk-kc-ar{font-size:11px;opacity:.6}
 .tk-wr-paper{margin-top:16px;border:var(--bd);border-radius:12px;overflow:hidden;box-shadow:var(--shadow-sm);background:#fff;transition:box-shadow .12s}
 .tk-wr-paper:focus-within{box-shadow:4px 4px 0 var(--blue)}
 .tk-wr-paper .tk-wr-box{border:none;border-radius:0;margin:0;min-height:240px;line-height:30px;padding:6px 16px 8px 56px;box-shadow:none;
@@ -880,6 +919,93 @@ header{align-items:center}
 .tk-wr-foot .tk-note{margin:0}
 .tk-wr-preview{border:2px dashed var(--ink);border-radius:12px;padding:12px 14px;font:600 14px/1.8 'JetBrains Mono',monospace;
   background:#FFFEF6;white-space:pre-wrap;word-break:break-word;margin-bottom:12px}
+.ai-box{margin-top:14px;border:2.5px solid var(--ink);border-radius:14px;background:linear-gradient(135deg,#F3EEFF,#EAF7FF);
+  padding:14px 16px;box-shadow:var(--shadow-sm)}
+.ai-head{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13.5px;margin-bottom:10px}
+.ai-head .ic{width:18px;height:18px;color:#7B5CFF}
+.ai-head .ai-badge{margin-left:auto;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--muted)}
+.ai-text{border:2px solid var(--ink);border-radius:12px;padding:12px 14px;background:#fff;font:600 14px/1.8 'JetBrains Mono',monospace;
+  white-space:pre-wrap;word-break:break-word}
+.ai-text ins{text-decoration:none;background:#C9F2D9;border-radius:4px;padding:0 2px}
+.ai-text del{color:#C2410C;opacity:.7;text-decoration-thickness:2px}
+.ai-chs{list-style:none;margin:10px 0 0;padding:0;display:flex;flex-direction:column;gap:7px}
+.ai-ch{border:2px solid var(--ink);border-radius:10px;background:#fff;padding:8px 11px;font-size:13px}
+.ai-ch .mono{font-size:12.5px}
+.ai-ch .ai-from{text-decoration:line-through;color:#C2410C}
+.ai-ch .ai-to{color:#1E9E5A;font-weight:800}
+.ai-ch .ai-why{display:block;margin-top:3px;color:var(--muted);font-weight:600;font-size:12.5px}
+.ai-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.ai-foot .tk-note{margin:0}
+.ai-prog{flex:1;min-width:140px;height:8px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff}
+.ai-prog span{display:block;height:100%;background:#7B5CFF;width:0}
+.btn.ai-btn{background:#EFE9FF}
+.ai-sum{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:999px;padding:3px 12px;background:#fff;
+  font-size:12.5px;font-weight:700;margin-bottom:10px}
+.ai-sum.good{background:#C9F2D9}
+.ai-ss{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.ai-s{display:flex;gap:10px;align-items:flex-start;border:2px solid var(--ink);border-radius:12px;background:#fff;padding:9px 12px}
+.ai-s.ok{background:#F2FBF5;border-color:#1E9E5A}
+.ai-s.bad{background:#FFF8F1;border-color:#E07A2E}
+.ai-s-n{flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-size:11.5px;font-weight:800;background:#fff}
+.ai-s.ok .ai-s-n{background:#1E9E5A;color:#fff;border-color:#1E9E5A}
+.ai-s.bad .ai-s-n{background:#FFE2C7}
+.ai-s-n .ic{width:12px;height:12px;stroke-width:3.4}
+.ai-s-b{flex:1;min-width:0}
+.ai-s-t{font:600 13.5px/1.7 'JetBrains Mono',monospace;word-break:break-word}
+.ai-s-hint{display:flex;gap:6px;align-items:flex-start;margin-top:5px;font-size:12.5px;font-weight:700;color:#A4520F}
+.ai-s-hint .ic{flex:none;width:14px;height:14px;margin-top:2px}
+.ai-s-ans{margin-top:8px;border-top:2px dashed #E0C3A6;padding-top:7px}
+.ai-s-lbl{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#1E9E5A}
+.ai-s-pat{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
+.ai-s-pat .ai-s-lbl{color:#4B32C3}
+.ai-s-ans .ai-s-lbl{display:inline-flex;align-items:center;gap:4px}
+.ai-s-ans .ai-s-lbl .ic{width:12px;height:12px}
+.ai-s-exp{display:flex;align-items:center;gap:7px;margin-top:6px;font-size:12px;font-weight:700;color:var(--muted)}
+.ai-s-exp .tk-spin{width:12px;height:12px;border-width:2px}
+.ai-live{margin-bottom:10px;opacity:.85}
+.t-cohesion{--qc:#0F766E}
+.ai-link{display:inline-flex;align-items:center;gap:4px;margin-left:8px;font-size:11px;font-weight:800;color:#2563EB;
+  border:1.5px solid #2563EB;border-radius:99px;padding:0 8px;background:#EEF4FF}
+.ai-link .ic{width:11px;height:11px}
+.ai-full{margin-top:12px;border-top:2.5px dashed #7B5CFF66;padding-top:12px}
+.ai-full-h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.ai-full-h .ai-s-lbl{color:#4B32C3}
+.ai-full-act{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.ai-applied{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#1E9E5A}
+.ai-applied .ic{width:14px;height:14px}
+.ai-q{--qc:#E07A2E;background:color-mix(in srgb,var(--qc) 18%,#fff);border-bottom:3px solid var(--qc);border-radius:4px;padding:0 2px;color:inherit}
+.ai-q sup{font:800 9.5px 'Manrope',sans-serif;color:#fff;background:var(--qc);border-radius:99px;padding:0 4px;margin-left:2px;vertical-align:super}
+.t-word_order{--qc:#7B5CFF}.t-word_choice{--qc:#E07A2E}.t-word_form{--qc:#D9468F}.t-grammar{--qc:#DC2626}
+.t-missing_word{--qc:#0E8F8F}.t-spelling{--qc:#C2410C}.t-extra_word{--qc:#8A6D1E}.t-literal{--qc:#2563EB}
+.ai-iss{list-style:none;margin:8px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.ai-is{display:flex;gap:8px;align-items:flex-start}
+.ai-is-n{flex:none;width:19px;height:19px;border-radius:50%;background:var(--qc);color:#fff;display:grid;place-items:center;font-size:10.5px;font-weight:800;margin-top:1px}
+.ai-is-type{display:inline-block;font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;color:var(--qc);
+  border:1.5px solid var(--qc);border-radius:6px;padding:0 6px;margin-right:6px}
+.ai-is-q{font:700 12.5px 'JetBrains Mono',monospace}
+.ai-is-q.nf{opacity:.7}
+.ai-is-tip{display:flex;gap:5px;align-items:flex-start;margin-top:2px;font-size:13px;font-weight:700;color:var(--ink)}
+.ai-is-tip .ic{flex:none;width:13px;height:13px;margin-top:3px;color:#C98A12}
+.ai-s-mine{display:block;margin-top:4px;color:#A4520F}
+.ai-s-pat code{font:800 12.5px 'JetBrains Mono',monospace;background:#EFE9FF;border:2px solid #7B5CFF;border-radius:8px;padding:2px 9px;color:#4B32C3}
+.ai-s-edit{display:flex;gap:8px;align-items:flex-end;margin-top:9px}
+.ai-in{flex:1;min-width:0;resize:vertical;border:2px solid var(--ink);border-radius:10px;padding:7px 10px;font:600 13.5px/1.55 'JetBrains Mono',monospace;
+  background:#fff;color:var(--ink);outline:none}
+.ai-in:focus{box-shadow:3px 3px 0 var(--ink)}
+.ai-in:disabled{background:var(--bg)}
+.ai-s-edit .btn{flex:none}
+.ai-s-edit .tk-spin{width:13px;height:13px;border-width:2px;border-color:#ffffff66;border-top-color:#fff}
+.ai-s-err{display:flex;gap:6px;align-items:flex-start;margin-top:6px;font-size:12.5px;font-weight:700;color:#C2410C}
+.ai-s-err .ic{flex:none;width:14px;height:14px;margin-top:2px}
+.ai-s-tries{margin-top:4px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.ai-s-old{font:600 12.5px/1.6 'JetBrains Mono',monospace;text-decoration:line-through;color:var(--muted)}
+.ai-s-okmsg{display:flex;align-items:center;gap:5px;margin-top:4px;font-size:12px;font-weight:800;color:#1E9E5A}
+.ai-s-okmsg .ic{width:13px;height:13px}
+@media (max-width:640px){.ai-s-edit{flex-direction:column;align-items:stretch}}
+.ai-s-act{display:flex;justify-content:flex-end;margin-top:6px}
+.ai-s-better{font:700 13.5px/1.7 'JetBrains Mono',monospace;word-break:break-word;margin-top:2px}
+.ai-s-better ins{text-decoration:none;background:#C9F2D9;border-radius:4px;padding:0 2px}
+.ai-s-better del{color:#C2410C;opacity:.7;text-decoration-thickness:2px}
 .tk-err{border-radius:4px;padding:0 2px;cursor:pointer;background:transparent;border-bottom:3px solid}
 .tk-err.t-spelling{border-color:var(--red);background:#FFD9E8}
 .tk-err.t-grammar{border-color:#F2711C;background:#FFE0C9}
@@ -964,6 +1090,35 @@ header{align-items:center}
 .hist-text mark{background:var(--lemon);border:1.5px solid var(--ink);border-radius:4px;padding:0 3px}
 .hist-stats{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .hist-stats span{border:2px solid var(--ink);border-radius:999px;padding:4px 11px;font-size:12px;font-weight:800;background:#fff}
+.hist-ai-row{margin-top:12px}
+.hist-ai-row:has(> [hidden]){display:none}
+.ai-ctl{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.ai-ctl[hidden]{display:none}
+.ai-lvl{display:inline-flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;background:#fff}
+.ai-lvl button{border:0;background:transparent;padding:6px 11px;font:800 12px 'Manrope',sans-serif;color:var(--ink);cursor:pointer}
+.ai-lvl button + button{border-left:2px solid var(--ink)}
+.ai-lvl button.on{background:#7B5CFF;color:#fff}
+.ai-lvl-tag{font-size:10.5px;font-weight:800;border:1.5px solid #7B5CFF;color:#4B32C3;border-radius:99px;padding:1px 8px;background:#fff}
+.ai-lvl-tag.lv-deep{background:#7B5CFF;color:#fff}
+.ai-via{display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;font-weight:700;color:var(--muted)}
+.ai-via .ic{width:12px;height:12px}
+.ai-s.skip{background:#F6F6F9;border-style:dashed}
+.ai-err{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ai-err > span{flex:1;min-width:200px}
+.ai-err-why{display:block;margin-top:3px;font-size:11.5px;font-weight:700;opacity:.8}
+.ai-alt{margin-top:7px;border-left:3px solid #7B5CFF;padding-left:9px}
+.ai-alt .ai-s-lbl{color:#4B32C3}
+.ai-alt-t{font:600 13px/1.65 'JetBrains Mono',monospace;color:#23284ACC}
+.hist-rw-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:20px 0 0}
+.hist-rw-head .hist-sec{margin:0}
+.hist-rw-st{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--muted)}
+.hist-rw-st .ic{width:14px;height:14px}
+.hist-rw-st.saved{color:#1E9E5A}
+.hist-rw{min-height:150px;margin-top:8px;font-size:14px}
+.hist-rw-foot{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px;font-size:12px;font-weight:800;color:var(--muted)}
+.hist-rw-tag{display:inline-flex;align-items:center;gap:4px;align-self:flex-start;border:2px solid var(--ink);border-radius:999px;padding:1px 9px;
+  font-size:11px;font-weight:800;background:var(--mint)}
+.hist-rw-tag .ic{width:12px;height:12px}
 @media (max-width:640px){.hist-modal{padding:12px 8px}.hist-card{padding:16px}}
 /* Dịch nhanh */
 .tr-fab{position:fixed;right:18px;bottom:18px;z-index:90;width:50px;height:50px;border-radius:50%;border:var(--bd);background:var(--sky);
@@ -1070,6 +1225,7 @@ header{align-items:center}
 <symbol id="i-in" viewBox="0 0 24 24"><path d="M12 3.5V13"/><path d="M8.5 9.5L12 13l3.5-3.5"/><path d="M4.5 15v3A2.5 2.5 0 0 0 7 20.5h10a2.5 2.5 0 0 0 2.5-2.5v-3"/></symbol>
 <symbol id="i-out" viewBox="0 0 24 24"><path d="M12 13V3.5"/><path d="M8.5 7L12 3.5 15.5 7"/><path d="M4.5 15v3A2.5 2.5 0 0 0 7 20.5h10a2.5 2.5 0 0 0 2.5-2.5v-3"/></symbol>
 <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4.5 6.5h15"/><path d="M9.5 6V4.5h5V6"/><path d="M6.5 6.5l1 13h9l1-13"/><path d="M10 10.5v5M14 10.5v5"/></symbol>
+<symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M18.5 16v4M16.5 18h4"/></symbol>
 <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9.5 18.5h5M10.5 21h3"/><path d="M12 3.5a5.8 5.8 0 0 1 3.4 10.5c-.8.6-1 1.3-1 2h-4.8c0-.7-.2-1.4-1-2A5.8 5.8 0 0 1 12 3.5z"/></symbol>
 <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l5 5 10-11"/></symbol>
 <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
@@ -1603,6 +1759,35 @@ vi:{
   histWordsN:n=>`${n} từ`, histChecks:n=>`${n} lần kiểm tra`, histIssues:n=>`${n} lỗi đã sửa`,
   histTarget:'Từ mục tiêu', histText:'Đoạn văn', histFixed:'Lỗi đã phát hiện & sửa trong lúc viết',
   histNoIssues:'Không có lỗi nào — đạt ngay lần kiểm tra đầu tiên!',
+  aiBtn:'Sửa văn phong', aiAgain:'Sửa lại', aiTitle:'Sửa chính tả, ngữ pháp và độ mạch lạc của từng câu',
+  aiThinking:'AI đang sửa chính tả và độ mạch lạc…', aiDownloading:p=>`Đang tải mô hình AI lần đầu… ${p}%`,
+  aiGuideTitle:'Sửa văn phong', aiOnDevice:'AI trên máy · Gemini Nano',
+  aiSumFix:(c,n,l)=>`Đã sửa ${c}/${n} câu${l ? ` · thêm ${l} từ liên kết` : ''}`, aiAllGood:'Tuyệt vời — mọi câu đều đúng và tự nhiên!',
+  aiYourTry:'Lần viết gần nhất của bạn',
+  aiIssue_word_order:'Trật tự từ', aiIssue_word_choice:'Dùng từ', aiIssue_word_form:'Dạng từ', aiIssue_grammar:'Ngữ pháp',
+  aiIssue_missing_word:'Thiếu từ', aiIssue_extra_word:'Thừa từ', aiIssue_literal:'Dịch word-by-word',
+  aiIssue_spelling:'Chính tả',
+  aiExplaining:'AI đang giải thích chỗ sai…', aiProgress:(a,n)=>`Đã sửa ${a}/${n} câu…`, aiKept:'Giữ câu gốc vì bản sửa làm mất từ mục tiêu.',
+  aiSumWhole:'AI đã viết lại cả đoạn (gộp/tách câu) — xem đoạn văn sau khi sửa bên dưới',
+  aiLost:w=>`Bản sửa làm mất từ mục tiêu ${w} — nhớ giữ lại các từ này khi dùng.`, aiIssue_cohesion:'Liên kết',
+  aiCorrected:'Câu đã sửa', aiLinkAdded:'Thêm liên kết', aiFullTitle:'Đoạn văn sau khi sửa',
+  aiApplyOne:'Dùng câu này', aiOneApplied:'Đã dùng câu này', aiOneNotFound:'Không tìm thấy câu gốc — có thể bạn đã sửa câu này rồi.',
+  aiApply:'Dùng đoạn này', aiApplyHist:'Đưa vào bản viết lại', aiApplied:'Đã thay vào ô viết', aiAppliedHist:'Đã đưa vào bản viết lại',
+  aiAppliedToast:'Đã thay đoạn văn bằng bản đã sửa — nhấn Kiểm tra đoạn văn để hoàn thành', aiCopyTxt:'Sao chép',
+  aiReplaceConfirm:'Thay nội dung đang có trong ô viết lại bằng đoạn đã sửa?',
+  aiNoteFix:'Phần xanh là chỗ AI thêm/đổi, phần gạch là chỗ bỏ. Từ mục tiêu luôn được giữ nguyên.',
+  aiStale:'Đoạn văn đã thay đổi so với lần sửa — bấm “Sửa lại” để AI sửa bản mới.',
+  aiTooShort:'Viết thêm vài câu rồi hãy nhờ AI sửa',
+  aiError:'AI chưa trả lời được dù đã tự thử lại nhiều cách.', aiRetry:'Thử lại', aiErrWhy:w=>`Lý do: ${w}`,
+  aiWhy_quota:'đoạn văn quá dài so với bộ nhớ của AI trên máy — hãy chia nhỏ đoạn', aiWhy_timeout:'AI phản hồi quá lâu (máy đang bận?)',
+  aiWhy_filtered:'Chrome chặn câu trả lời của AI', aiWhy_bad:'AI trả về dữ liệu không đọc được', aiWhy_gesture:'cần bấm nút trực tiếp để tải mô hình AI',
+  aiViaLt:'AI bỏ dở câu này — đã sửa lỗi cơ bản bằng LanguageTool', aiViaNone:'AI chưa xử lý được câu này',
+  aiNoAiNote:n=>`AI chưa sửa trọn ${n} câu (đã dùng phương án dự phòng).`,
+  aiUnsupported:'Trình duyệt này không có AI tích hợp. Hãy dùng Google Chrome bản mới trên máy tính.',
+  aiInfo:'Sửa văn phong: chính tả được sửa ngay bằng LanguageTool, sau đó AI tích hợp sẵn trong Chrome (Gemini Nano, chạy trên máy, miễn phí) sửa ngữ pháp và độ mạch lạc trong câu và giữa các câu, chỉ rõ đoạn sai và lý do. Ưu tiên tốc độ: chỉ sửa chỗ cần thiết, giữ cách viết của bạn khi đã ổn. Bấm “Dùng đoạn này” để thay vào ô viết. Từ mục tiêu luôn được giữ. Không ảnh hưởng đến việc chấm điểm.',
+  histRewrite:'Bản viết lại hoàn chỉnh', histRewritePh:'Tự viết lại phiên bản hoàn chỉnh của đoạn văn ở đây…',
+  histRewriteSaving:'Đang lưu…', histRewriteSaved:'Đã lưu', histRewriteTag:'Đã viết lại',
+  histRewriteAt:d=>`Cập nhật lần cuối: ${d}`,
   /* ── Nhiệm vụ (Tasks) ── */
   tkTitle:'Nhiệm vụ hôm nay', tkDoneLbl:'đã xong', tkMin:'phút', tkBack:'Tổng quan', tkCheck:'Kiểm tra', tkContinue:'Tiếp tục',
   tkStatusNew:'Chưa bắt đầu — làm 5 nhiệm vụ theo thứ tự bạn muốn để nhận hoa trong Vườn',
@@ -1612,7 +1797,10 @@ vi:{
   tkModeMin_quick:'~15 phút', tkModeMin_standard:'~30 phút', tkModeMin_deep:'45–60 phút',
   tkModeCounts:(f,p,l,c,w)=>`Focus ${f}′ · ${p} từ phát âm · ${l} từ nghe · ${c} câu · ${w} đoạn văn`,
   tkModeNote:'Thời lượng là mục tiêu, không phải giới hạn — có thể dừng và quay lại tiếp tục bất cứ lúc nào. Focus luôn bắt buộc: 20 phút ở chế độ Nhanh, 30 phút ở các chế độ khác.',
-  tkModeLocked:'Nhiệm vụ đã bắt đầu giữ nguyên số lượng; chế độ mới chỉ áp dụng cho nhiệm vụ chưa bắt đầu.',
+  tkModePickTitle:'Chọn thời lượng cho hôm nay', tkModeOnce:'Mỗi ngày chỉ chọn 1 lần — sau khi chốt sẽ không đổi được.',
+  tkModePickFirst:'Chọn một chế độ ở trên', tkModeLockBtn:m=>`Chốt chế độ ${m}`,
+  tkModeLockedToast:m=>`Đã chốt chế độ ${m} cho hôm nay`, tkModeFirst:'Hãy chọn và chốt thời lượng cho hôm nay trước khi làm nhiệm vụ',
+  tkModeToday:'Thời lượng hôm nay', tkModeTomorrow:'Đổi được vào ngày mai', tkModeLockedLbl:'Đã chốt hôm nay',
   tkName_focus:g=>`Focus ${g} phút`, tkName_pron:'Phát âm', tkName_listen:'Nghe & viết lại', tkName_context:'Điền từ vào câu', tkName_write:'Viết đoạn văn',
   tkDesc_focus:g=>`Tập trung học từ vựng ít nhất ${g} phút trong tab Tập trung.`,
   tkDesc_pron:'Ghi âm từ mới rồi đọc câu ví dụ — được chấm điểm phát âm.',
@@ -1691,6 +1879,10 @@ vi:{
   tkWrShortVocab:'Sổ có ít hơn 5 từ nên mỗi đoạn dùng số từ hiện có.',
   tkErrType_spelling:'Chính tả', tkErrType_grammar:'Ngữ pháp', tkErrType_usage:'Cách dùng từ',
   tkWrMissing:w=>`Chưa dùng từ mục tiêu "${w}" trong đoạn văn.`,
+  tkWrMissingParts:(w,m)=>`"${w}" — còn thiếu cụm từ khoá: ${m}.`,
+  tkWrPartsOrder:w=>`"${w}" — đã có đủ các cụm từ khoá nhưng chưa đúng thứ tự hoặc không nằm trong cùng một câu.`,
+  tkWrPartsSug:l=>`Dùng các cụm theo thứ tự trong một câu: ${l}. Từ nối / mạo từ (and, were, a, the…) có thể thay đổi.`,
+  tkWrPartsRule:'Cụm từ dài được chia thành các cụm từ khoá (hiện dưới mỗi thẻ). Chỉ cần dùng đủ các cụm này, mỗi cụm là các từ liên tiếp, đúng thứ tự và trong cùng một câu — không bắt buộc chép lại các từ nối như and, were, a, the.',
   tkWrUse_short:w=>`"${w}" nằm trong một câu quá ngắn — hãy dùng từ trong câu đầy đủ ngữ cảnh.`,
   tkWrUse_list:w=>`"${w}" nằm trong câu chỉ liệt kê các từ — hãy dùng từ trong một câu có nghĩa.`,
   tkWrUse_mention:w=>`Bạn đang nhắc tới từ "${w}" chứ chưa dùng nó — hãy dùng từ theo đúng nghĩa.`,
@@ -1831,6 +2023,35 @@ en:{
   histWordsN:n=>`${n} words`, histChecks:n=>`${n} check${n>1?'s':''}`, histIssues:n=>`${n} issue${n===1?'':'s'} fixed`,
   histTarget:'Target words', histText:'Paragraph', histFixed:'Issues found & fixed while writing',
   histNoIssues:'No issues — passed on the first check!',
+  aiBtn:'Fix style', aiAgain:'Fix again', aiTitle:'Fix spelling, grammar and flow sentence by sentence',
+  aiThinking:'The AI is fixing spelling and flow…', aiDownloading:p=>`Downloading the AI model for the first time… ${p}%`,
+  aiGuideTitle:'Style fixes', aiOnDevice:'On-device AI · Gemini Nano',
+  aiSumFix:(c,n,l)=>`Fixed ${c}/${n} sentences${l ? ` · added ${l} linking word${l>1?'s':''}` : ''}`, aiAllGood:'Great — every sentence is correct and natural!',
+  aiYourTry:'Your latest attempt',
+  aiIssue_word_order:'Word order', aiIssue_word_choice:'Word choice', aiIssue_word_form:'Word form', aiIssue_grammar:'Grammar',
+  aiIssue_missing_word:'Missing word', aiIssue_extra_word:'Extra word', aiIssue_literal:'Literal translation',
+  aiIssue_spelling:'Spelling',
+  aiExplaining:'The AI is explaining what was wrong…', aiProgress:(a,n)=>`Fixed ${a}/${n} sentences…`, aiKept:'Kept the original because the fix dropped a target word.',
+  aiSumWhole:'The AI rewrote the whole paragraph (merged/split sentences) — see the corrected paragraph below',
+  aiLost:w=>`The fix dropped the target word(s) ${w} — keep them when you use it.`, aiIssue_cohesion:'Cohesion',
+  aiCorrected:'Corrected', aiLinkAdded:'Linking word', aiFullTitle:'Corrected paragraph',
+  aiApplyOne:'Use this sentence', aiOneApplied:'Sentence used', aiOneNotFound:"Couldn't find the original sentence — you may have edited it already.",
+  aiApply:'Use this paragraph', aiApplyHist:'Put into rewrite', aiApplied:'Replaced in the editor', aiAppliedHist:'Put into the rewrite',
+  aiAppliedToast:'Paragraph replaced with the corrected version — press Check paragraph to finish', aiCopyTxt:'Copy',
+  aiReplaceConfirm:'Replace what is in the rewrite box with the corrected paragraph?',
+  aiNoteFix:'Green is what the AI added/changed, struck-through is removed. Target words are always kept.',
+  aiStale:'Your paragraph changed since the fix — press “Fix again” to correct the new version.',
+  aiTooShort:'Write a few more sentences before asking the AI to fix it',
+  aiError:"The AI couldn't answer even after retrying several ways.", aiRetry:'Try again', aiErrWhy:w=>`Reason: ${w}`,
+  aiWhy_quota:"the paragraph is too long for the on-device AI's memory — split it up", aiWhy_timeout:'the AI took too long (is the computer busy?)',
+  aiWhy_filtered:"Chrome blocked the AI's answer", aiWhy_bad:'the AI returned unreadable data', aiWhy_gesture:'press the button directly to download the AI model',
+  aiViaLt:'The AI skipped this sentence — basic fixes from LanguageTool', aiViaNone:"The AI couldn't process this sentence",
+  aiNoAiNote:n=>`The AI didn't fully fix ${n} sentence${n>1?'s':''} (fallback used).`,
+  aiUnsupported:'This browser has no built-in AI. Use the latest Google Chrome on a computer.',
+  aiInfo:"Fix style: spelling is fixed instantly with LanguageTool, then Chrome's built-in AI (Gemini Nano, on-device, free) fixes grammar and the flow within and between sentences, showing exactly what was wrong and why. Speed first: it only changes what is needed and keeps your wording when it is fine. Press “Use this paragraph” to put it in the editor. Target words are always kept. Never affects scoring.",
+  histRewrite:'Final rewritten version', histRewritePh:'Write your own polished version of this paragraph here…',
+  histRewriteSaving:'Saving…', histRewriteSaved:'Saved', histRewriteTag:'Rewritten',
+  histRewriteAt:d=>`Last updated: ${d}`,
   /* ── Tasks ── */
   tkTitle:"Today's tasks", tkDoneLbl:'done', tkMin:'min', tkBack:'Overview', tkCheck:'Check', tkContinue:'Continue',
   tkStatusNew:'Not started — do the 5 tasks in any order to grow a flower in your Garden',
@@ -1840,7 +2061,10 @@ en:{
   tkModeMin_quick:'~15 min', tkModeMin_standard:'~30 min', tkModeMin_deep:'45–60 min',
   tkModeCounts:(f,p,l,c,w)=>`Focus ${f}′ · ${p} pronunciation · ${l} listening · ${c} sentences · ${w} paragraph${w>1?'s':''}`,
   tkModeNote:'Length is a target, not a hard limit — you can stop and continue later at any time. Focus is always required: 20 minutes in Quick, 30 minutes otherwise.',
-  tkModeLocked:'Tasks already started keep their amount; a new mode only applies to tasks not started yet.',
+  tkModePickTitle:"Choose today's session length", tkModeOnce:'You can choose only once a day — it cannot be changed after you lock it in.',
+  tkModePickFirst:'Pick a mode above', tkModeLockBtn:m=>`Lock in ${m}`,
+  tkModeLockedToast:m=>`${m} mode locked in for today`, tkModeFirst:"Choose and lock in today's session length before starting a task",
+  tkModeToday:"Today's session", tkModeTomorrow:'Can change tomorrow', tkModeLockedLbl:'Locked for today',
   tkName_focus:g=>`Focus ${g} min`, tkName_pron:'Pronunciation', tkName_listen:'Listening & Spelling', tkName_context:'Context Practice', tkName_write:'Writing',
   tkDesc_focus:g=>`Study vocabulary for at least ${g} minutes in the Focus tab.`,
   tkDesc_pron:'Record new words, then read an example sentence — scored for pronunciation.',
@@ -1919,6 +2143,10 @@ en:{
   tkWrShortVocab:'Your book has fewer than 5 words, so each paragraph uses the words available.',
   tkErrType_spelling:'Spelling', tkErrType_grammar:'Grammar', tkErrType_usage:'Word Usage',
   tkWrMissing:w=>`The target word "${w}" is not used yet.`,
+  tkWrMissingParts:(w,m)=>`"${w}" — missing key part${m.includes('", "')?'s':''}: ${m}.`,
+  tkWrPartsOrder:w=>`"${w}" — all key parts are there, but not in order or not in the same sentence.`,
+  tkWrPartsSug:l=>`Use the parts in order within one sentence: ${l}. Linking words / articles (and, were, a, the…) may differ.`,
+  tkWrPartsRule:'Long phrases are split into key parts (shown under each sticker). Just use every part — each as consecutive words, in order, within one sentence. You don\'t need to copy linking words such as and, were, a, the.',
   tkWrUse_short:w=>`"${w}" is in a very short sentence — use it in a full sentence with context.`,
   tkWrUse_list:w=>`"${w}" is in a sentence that only lists words — use it in a meaningful sentence.`,
   tkWrUse_mention:w=>`You mention the word "${w}" instead of using it — use it with its meaning.`,
@@ -2931,12 +3159,14 @@ let tasksSaveT = null;
 const tasksKey = () => 'soTuTasks_' + currentUser;
 
 function newTasks(mode){
-  return { date: todayKey(), mode, started: false, completedAt: 0, celebrated: false, updatedAt: now(), t: {} };
+  return { date: todayKey(), mode, modeSet: false, started: false, completedAt: 0, celebrated: false, updatedAt: now(), t: {} };
 }
 function normTasks(s){
   if(!s || typeof s !== 'object' || typeof s.date !== 'string') return null;
   if(!TASK_MODES[s.mode]) s.mode = 'standard';
   s.t = (s.t && typeof s.t === 'object') ? s.t : {};
+  if(typeof s.modeSet !== 'boolean')               // dữ liệu cũ: đã bắt đầu làm = coi như đã chốt
+    s.modeSet = !!(s.started || s.completedAt || TASK_KEYS.some(k => s.t[k] && (s.t[k].inited || s.t[k].done)));
   TASK_KEYS.forEach(k => {
     const x = s.t[k] = (s.t[k] && typeof s.t[k] === 'object') ? s.t[k] : {};
     x.done = !!x.done;
@@ -2987,7 +3217,11 @@ async function loadTasks(){
     for(const [k, v] of Object.entries(d.hist)) if(v && typeof v === 'object') taskHist[k] = v;
   const logById = new Map();                     // gộp lịch sử viết của máy + mây theo id
   for(const d of [local, remote]) if(d) for(const e of asArr(d.writeLog))
-    if(e && e.id && typeof e.text === 'string') logById.set(e.id, Object.assign(e, { words: asArr(e.words), issues: asArr(e.issues) }));
+    if(e && e.id && typeof e.text === 'string'){
+      const prev = logById.get(e.id);
+      if(prev && (prev.rewriteAt || 0) > (e.rewriteAt || 0)){ e.rewrite = prev.rewrite; e.rewriteAt = prev.rewriteAt; }
+      logById.set(e.id, Object.assign(e, { words: asArr(e.words), issues: asArr(e.issues) }));
+    }
   writeLog = [...logById.values()].sort((a, b) => (b.at || 0) - (a.at || 0)).slice(0, 500);
   updateHistBadge();
   try{ localStorage.setItem(focusLogKey(), JSON.stringify(focusLog)); }catch(e){}
@@ -3000,6 +3234,7 @@ function ensureToday(){
   if(!tasks || tasks.date !== todayKey()){
     tasks = normTasks(newTasks(taskModePref));
     tkView = 'overview'; tkTrans = null; tkAnimDone = false;
+    tkModePick = null;
     changed = true;
   }
   if(checkFocusTask()) changed = true;
@@ -3144,6 +3379,86 @@ function targetRegex(word){
 function findTarget(text, word){
   const re = targetRegex(word);
   return re ? [...(text || '').matchAll(re)] : [];
+}
+
+/* ── Kiểm tra linh hoạt cho phần Viết: tách cụm từ dài thành các "cụm từ khoá" ──
+   • Chỉ với cụm dài (≥ 5 từ): tách ở liên từ / động từ "to be" nằm GIỮA cụm (and, or,
+     but, were, is…) khi mỗi bên có ≥ 2 từ và có từ mang nghĩa — các từ nối đó không bắt
+     buộc. Cụm ngắn như "rock and roll" giữ nguyên.
+   • Mạo từ (a/an/the) trong cụm là tuỳ chọn và đổi được (my, this, some…); mạo từ ở
+     đầu/cuối cụm bị bỏ. Giới từ giữa các từ mang nghĩa (key TO regaining) được giữ
+     vì bỏ đi sẽ đổi nghĩa.
+   • Mỗi cụm khoá phải là các từ liên tiếp; các cụm phải đúng thứ tự, trong cùng một câu. */
+const KC_SPLIT = new Set(['and','or','but','nor','yet','is','are','was','were','am','be','been','being','while','whereas','because','which','who','whom','whose']);
+const KC_ART = new Set(['a','an','the']);
+const KC_DET = 'a|an|the|my|your|his|her|its|our|their|this|that|these|those|some|any|one';
+const KC_FUNC = new Set([...KC_SPLIT, ...KC_ART, 'to','of','in','on','at','for','with','by','from','as','into','onto','about','up','down','out','off','over',
+  'so','than','then','that','this','it','its','not','do','does','did','has','have','had','will','would','can','could','should','may','might','must']);
+const kcCache = new Map();
+function keyChunks(word){
+  if(kcCache.has(word)) return kcCache.get(word);
+  const toks = word.toLowerCase().replace(/\(.*?\)/g, ' ').replace(/[,;:]+/g, ' , ').split(/[\s\/]+/).filter(Boolean);
+  const content = tk => tk !== ',' && !KC_FUNC.has(tk) && !PLACEHOLDER_RE.test(tk);
+  let chunks = [[]];
+  toks.forEach((tk, i) => {
+    const cur = chunks[chunks.length - 1];
+    const isSplit = tk === ',' || (KC_SPLIT.has(tk) && i > 0 && i < toks.length - 1);
+    const rest = toks.slice(i + 1).filter(x => x !== ',');
+    if(isSplit && toks.length >= 5 && cur.length >= 2 && rest.length >= 2 && cur.some(content) && rest.some(content)){ chunks.push([]); return; }
+    if(tk !== ',') cur.push(tk);
+  });
+  chunks = chunks.map(c => {
+    while(c.length > 1 && (KC_ART.has(c[0]) || KC_SPLIT.has(c[0]))) c.shift();
+    while(c.length > 1 && (KC_ART.has(c[c.length - 1]) || KC_SPLIT.has(c[c.length - 1]))) c.pop();
+    return c;
+  }).filter(c => c.length);
+  if(!chunks.length) chunks = [toks.filter(tk => tk !== ',')];
+  const out = chunks.map(c => {
+    let src = '', gap = false, det = false;
+    for(const tk of c){
+      if(PLACEHOLDER_RE.test(tk)){ gap = true; continue; }
+      if(KC_ART.has(tk) && src){ det = true; continue; }
+      const alt = [...wordForms(tk)].sort((a, b) => b.length - a.length).map(escRe).join('|');
+      if(src) src += gap ? "(?:[\\s,]+[\\w'’-]+){0,4}?[\\s,]+" : '[\\s-]+';
+      if(det) src += '(?:(?:' + KC_DET + ')[\\s-]+)?';
+      src += '(?:' + alt + ')';
+      gap = false; det = false;
+    }
+    return { label: c.join(' '), src: src ? "(?<![\\w'’-])" + src + "(?![\\w-])" : '' };
+  }).filter(c => c.src);
+  kcCache.set(word, out);
+  return out;
+}
+/* Trả về các "lần dùng" hợp lệ: { 0: đoạn khớp, index, parts: [[đầu, cuối]…] } */
+function findUse(text, word){
+  text = text || '';
+  const ks = keyChunks(word);
+  if(!ks.length) return [];
+  const mk = (a, b, parts) => Object.assign([text.slice(a, b)], { index: a, parts });
+  if(ks.length === 1)
+    return [...text.matchAll(new RegExp(ks[0].src, 'gi'))].map(m => mk(m.index, m.index + m[0].length, [[m.index, m.index + m[0].length]]));
+  const out = [];
+  for(const sn of splitSentences(text)){
+    let pos = sn.start;
+    for(;;){
+      const parts = [];
+      let p2 = pos;
+      for(const k of ks){
+        const re = new RegExp(k.src, 'gi'); re.lastIndex = 0;
+        const m = re.exec(text.slice(p2, sn.end));
+        if(!m) break;
+        parts.push([p2 + m.index, p2 + m.index + m[0].length]); p2 = p2 + m.index + m[0].length;
+      }
+      if(parts.length < ks.length) break;
+      out.push(mk(parts[0][0], parts[parts.length - 1][1], parts));
+      pos = p2;
+    }
+  }
+  return out;
+}
+/* Trạng thái từng cụm khoá (có xuất hiện trong đoạn văn hay không) để hiển thị */
+function chunkStatus(text, word){
+  return keyChunks(word).map(k => ({ label: k.label, ok: new RegExp(k.src, 'i').test(text || '') }));
 }
 
 /* ── Khởi tạo nội dung từng nhiệm vụ (chỉ 1 lần; giữ nguyên khi đổi chế độ) ── */
@@ -3489,7 +3804,18 @@ function renderTasks(){
   if(tkView === 'done') return renderTkDone(area);
   renderTkTask(area, tkView);
 }
+let tkModePick = null;
+const TK_MODE_ICON = { quick: 'flame', standard: 'target', deep: 'tree' };           // chế độ đang chọn (chưa chốt) trên trang tổng quan
+function tkNeedMode(){
+  if(!tasks || tasks.modeSet) return false;
+  toast(t('tkModeFirst'));
+  if(tkView !== 'overview'){ tkView = 'overview'; renderTasks(); }
+  const pn = $('.tk-mode-panel');
+  if(pn){ pn.scrollIntoView({ behavior: 'smooth', block: 'center' }); pn.classList.remove('nudge'); void pn.offsetWidth; pn.classList.add('nudge'); }
+  return true;
+}
 function tkOpen(k){
+  if(tkNeedMode()) return;
   recAbort(); stopSpeech();
   if(k === 'start'){ k = nextTaskKey(); if(!k){ tkView = 'done'; renderTasks(); return; } }
   ctxPop = -1; lsDraft = '';
@@ -3525,10 +3851,9 @@ function renderTkOverview(area){
   const n = tasksDoneCount(), pct = tasksOverallPct();
   const statusLine = tasks.completedAt ? t('tkStatusDone')
     : tasks.started || n ? t('tkStatusProgress', 5 - n) : t('tkStatusNew');
-  const anyStarted = TASK_KEYS.some(k => tasks.t[k].inited);
   const modeBtn = m => {
     const c = TASK_MODES[m];
-    return `<button class="tk-mode ${tasks.mode === m ? 'on' : ''}" data-tk="mode" data-m="${m}">
+    return `<button class="tk-mode ${tkModePick === m ? 'on' : ''}" data-tk="mode" data-m="${m}" aria-pressed="${tkModePick === m}">
       <span class="tk-mode-name">${t('tkMode_' + m)}</span>
       <span class="tk-mode-min">${I('clock')}${t('tkModeMin_' + m)}</span>
       <span class="tk-mode-cnt">${t('tkModeCounts', m === 'quick' ? 20 : 30, c.pron, c.listen, c.context, c.write)}</span>
@@ -3582,12 +3907,34 @@ function renderTkOverview(area){
     </div>
     ${tasks.completedAt ? `<div class="tk-done-strip" data-tk="result">${tkDayBadge(false)}<div><b>${t('tkAllDoneTitle')}</b><br><span class="muted">${t('tkDoneStripSub')}</span></div>
       <button class="tk-go s-done" data-tk="result" title="${esc(t('tkCtaResult'))}" aria-label="${esc(t('tkCtaResult'))}">${I('next')}</button></div>` : ''}
-    <div class="panel tk-mode-panel">
-      <div class="panel-title"><span class="dot" style="background:var(--sky)"></span>${t('tkModeTitle')}</div>
+    ${tasks.modeSet ? (() => {
+      const m = tasks.mode, c = TASK_MODES[m];
+      const chip = (k, txt) => `<span class="tk-ms-chip" title="${esc(tkName(k))}"><span class="tk-ms-ci" style="background:${TASK_META[k].color}">${I(TASK_META[k].icon)}</span>${txt}</span>`;
+      return `<div class="panel tk-mode-panel is-set m-${m}">
+        <svg class="ic tk-ms-deco" aria-hidden="true"><use href="#i-${TK_MODE_ICON[m]}"/></svg>
+        <div class="tk-ms-row">
+          <span class="tk-ms-badge">${I(TK_MODE_ICON[m])}</span>
+          <div class="tk-ms-main">
+            <span class="tk-mode-k">${t('tkModeToday')}</span>
+            <span class="tk-ms-name">${t('tkMode_' + m)}<span class="tk-ms-min">${I('clock')}${t('tkModeMin_' + m)}</span></span>
+          </div>
+          <span class="tk-ms-lock">${I('lock')}<span>${t('tkModeLockedLbl')}<small>${t('tkModeTomorrow')}</small></span></span>
+        </div>
+        <div class="tk-ms-chips">
+          ${chip('focus', `${m === 'quick' ? 20 : 30} ${t('tkMin')}`)}${chip('pron', t('tkUnit_pron', c.pron))}${chip('listen', t('tkUnit_listen', c.listen))}${chip('context', t('tkUnit_context', c.context))}${chip('write', t('tkUnit_write', c.write))}
+        </div>
+        ${infoCorner([t('tkModeNote')])}
+      </div>`;
+    })() : `<div class="panel tk-mode-panel is-pick">
+      <div class="panel-title"><span class="dot" style="background:var(--sky)"></span>${t('tkModePickTitle')}</div>
+      <p class="tk-mode-sub">${I('lock')}${t('tkModeOnce')}</p>
       <div class="tk-modes">${TASK_MODE_KEYS.map(modeBtn).join('')}</div>
-      ${infoCorner([t('tkModeNote'), anyStarted && !tasks.completedAt ? t('tkModeLocked') : ''])}
-    </div>
-    <div class="tk-list">${TASK_KEYS.map(card).join('')}</div>`;
+      <div class="tk-mode-act">
+        <button class="btn primary" data-tk="modeLock" ${tkModePick ? '' : 'disabled'}>${I('lock')}${tkModePick ? t('tkModeLockBtn', t('tkMode_' + tkModePick)) : t('tkModePickFirst')}</button>
+      </div>
+      ${infoCorner([t('tkModeNote')])}
+    </div>`}
+    <div class="tk-list ${tasks.modeSet ? '' : 'is-waiting'}">${TASK_KEYS.map(card).join('')}</div>`;
 }
 
 /* Thông báo phụ gom vào nút "!" — nhấn để xem */
@@ -4119,11 +4466,11 @@ const wordCount = s => ((s || '').match(/[A-Za-z][A-Za-z'’-]*/g) || []).length
 function usageProblem(tw, m, sent, targets, text){
   const n = wordCount(sent.text);
   if(n < 5) return 'short';
-  const hits = targets.filter(x => findTarget(sent.text, x.word).length).length;
+  const hits = targets.filter(x => findUse(sent.text, x.word).length).length;
   if(hits >= 3 && n < hits * 3) return 'list';
   const before = text.slice(sent.start, m.index).toLowerCase();
   if(/["“'‘«]\s*$/.test(before) || /\b(word|term|phrase|vocabulary|expression)\s*$/.test(before)) return 'mention';
-  const form = m[0].toLowerCase(), base = tw.word.toLowerCase(), pos = (tw.pos || '').toLowerCase();
+  const form = m[0].toLowerCase(), base = tw.word.toLowerCase().trim(), pos = (tw.pos || '').toLowerCase();
   if(!/\s/.test(base) && form !== base){
     if(/^(n|noun|danh)/.test(pos) && /ed$/.test(form) && !/ed$/.test(base)) return 'pos';
     if(/^(adj|tính)/.test(pos) && /(s|ed|ing)$/.test(form) && !/(s|ed|ing)$/.test(base) && !/(er|est|ly|ily)$/.test(form)) return 'pos';
@@ -4133,9 +4480,15 @@ function usageProblem(tw, m, sent, targets, text){
 function localUsageErrors(text, targets){
   const errs = [], sents = splitSentences(text);
   targets.forEach(tw => {
-    const ms = findTarget(text, tw.word);
+    const ms = findUse(text, tw.word);
     if(!ms.length){
-      errs.push({ type: 'usage', text: tw.word, offset: -1, length: 0, msg: t('tkWrMissing', tw.word), sug: t('tkWrMissingSug') });
+      const cs = chunkStatus(text, tw.word);
+      if(cs.length > 1){
+        const miss = cs.filter(c => !c.ok).map(c => '"' + c.label + '"');
+        errs.push({ type: 'usage', text: tw.word, offset: -1, length: 0,
+          msg: miss.length ? t('tkWrMissingParts', tw.word, miss.join(', ')) : t('tkWrPartsOrder', tw.word),
+          sug: t('tkWrPartsSug', cs.map(c => c.label).join(' → ')) });
+      }else errs.push({ type: 'usage', text: tw.word, offset: -1, length: 0, msg: t('tkWrMissing', tw.word), sug: t('tkWrMissingSug') });
       return;
     }
     let bad = null;
@@ -4155,11 +4508,16 @@ function tkWriteBody(x){
   const p = x.paras[x.idx], doneN = x.paras.filter(q => q.done).length;
   tkInfos.push(t('tkWrInstr', p.words.length, WRITE_MIN_WORDS));
   if(x.short) tkInfos.push(t('tkWrShortVocab'));
-  tkInfos.push(t('tkWrEngine'));
+  tkInfos.push(t('tkWrEngine'), t('aiInfo'));
   const tilt = [-3, 2, -1.5, 2.5, -2];
   const tabs = x.paras.map((q, i) => `<span class="tk-wr-tab ${i === x.idx ? 'on' : ''} ${q.done ? 'done' : ''}">${q.done ? I('check') : ''}${t('tkWrPara', i + 1, x.paras.length)}</span>`).join('');
-  const stickers = p.words.map((w, i) => `<span class="tk-stk" data-i="${i}" style="--c:${PALETTE[i % PALETTE.length]};--r:${tilt[i % tilt.length]}deg">
-      <span class="tk-stk-ok">${I('check')}</span>${esc(w.word)}</span>`).join('');
+  const stickers = p.words.map((w, i) => {
+    const ks = keyChunks(w.word);
+    return `<span class="tk-stk ${ks.length > 1 ? 'long' : ''}" data-i="${i}" style="--c:${PALETTE[i % PALETTE.length]};--r:${tilt[i % tilt.length]}deg">
+      <span class="tk-stk-ok">${I('check')}</span>${ks.length > 1 ? `<span>${esc(w.word)}</span>` : esc(w.word)}${ks.length > 1 ? `<span class="tk-kcs">${ks.map((k, j) =>
+        `<span class="tk-kc" data-j="${j}">${esc(k.label)}</span>`).join('<span class="tk-kc-ar">→</span>')}</span>` : ''}</span>`;
+  }).join('');
+  if(p.words.some(w => keyChunks(w.word).length > 1)) tkInfos.push(t('tkWrPartsRule'));
   return `
     ${tkItemBar(doneN, x.paras.length, 'tkUnitProg_write')}
     <div class="panel tk-wr">
@@ -4171,9 +4529,11 @@ function tkWriteBody(x){
       <div class="tk-wr-paper"><textarea id="wrBox" class="tk-wr-box" spellcheck="false" placeholder="${esc(t('tkWrPh'))}">${esc(p.text)}</textarea></div>
       <div class="tk-wr-foot">
         <div class="tk-wr-meter"><span class="tk-mini"><span id="wrMeter"></span></span><span class="tk-note" id="wrCount"></span></div>
+        <span class="ai-ctl" hidden><button class="btn ai-btn" data-tk="wrAi" id="wrAiBtn" hidden title="${esc(t('aiTitle'))}">${I('spark')}${t('aiBtn')}</button></span>
         <button class="btn primary" data-tk="wrCheck" id="wrCheckBtn">${I('check')}${t('tkWrCheck')}</button>
       </div>
       <div id="wrResult"></div>
+      <div id="wrAi"></div>
     </div>`;
 }
 let wrSaveT = null;
@@ -4187,19 +4547,25 @@ function afterWriteRender(x){
     meter.classList.toggle('ok', wc >= WRITE_MIN_WORDS);
     let used = 0;
     $$('#wrTargets .tk-stk').forEach(el => {
-      const ok = findTarget(txt, p.words[+el.dataset.i].word).length > 0;
+      const w = p.words[+el.dataset.i].word, ok = findUse(txt, w).length > 0;
       el.classList.toggle('used', ok); if(ok) used++;
+      const kcs = el.querySelectorAll('.tk-kc');
+      if(kcs.length) chunkStatus(txt, w).forEach((c, j) => kcs[j] && kcs[j].classList.toggle('ok', c.ok));
     });
     const u = $('#wrUsedN');
     u.textContent = t('tkWrUsed', used, p.words.length);
     u.classList.toggle('all', used === p.words.length);
   };
   box.addEventListener('input', () => {
-    p.text = box.value; sync();
+    p.text = box.value; sync(); aiWriteBtnSync(p);
     clearTimeout(wrSaveT); wrSaveT = setTimeout(saveTasks, 800);
   });
   sync();
   if(p.errors.length) renderWriteErrors(p);
+  aiShowButton($('#wrAiBtn'));
+  if(p.ai && p.ai.explaining && !aiExplainBusy(p.ai)) p.ai.explaining = false;
+  if(p.ai && p.ai.fixed) $('#wrAi').innerHTML = aiResultHtml(p.ai, (p.text || '').trim(), 'write');
+  aiWriteBtnSync(p);
   box.focus();
   box.setSelectionRange(box.value.length, box.value.length);
 }
@@ -4229,6 +4595,543 @@ function renderWriteErrors(p, fresh){
       </li>`).join('')}</ul>`;
   if(fresh) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
+/* ═════════════ GỢI Ý VĂN PHONG BẰNG AI TÍCH HỢP CỦA CHROME ═════════════
+   Dùng Gemini Nano chạy NGAY TRÊN MÁY (Prompt API `LanguageModel`, dự phòng
+   Rewriter API) — miễn phí, không cần API key/máy chủ, văn bản không rời khỏi máy.
+   Trình duyệt không hỗ trợ → nút tự ẩn. Lần đầu dùng có thể phải tải mô hình. */
+const AI_LANG = { expectedInputs: [{ type: 'text', languages: ['en'] }], expectedOutputs: [{ type: 'text', languages: ['en'] }] };
+let aiStatusP = null;
+function aiStatus(){
+  if(aiStatusP) return aiStatusP;
+  const norm = a => a === 'readily' ? 'available' : a === 'after-download' ? 'downloadable' : a === 'no' ? 'unavailable' : a;
+  let timedOut = false;
+  const within = pr => Promise.race([pr, new Promise(r => setTimeout(() => { timedOut = true; r('unavailable'); }, 6000))]);
+  aiStatusP = (async () => {
+    try{
+      if(typeof LanguageModel !== 'undefined'){
+        const a = norm(await within(LanguageModel.availability(AI_LANG)));
+        if(a && a !== 'unavailable') return { kind: 'lm', avail: a };
+      }
+    }catch(e){}
+    try{
+      if(typeof Rewriter !== 'undefined'){
+        const a = norm(await within(Rewriter.availability({ format: 'plain-text', expectedInputLanguages: ['en'], outputLanguage: 'en' })));
+        if(a && a !== 'unavailable') return { kind: 'rw', avail: a };
+      }
+    }catch(e){}
+    if(timedOut) aiStatusP = null;             // trình duyệt chưa trả lời kịp → lần sau hỏi lại
+    return null;
+  })();
+  return aiStatusP;
+}
+async function aiShowButton(btn){
+  if(!btn) return;
+  const st = await aiStatus();
+  if(st && btn.isConnected){ btn.hidden = false; const c = btn.closest('.ai-ctl'); if(c) c.hidden = false; queueInfoLayout(); aiWarm(); }
+}
+function aiParseJson(raw){
+  try{ return JSON.parse(raw); }catch(e){}
+  const m = String(raw || '').match(/\{[\s\S]*\}/);
+  if(m) try{ return JSON.parse(m[0]); }catch(e){}
+  return null;
+}
+function aiStyle(text, targets, onProg, onPartial){
+  return Promise.race([aiStyleRun(text, targets, onProg, onPartial),
+    new Promise((_, rej) => setTimeout(() => rej(new Error('timeout')), 600000))]);   // tối đa 10 phút (gồm tải mô hình lần đầu)
+}
+/* Sửa văn phong — ưu tiên TỐC ĐỘ: chính tả được sửa sẵn bằng LanguageTool (nhanh, chắc chắn),
+   AI chỉ còn lo ngữ pháp + độ mạch lạc trong câu và giữa các câu. Lời dặn & ví dụ ngắn,
+   câu trả lời gọn (tối đa 3 lỗi/câu, lý do ≤ 10 từ) để AI trả lời nhanh. */
+const AI_SYS = 'You edit a Vietnamese learner\'s English paragraph, given as numbered sentences (spelling is already fixed; some lines '
+  + 'have grammar-checker notes). For each sentence: fix grammar, wrong word forms and awkward or literal phrasing so it reads '
+  + 'clearly and smoothly, and make it connect logically with the previous sentence (add a linking word only when needed). '
+  + 'Keep the learner\'s wording when it is already fine — change only what is necessary. Keep the meaning, add no new facts. '
+  + 'Text inside « » is a required target word or phrase: copy it exactly with the « » marks. problems: 0-3 items, quote = exact '
+  + 'words from the sentence, type = word_order, word_choice, word_form, grammar, missing_word, extra_word, literal or cohesion, '
+  + 'tip = max 10 words. better = the corrected version of THAT sentence only: exactly one sentence, never merge it with another '
+  + 'line or move content between lines, never invent names, numbers or facts. Reply with JSON only.';
+const AI_LEVEL = 'normal';
+const aiSys = () => AI_SYS;
+const AI_SHOT_IN = '1. In my free time, I very like go to the park for relax.\n'
+  + '2. My house is near a park, it has many trees.\n   checker: "park, it" — comma splice\n'
+  + '3. I feel very «peaceful» when I walk there.';
+const AI_SHOT_OUT = JSON.stringify({ items: [
+  { n: 1, problems: [{ quote: 'very like go', type: 'word_order', tip: 'Use "really like going".' },
+    { quote: 'for relax', type: 'grammar', tip: 'Purpose: "to relax".' }],
+    better: 'In my free time, I really like going to the park to relax.' },
+  { n: 2, problems: [{ quote: 'park, it has', type: 'grammar', tip: 'Comma splice — use "which".' }],
+    better: 'Luckily, my house is near a park, which has many trees.' },
+  { n: 3, problems: [], better: 'I feel very «peaceful» when I walk there.' }] });
+const aiSchema = () => ({ type: 'object', required: ['items'], properties: { items: { type: 'array', items: { type: 'object',
+  required: ['n', 'problems', 'better'], properties: { n: { type: 'integer' },
+  problems: { type: 'array', maxItems: 3, items: { type: 'object', required: ['quote', 'type', 'tip'], properties: {
+    quote: { type: 'string' }, type: { type: 'string', enum: ['word_order', 'word_choice', 'word_form', 'grammar', 'missing_word', 'extra_word', 'literal', 'cohesion'] },
+    tip: { type: 'string' } } } },
+  better: { type: 'string' } } } } } });
+const AI_EXP_SYS = 'You compare a learner\'s ORIGINAL English sentence with a REWRITTEN version. For each numbered pair list the '
+  + 'main problems of the ORIGINAL that the rewrite fixed (0-3). quote = the exact problematic words copied from the ORIGINAL '
+  + '(1-6 words, or "" if something was only added); type = word_order, word_choice, word_form, grammar, missing_word, extra_word, '
+  + 'literal or cohesion; tip = max 12 words explaining why the rewrite is better. Reply with JSON only.';
+const AI_ISSUE_TYPES = ['spelling', 'word_order', 'word_choice', 'word_form', 'grammar', 'missing_word', 'extra_word', 'literal', 'cohesion'];
+const AI_EXP_SCHEMA = { type: 'object', required: ['items'], properties: { items: { type: 'array', items: { type: 'object',
+  required: ['n', 'issues'], properties: { n: { type: 'integer' }, issues: { type: 'array', maxItems: 3, items: { type: 'object',
+    required: ['quote', 'type', 'tip'], properties: { quote: { type: 'string' }, type: { type: 'string', enum: AI_ISSUE_TYPES },
+    tip: { type: 'string' } } } } } } } } };
+const aiBases = {};
+function aiBase(kind, monitor){
+  if(!aiBases[kind]){
+    const init = kind === 'exp' ? [{ role: 'system', content: AI_EXP_SYS }]
+      : [{ role: 'system', content: aiSys() }, { role: 'user', content: AI_SHOT_IN }, { role: 'assistant', content: AI_SHOT_OUT }];
+    aiBases[kind] = LanguageModel.create({ ...AI_LANG, ...(monitor ? { monitor } : {}), initialPrompts: init });
+    aiBases[kind].catch(() => { delete aiBases[kind]; });
+  }
+  return aiBases[kind];
+}
+async function aiSession(kind, monitor){
+  try{ return await (await aiBase(kind, monitor)).clone(); }
+  catch(e){ delete aiBases[kind]; return await (await aiBase(kind, monitor)).clone(); }
+}
+function aiWarm(){                      // gọi khi nút hiện ra: mô hình đã có sẵn thì nạp trước
+  aiStatus().then(st => { if(st && st.kind === 'lm' && st.avail === 'available') aiBase('json-' + AI_LEVEL).catch(() => {}); });
+}
+/* Đánh dấu các từ mục tiêu bằng « » để AI giữ nguyên */
+function aiMark(text, targets){
+  const rs = [];
+  targets.forEach(w => findUse(text, w).forEach(m => rs.push(...m.parts)));
+  rs.sort((a, b) => a[0] - b[0]);
+  let out = '', pos = 0;
+  for(const [a, b] of rs){ if(a < pos) continue; out += text.slice(pos, a) + '«' + text.slice(a, b) + '»'; pos = b; }
+  return out + text.slice(pos);
+}
+const aiClean = s => String(s || '').replace(/[«»]/g, '').replace(/[ \t]{2,}/g, ' ').trim();
+const aiNorm = s => aiClean(s).toLowerCase().replace(/[^a-z0-9']+/g, ' ').trim();
+/* Độ giống: tỉ lệ từ có nghĩa của câu gốc còn xuất hiện trong câu sửa */
+function aiSim(src, out){
+  const A = aiNorm(src).split(' ').filter(w => w.length > 2), B = new Set(aiNorm(out).split(' '));
+  if(!A.length) return 1;
+  return A.filter(w => B.has(w) || B.has(w + 's') || B.has(w.replace(/s$/, ''))).length / A.length;
+}
+const aiSentN = x => splitSentences(aiClean(x)).filter(q => /[A-Za-z]/.test(q.text)).length;
+/* Từ liên kết mới thêm ở đầu câu (vd "After that,") */
+function aiLinkOf(orig, better){
+  const m = better.match(/^((?:[A-Za-z']+\s){0,3}[A-Za-z']+),\s/);
+  if(!m) return '';
+  return orig.toLowerCase().startsWith(m[1].toLowerCase()) ? '' : m[1];
+}
+function aiParseLines(raw, n){
+  const lines = String(raw || '').split(/\n+/).map(l => l.trim()).filter(Boolean);
+  const out = [];
+  for(const l of lines){ const m = l.match(/^(\d+)[.)]\s*(.*)$/); if(m) out[+m[1] - 1] = m[2]; }
+  return out.filter(x => x != null).length === n ? out : null;
+}
+/* Lỗi LanguageTool theo từng câu (bỏ qua nếu không có mạng) — làm điểm bám cho AI */
+/* LanguageTool: lỗi thô (dùng làm gợi ý cho AI và làm phương án dự phòng khi AI không trả lời) */
+async function aiLtMatches(text){
+  try{
+    const ac = new AbortController(), tm = setTimeout(() => ac.abort(), 6000);
+    const r = await fetch('https://api.languagetool.org/v2/check', { method: 'POST', signal: ac.signal,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ text, language: 'en-US' }) });
+    clearTimeout(tm);
+    if(!r.ok) return [];
+    return ((await r.json()).matches || []).slice(0, 40);
+  }catch(e){ return []; }
+}
+/* Gom lỗi LanguageTool theo câu (bỏ lỗi đè lên từ mục tiêu): [{ off (trong câu), len, frag, sug, msg, type }] */
+function aiLtBySentence(matches, text, sents, targets){
+  const tr = [];
+  targets.forEach(w => findUse(text, w).forEach(m => tr.push(...m.parts)));
+  const starts = []; let from = 0;
+  sents.forEach(sx => { const k = text.indexOf(sx, from); starts.push(k); from = k >= 0 ? k + sx.length : from; });
+  const out = sents.map(() => []);
+  for(const m of matches){
+    const ty = ltType(m);
+    if(!ty || tr.some(([a, b]) => a < m.offset + m.length && m.offset < b)) continue;
+    const i = starts.findIndex((st, k) => st >= 0 && m.offset >= st && m.offset + m.length <= st + sents[k].length); if(i < 0) continue;
+    out[i].push({ off: m.offset - starts[i], len: m.length, frag: text.substr(m.offset, m.length),
+      sug: ((m.replacements || [])[0] || {}).value || '', msg: (m.message || '').slice(0, 90), spell: ty === 'spelling',
+      type: ty === 'spelling' ? 'word_form' : ty === 'usage' ? 'word_choice' : 'grammar' });
+  }
+  return out;
+}
+const aiLtHintText = list => list.map(x => `"${x.frag}"${x.sug ? ' → "' + x.sug + '"' : ''} — ${x.msg.slice(0, 70)}`).join('; ');
+/* Dự phòng không cần AI: áp gợi ý đầu tiên của LanguageTool vào câu */
+function aiLtFix(sx, list){
+  let out = sx;
+  [...list].filter(x => x.sug).sort((a, b) => b.off - a.off).forEach(x => { out = out.slice(0, x.off) + x.sug + out.slice(x.off + x.len); });
+  return { problems: list.map(x => ({ quote: x.frag, type: x.type, tip: x.msg })), better: out, alt: '' };
+}
+/* Đọc JSON kể cả khi bị cắt giữa chừng: giữ lại các câu đã trả lời trọn vẹn */
+function aiParseItems(raw){
+  const j = aiParseJson(raw);
+  if(j && Array.isArray(j.items)) return j.items;
+  const str = String(raw || '');
+  let k = str.lastIndexOf('}'), n = 0;
+  while(k > 0 && n++ < 300){
+    try{ const j2 = JSON.parse(str.slice(0, k + 1) + ']}'); if(Array.isArray(j2.items)) return j2.items; }catch(e){}
+    k = str.lastIndexOf('}', k - 1);
+  }
+  return [];
+}
+/* Một lượt hỏi AI cho danh sách câu [{ i, s, hint }] → Map(i → câu trả lời). Hết giờ tính theo
+   lúc AI "im lặng" (45 giây không ra chữ), không tính tổng thời gian. */
+async function aiJsonOnce(lv, list, targets, monitor, onCount, fresh){
+  if(fresh) delete aiBases['json-' + lv];
+  const schema = aiSchema(lv), ses = await aiSession('json-' + lv, monitor);
+  const q = list.map((x, k) => (k + 1) + '. ' + aiMark(x.s, targets) + (x.hint ? '\n   checker: ' + x.hint : '')).join('\n');
+  const ac = new AbortController();
+  let timer = null, raw = '', err = null;
+  const kick = () => { clearTimeout(timer); timer = setTimeout(() => ac.abort(), 45000); };
+  try{
+    if(ses.measureInputUsage && ses.inputQuota){
+      const need = await ses.measureInputUsage(q, { responseConstraint: schema });
+      if(need > ses.inputQuota - (ses.inputUsage || 0)){ const e = new Error('quota'); e.name = 'QuotaExceededError'; throw e; }
+    }
+    kick();
+    if(ses.promptStreaming){
+      for await (const ch of ses.promptStreaming(q, { responseConstraint: schema, signal: ac.signal })){
+        kick();
+        raw = raw && ch.startsWith(raw) ? ch : raw + ch;
+        if(onCount) onCount((raw.match(/"better"\s*:/g) || []).length);
+      }
+    }else raw = await ses.prompt(q, { responseConstraint: schema, signal: ac.signal });
+  }catch(e){ err = e; }
+  finally{ clearTimeout(timer); try{ ses.destroy(); }catch(e){} }
+  /* Ghép câu trả lời với đúng câu gốc theo độ giống nhau (AI hay lệch số thứ tự / gộp 2 câu) —
+     câu trả lời nào gộp nhiều câu hoặc không giống câu gốc nào thì bỏ, để hỏi lại riêng câu đó. */
+  const got = new Map(), taken = new Set();
+  aiParseItems(raw).forEach((it, k) => {
+    if(!it || typeof it !== 'object' || !aiClean(it.better)) return;
+    const better = aiClean(it.better);
+    const n0 = Number.isInteger(it.n) && it.n >= 1 && it.n <= list.length ? it.n - 1 : k;
+    let best = -1, bs = 0;
+    list.forEach((x, j) => { if(taken.has(j)) return;
+      const sc = aiSim(x.s, better) + (j === n0 ? 0.05 : 0); if(sc > bs){ bs = sc; best = j; } });
+    if(best < 0 || bs < 0.5) return;
+    if(aiSentN(better) > aiSentN(list[best].s)) return;
+    taken.add(best);
+    it.problems = asArr(it.problems).filter(q => q && (!aiClean(q.quote) || list[best].s.toLowerCase().includes(aiClean(q.quote).toLowerCase())));
+    got.set(list[best].i, it);
+  });
+  if(!got.size && err) throw err;
+  if(!got.size) throw new Error('bad');
+  return got;
+}
+async function aiStyleRun(text, targets, onProg, onPartial){
+  const st = await aiStatus();
+  if(!st) throw new Error('unsupported');
+  const sents = splitSentences(text).map(x => x.text.trim()).filter(x => /[A-Za-z]/.test(x));
+  if(!sents.length) throw new Error('bad');
+  const monitor = m => m.addEventListener('downloadprogress', e => onProg && onProg(e.loaded));
+  const ac = new AbortController();
+  let timer = null;
+  const arm = () => { timer = setTimeout(() => ac.abort(), 90000); };    // giới hạn phần trả lời (không tính lúc tải mô hình)
+  const input = sents.map((x, i) => (i + 1) + '. ' + aiMark(x, targets)).join('\n');
+  let raw = '';
+  if(st.kind === 'lm'){
+    /* Luôn cố trả lời: cả đoạn → thử lại với phiên mới → từng câu một → mức Bình thường (ngắn hơn)
+       → câu nào AI vẫn bỏ dở thì dùng sửa lỗi của LanguageTool. */
+    const lv = AI_LEVEL;
+    const [, matches] = await Promise.all([aiBase('json-' + lv, monitor).catch(() => {}), aiLtMatches(text)]);
+    const lt = aiLtBySentence(matches, text, sents, targets);
+    /* Chính tả: sửa ngay bằng gợi ý của LanguageTool (không chờ AI), phần còn lại làm gợi ý cho AI */
+    const spell = lt.map(list => list.filter(x => x.type === 'word_form' && x.sug && x.spell));
+    const pre = sents.map((sx, i) => spell[i].length ? aiLtFix(sx, spell[i]).better : sx);
+    const all = sents.map((sx, i) => ({ i, s: pre[i], hint: aiLtHintText(lt[i].filter(x => !spell[i].includes(x))) }));
+    const got = new Map(), lvOf = new Map();
+    let lastErr = null;
+    const report = extra => onPartial && onPartial(Math.min(sents.length, got.size + (extra || 0)), sents.length);
+    const t0 = performance.now(), BUDGET = 60000;        // tổng thời gian thử lại tối đa ~1 phút
+    const run = async (level, list, fresh) => {
+      if(got.size && performance.now() - t0 > BUDGET) return;
+      try{
+        const m = await aiJsonOnce(level, list, targets, monitor, c => report(Math.min(c, list.length)), fresh);
+        m.forEach((v, k) => { if(!got.has(k)){ got.set(k, v); lvOf.set(k, level); } });
+      }catch(e){ lastErr = e; }
+      report();
+    };
+    const missing = () => all.filter(x => !got.has(x.i));
+    await run(lv, all, false);
+    if(missing().length === all.length && !(lastErr && lastErr.name === 'QuotaExceededError')) await run(lv, all, true);
+    for(const x of missing()){ await run(lv, [x], false); if(!got.has(x.i)) await run(lv, [x], true); }
+    const noAi = missing().map(x => x.i);
+    noAi.forEach(i => { if(lt[i].length){ got.set(i, aiLtFix(sents[i], lt[i])); lvOf.set(i, 'lt'); } });
+    /* gộp lỗi chính tả (đã sửa sẵn) vào danh sách lỗi của câu */
+    got.forEach((it, i) => { if(lvOf.get(i) !== 'lt' && spell[i].length)
+      it.problems = [...spell[i].map(x => ({ quote: x.frag, type: 'spelling', tip: '→ ' + x.sug })), ...asArr(it.problems)]; });
+    if(!got.size) throw lastErr || new Error('bad');
+    const items = sents.map((sx, i) => {
+      const it = got.get(i) || {};
+      let better = aiClean(it.better) || sx, kept = false;
+      if(targets.some(w => findUse(sx, w).length && !findUse(better, w).length)){ kept = aiNorm(better) !== aiNorm(sx); better = sx; }
+      const changed = aiNorm(better) !== aiNorm(sx);
+      const issues = !changed ? [] : asArr(it.problems).filter(q2 => q2 && q2.tip).slice(0, 8).map(q2 => ({
+        quote: aiClean(q2.quote), type: AI_ISSUE_TYPES.includes(q2.type) ? q2.type : 'grammar', tip: String(q2.tip).trim() }));
+      const alt = '';
+      return { s: sx, better, changed, kept, issues, alt, link: changed ? aiLinkOf(sx, better) : '',
+        via: lvOf.get(i) === 'lt' ? 'lt' : !got.has(i) ? 'none' : '' };
+    });
+    return { kind: 'lm', level: lv, items, fixed: items.map(x => x.better).join(' '),
+      noAi: items.filter(x => x.via).length };
+  }
+  try{
+    {
+      const rw = await Rewriter.create({ tone: 'as-is', length: 'as-is', format: 'plain-text', expectedInputLanguages: ['en'], outputLanguage: 'en',
+        monitor, sharedContext: 'Numbered sentences of one paragraph by a Vietnamese learner. Rewrite each line as a fluent native speaker would, '
+          + 'fixing all mistakes and literal phrasing and linking the ideas smoothly. Keep the numbering and the meaning. '
+          + 'Text inside « » must be copied exactly, keeping the « » marks.' });
+      arm();
+      try{ raw = await rw.rewrite(input, { signal: ac.signal }); }
+      finally{ try{ rw.destroy(); }catch(e){} }
+    }
+  }finally{ clearTimeout(timer); }
+  const lines = aiParseLines(raw, sents.length);
+  if(!lines){                                      // AI gộp/tách câu → chỉ hiện cả đoạn
+    const whole = aiClean(String(raw).replace(/^\s*\d+[.)]\s*/gm, '').replace(/\n+/g, ' '));
+    if(!whole) throw new Error('bad');
+    const lost = targets.filter(w => findUse(text, w).length && !findUse(whole, w).length);
+    return { kind: st.kind, items: [], fixed: whole, lost };
+  }
+  const items = sents.map((sx, i) => {
+    let better = aiClean(lines[i]) || sx, kept = false;
+    if(targets.some(w => findUse(sx, w).length && !findUse(better, w).length)){ better = sx; kept = aiNorm(lines[i]) !== aiNorm(sx); }
+    const changed = aiNorm(better) !== aiNorm(sx);
+    return { s: sx, better, changed, kept, issues: [], link: changed ? aiLinkOf(sx, better) : '' };
+  });
+  return { kind: st.kind, items, fixed: items.map(x => x.better).join(' '), explaining: st.kind === 'lm' && items.some(x => x.changed) };
+}
+/* Bước 2: giải thích lỗi cho các câu đã đổi (chạy sau, không chặn việc hiện bản sửa) */
+const aiExplainSet = new WeakSet();
+const aiExplainBusy = r => aiExplainSet.has(r);
+async function aiExplain(r){
+  aiExplainSet.add(r);
+  try{ return await aiExplainRun(r); }finally{ aiExplainSet.delete(r); }
+}
+async function aiExplainRun(r){
+  const ch = asArr(r.items).map((x, i) => [x, i]).filter(([x]) => x.changed);
+  if(!ch.length){ r.explaining = false; return; }
+  const ses = await aiSession('exp');
+  const ac = new AbortController(), timer = setTimeout(() => ac.abort(), 90000);
+  try{
+    const raw = await ses.prompt(ch.map(([x], k) => `${k + 1}. ORIGINAL: ${x.s}\n   REWRITTEN: ${x.better}`).join('\n'),
+      { responseConstraint: AI_EXP_SCHEMA, signal: ac.signal });
+    const j = aiParseJson(raw), byN = new Map(asArr(j && j.items).filter(Boolean).map((y, k) => [Number.isInteger(y.n) ? y.n : k + 1, y]));
+    ch.forEach(([x], k) => {
+      x.issues = asArr((byN.get(k + 1) || {}).issues).filter(q => q && q.tip && (!aiClean(q.quote) || x.s.toLowerCase().includes(aiClean(q.quote).toLowerCase()))).slice(0, 3).map(q => ({
+        quote: aiClean(q.quote), type: AI_ISSUE_TYPES.includes(q.type) ? q.type : 'grammar', tip: String(q.tip).trim() }));
+    });
+  }finally{ clearTimeout(timer); r.explaining = false; try{ ses.destroy(); }catch(e){} }
+}
+/* So sánh theo từ: phần thêm <ins>, phần bỏ <del> */
+function aiDiffHtml(a, b){
+  const A = a.split(/(\s+)/).filter(Boolean), B = b.split(/(\s+)/).filter(Boolean);
+  if(A.length * B.length > 400000) return esc(b);
+  const n = A.length, m = B.length, L = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
+  for(let i = n - 1; i >= 0; i--) for(let j = m - 1; j >= 0; j--)
+    L[i][j] = A[i] === B[j] ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const ops = [];                               // [loại, chữ]: '=' giữ · '-' bỏ · '+' thêm
+  let i = 0, j = 0;
+  while(i < n || j < m){
+    if(i < n && j < m && A[i] === B[j]){ ops.push(['=', B[j]]); i++; j++; }
+    else if(j < m && (i >= n || L[i][j + 1] >= L[i + 1][j])) ops.push(['+', B[j++]]);
+    else ops.push(['-', A[i++]]);
+  }
+  /* Gom các thay đổi liền nhau (kể cả khoảng trắng giữa chúng) thành một cụm bỏ + một cụm thêm */
+  let html = '', del = '', ins = '', pend = '';
+  const flush = () => {
+    if(del.trim()) html += `<del>${esc(del.trim())}</del>` + (ins.trim() ? ' ' : '');
+    if(ins.trim()) html += `<ins>${esc(ins.trim())}</ins>`;
+    del = ins = '';
+  };
+  for(const [k, w] of ops){
+    const sp = /^\s+$/.test(w);
+    if(k === '=' && sp && (del || ins)){ pend += w; continue; }
+    if(k === '='){ if((del.trim() || ins.trim()) && !pend) pend = ' '; flush(); html += esc(pend) + esc(w); pend = ''; continue; }
+    if(sp) continue;
+    if(pend){ del += del ? ' ' : ''; ins += ins ? ' ' : ''; pend = ''; }
+    if(k === '-') del += (del && !del.endsWith(' ') ? ' ' : '') + w;
+    else ins += (ins && !ins.endsWith(' ') ? ' ' : '') + w;
+  }
+  flush(); html += esc(pend);
+  return html;
+}
+/* Sửa văn phong — AI sửa từng câu (chỉ rõ lỗi, câu đã sửa) và thêm từ liên kết khi cần;
+   có thể áp cả đoạn đã sửa vào ô viết (Viết) hoặc bản viết lại (Lịch sử). */
+/* Tô các đoạn bị lỗi trong câu, đánh số khớp với danh sách lỗi bên dưới */
+function aiHlIssues(text, issues){
+  const low = text.toLowerCase(), rs = [];
+  issues.forEach((q, k) => {
+    if(!q.quote) return;
+    let from = 0, at = -1;
+    while((at = low.indexOf(q.quote.toLowerCase(), from)) >= 0 && rs.some(r => at < r[1] && at + q.quote.length > r[0])) from = at + 1;
+    if(at >= 0){ rs.push([at, at + q.quote.length, k]); q.found = true; } else q.found = false;
+  });
+  rs.sort((a, b) => a[0] - b[0]);
+  let html = '', pos = 0;
+  for(const [a, b, k] of rs){
+    html += esc(text.slice(pos, a)) + `<mark class="ai-q t-${issues[k].type}">${esc(text.slice(a, b))}<sup>${k + 1}</sup></mark>`; pos = b;
+  }
+  return html + esc(text.slice(pos));
+}
+function aiIssuesHtml(x){
+  const iss = asArr(x.issues);
+  if(!iss.length) return x.hint ? `<div class="ai-s-hint">${I('bulb')}<span>${esc(x.hint)}</span></div>` : '';
+  return `<ol class="ai-iss">${iss.map((q, k) => `<li class="ai-is">
+      <span class="ai-is-n t-${q.type}">${k + 1}</span>
+      <div><span class="ai-is-type t-${q.type}">${t('aiIssue_' + q.type)}</span>${q.quote ? `<span class="ai-is-q ${q.found === false ? 'nf' : ''}">“${esc(q.quote)}”</span>` : ''}
+        <div class="ai-is-tip">${I('bulb')}<span>${esc(q.tip)}</span></div></div></li>`).join('')}</ol>`;
+}
+function aiItemHtml(x, i, r){
+  const via = x.via === 'lt' ? `<div class="ai-via">${I('bulb')}${t('aiViaLt')}</div>` : x.via === 'none' ? `<div class="ai-via">${I('x')}${t('aiViaNone')}</div>` : '';
+  if(!x.changed) return `<li class="ai-s ${x.via === 'none' ? 'skip' : 'ok'}"><span class="ai-s-n">${x.via === 'none' ? i + 1 : I('check')}</span>
+      <div class="ai-s-b"><div class="ai-s-t">${esc(x.s)}</div>${x.kept ? `<div class="tk-note" style="margin:4px 0 0">${t('aiKept')}</div>` : ''}${via}</div></li>`;
+  return `<li class="ai-s bad">
+      <span class="ai-s-n">${i + 1}</span>
+      <div class="ai-s-b">
+        <div class="ai-s-t">${aiHlIssues(x.s, asArr(x.issues))}</div>${via}
+        ${asArr(x.issues).length ? aiIssuesHtml(x) : r && r.explaining && aiExplainBusy(r) ? `<div class="ai-s-exp"><span class="tk-spin"></span>${t('aiExplaining')}</div>` : ''}
+        <div class="ai-s-ans"><span class="ai-s-lbl">${I('check')}${t('aiCorrected')}</span>${x.link ? `<span class="ai-link">${I('next')}${t('aiLinkAdded')}: <b>${esc(x.link)}</b></span>` : ''}
+          <div class="ai-s-better">${aiDiffHtml(x.s, x.better)}</div>
+          <div class="ai-s-act">${x.applied || (r && r.applied) ? `<span class="ai-applied">${I('check')}${t('aiOneApplied')}</span>`
+            : `<button class="btn sm primary" data-ai="one" data-i="${i}">${I('check')}${t('aiApplyOne')}</button>`}</div></div>
+      </div></li>`;
+}
+function aiResultHtml(r, cur, ctx){
+  if(!r || !r.items || !r.fixed) return '';
+  const items = asArr(r.items), lkN = items.filter(x => x.link).length;
+  const chN = items.length ? items.filter(x => x.changed).length : (aiNorm(r.fixed) !== aiNorm(r.src) ? -1 : 0);
+  const stale = ctx === 'write' && !r.applied && r.src !== cur;
+  return `<div class="ai-box" data-ctx="${ctx}">
+    <div class="ai-head">${I('spark')}${t('aiGuideTitle')}<span class="ai-badge">${t('aiOnDevice')}</span></div>
+    <div class="ai-sum ${chN ? '' : 'good'}">${chN > 0 ? t('aiSumFix', chN, items.length, lkN) : chN < 0 ? t('aiSumWhole') : t('aiAllGood')}</div>
+    ${items.length ? `<ol class="ai-ss">${items.map((x, i) => aiItemHtml(x, i, r)).join('')}</ol>` : ''}
+    ${r.noAi ? `<div class="tk-note" style="margin:8px 0 0">${t('aiNoAiNote', r.noAi)} <button class="btn sm" data-ai-retry="${ctx}">${I('spark')}${t('aiRetry')}</button></div>` : ''}
+    ${asArr(r.lost).length ? `<div class="tk-alert bad" style="margin-top:10px">${I('x')}<span>${esc(t('aiLost', asArr(r.lost).map(w => '"' + w + '"').join(', ')))}</span></div>` : ''}
+    ${chN ? `<div class="ai-full">
+      <div class="ai-full-h"><span class="ai-s-lbl">${t('aiFullTitle')}</span>
+        <span class="ai-full-act">
+          <button class="btn sm" data-ai="copy">${I('copy')}${t('aiCopyTxt')}</button>
+          ${r.applied ? `<span class="ai-applied">${I('check')}${t(ctx === 'hist' ? 'aiAppliedHist' : 'aiApplied')}</span>`
+            : `<button class="btn sm primary" data-ai="apply">${I('check')}${t(ctx === 'hist' ? 'aiApplyHist' : 'aiApply')}</button>`}
+        </span></div>
+      <div class="ai-text">${aiDiffHtml(r.src, r.fixed)}</div>
+    </div>` : ''}
+    <div class="ai-foot"><span class="tk-note">${stale ? t('aiStale') : t('aiNoteFix')}</span></div>
+  </div>`;
+}
+function aiLoadingHtml(){
+  return `<div class="ai-box"><div class="ai-head">${I('spark')}${t('aiThinking')}</div>
+    <div class="ai-text ai-live" hidden></div>
+    <div class="ai-foot"><span class="tk-spin"></span><span class="ai-prog" hidden><span></span></span><span class="tk-note ai-pct"></span></div></div>`;
+}
+async function aiRun(host, text, targets, btn, ctx){
+  if(btn) btn.disabled = true;
+  host.innerHTML = aiLoadingHtml();
+  const prog = loaded => {
+    const bar = host.querySelector('.ai-prog'), pct = host.querySelector('.ai-pct');
+    if(!bar || loaded >= 1) { if(pct) pct.textContent = ''; return; }
+    bar.hidden = false; bar.firstElementChild.style.width = Math.round(loaded * 100) + '%';
+    pct.textContent = t('aiDownloading', Math.round(loaded * 100));
+  };
+  try{
+    const live = (a, n) => { const el = host.querySelector('.ai-live'); if(el){ el.hidden = false; el.textContent = typeof a === 'number' ? t('aiProgress', a, n) : a; } };
+    const r = await aiStyle(text, targets, prog, live);
+    r.src = text; r.at = now();
+    return r;
+  }catch(e){
+    const un = e && e.message === 'unsupported';
+    if(host.isConnected) host.innerHTML = `<div class="tk-alert bad ai-err" style="margin-top:14px">${I('x')}<span>${t(un ? 'aiUnsupported' : 'aiError')}
+      ${un ? '' : `<small class="ai-err-why">${esc(t('aiErrWhy', aiErrReason(e)))}</small>`}</span>
+      ${un || !ctx ? '' : `<button class="btn sm" data-ai-retry="${ctx}">${I('spark')}${t('aiRetry')}</button>`}</div>`;
+    return null;
+  }finally{ if(btn) btn.disabled = false; }
+}
+function aiErrReason(e){
+  const n = (e && (e.name || '')) + ' ' + (e && e.message || '');
+  if(/Quota/i.test(n)) return t('aiWhy_quota');
+  if(/Abort|timeout/i.test(n)) return t('aiWhy_timeout');
+  if(/NotReadable|unsafe|filter/i.test(n)) return t('aiWhy_filtered');
+  if(/bad/.test(n)) return t('aiWhy_bad');
+  if(/NotAllowed|activation|gesture/i.test(n)) return t('aiWhy_gesture');
+  return (e && (e.name || e.message)) || '?';
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ai-retry]'); if(!b) return;
+  if(b.dataset.aiRetry === 'write') writeAi(); else histAi();
+});
+/* Chạy bước giải thích rồi vẽ lại nếu khung vẫn đang hiện kết quả này */
+function aiExplainLater(r, ctx){
+  if(!r.explaining) return;
+  const redraw = () => {
+    saveTasks();
+    if(ctx === 'write'){ const x = tasks.t.write, p = x.paras[x.idx], h = $('#wrAi');
+      if(p && p.ai === r && h && tkView === 'write') h.innerHTML = aiResultHtml(r, ($('#wrBox') || {}).value ? $('#wrBox').value.trim() : '', 'write'); }
+    else{ const e = writeLog.find(y => y.id === histView), h = $('#histAi'); if(e && e.ai === r && h) h.innerHTML = aiResultHtml(r, e.text, 'hist'); }
+  };
+  aiExplain(r).then(redraw, () => { r.explaining = false; redraw(); });
+}
+/* Áp riêng một câu đã sửa vào ô viết (Viết) hoặc bản viết lại (Lịch sử) */
+function aiApplyOne(ctx, i){
+  const write = ctx === 'write';
+  const p = write ? tasks.t.write.paras[tasks.t.write.idx] : null, e = write ? null : writeLog.find(x => x.id === histView);
+  const r = write ? p && p.ai : e && e.ai, x = r && asArr(r.items)[i];
+  const el = write ? $('#wrBox') : $('#histRw');
+  if(!x || !x.changed || !el) return;
+  const base = write ? el.value : (el.value.trim() || e.text);
+  const k = base.indexOf(x.s);
+  if(k < 0){ toast(t('aiOneNotFound')); return; }
+  el.value = base.slice(0, k) + x.better + base.slice(k + x.s.length);
+  el.dispatchEvent(new Event('input', { bubbles: true }));
+  x.applied = true;
+  if(asArr(r.items).every(y => !y.changed || y.applied)) r.applied = true;
+  if(write) r.src = el.value.trim(); else histRwFlush();
+  saveTasks();
+  const h = write ? $('#wrAi') : $('#histAi');
+  if(h) h.innerHTML = aiResultHtml(r, write ? el.value.trim() : e.text, ctx);
+}
+/* Áp đoạn đã sửa: Viết → thay vào ô viết · Lịch sử → đưa vào "Bản viết lại hoàn chỉnh" */
+function aiApply(ctx){
+  if(ctx === 'write'){
+    const x = tasks.t.write, p = x.paras[x.idx], box = $('#wrBox'); if(!p || !p.ai || !box) return;
+    box.value = p.ai.fixed; box.dispatchEvent(new Event('input'));
+    p.ai.applied = true; saveTasks();
+    $('#wrAi').innerHTML = aiResultHtml(p.ai, box.value.trim(), 'write');
+    toast(t('aiAppliedToast'));
+    box.focus();
+    return;
+  }
+  const e = writeLog.find(x => x.id === histView), ta = $('#histRw'); if(!e || !e.ai || !ta) return;
+  if(ta.value.trim() && ta.value.trim() !== e.ai.fixed && !confirm(t('aiReplaceConfirm'))) return;
+  ta.value = e.ai.fixed; ta.dispatchEvent(new Event('input', { bubbles: true }));
+  e.ai.applied = true; histRwFlush();
+  $('#histAi').innerHTML = aiResultHtml(e.ai, e.text, 'hist');
+}
+document.addEventListener('click', ev => {
+  const b = ev.target.closest('[data-ai]'); if(!b) return;
+  const box = b.closest('.ai-box'); if(!box) return;
+  const ctx = box.dataset.ctx;
+  if(b.dataset.ai === 'apply') aiApply(ctx);
+  else if(b.dataset.ai === 'one') aiApplyOne(ctx, +b.dataset.i);
+  else if(b.dataset.ai === 'copy'){
+    const r = ctx === 'write' ? tasks.t.write.paras[tasks.t.write.idx].ai : (writeLog.find(x => x.id === histView) || {}).ai;
+    if(r && r.fixed) navigator.clipboard.writeText(r.fixed).then(() => toast(t('trCopied'))).catch(() => {});
+  }
+});
+function aiWriteBtnSync(p){
+  const b = $('#wrAiBtn'), box = $('#wrBox'); if(!b || !box) return;
+  b.innerHTML = I('spark') + t(p && p.ai && p.ai.fixed ? 'aiAgain' : 'aiBtn');
+}
+async function writeAi(){
+  const x = tasks.t.write, p = x.paras[x.idx], box = $('#wrBox'), host = $('#wrAi');
+  if(!p || !box || !host) return;
+  const text = box.value.trim();
+  if(wordCount(text) < 8){ toast(t('aiTooShort')); return; }
+  const r = await aiRun(host, text, p.words.map(w => w.word), $('#wrAiBtn'), 'write');
+  if(!r || tkView !== 'write' || x.paras[x.idx] !== p) return;
+  p.ai = r; saveTasks();
+  aiWriteBtnSync(p);
+  aiExplainLater(r, 'write');
+  const h = $('#wrAi'); if(h){ h.innerHTML = aiResultHtml(r, $('#wrBox').value.trim(), 'write'); h.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }
+}
 async function writeCheck(){
   const x = tasks.t.write, p = x.paras[x.idx], box = $('#wrBox'), btn = $('#wrCheckBtn'), el = $('#wrResult');
   if(!p || !box) return;
@@ -4253,13 +5156,13 @@ async function writeCheck(){
   }
   if(tkView !== 'write' || x.paras[x.idx] !== p) return;
   const vocab = new Set(words.map(w => w.word.trim().toLowerCase()));
-  const tforms = new Set(p.words.flatMap(w => [...wordForms(w.word)]));
+  const tforms = new Set(p.words.flatMap(w => w.word.toLowerCase().split(/[\s\/]+/).filter(Boolean).flatMap(tk => [...wordForms(tk)])));
   const errs = [];
   for(const m of (data.matches || [])){
     const type = ltType(m); if(!type) continue;
     const frag = text.substr(m.offset, m.length);
     if(type === 'spelling' && (vocab.has(frag.toLowerCase()) || tforms.has(frag.toLowerCase()))) continue;
-    const overlapsTarget = p.words.some(w => findTarget(text, w.word).some(q => q.index < m.offset + m.length && m.offset < q.index + q[0].length));
+    const overlapsTarget = p.words.some(w => findUse(text, w.word).some(q => q.parts.some(([a, b]) => a < m.offset + m.length && m.offset < b)));
     errs.push({ type: type === 'grammar' && overlapsTarget ? 'usage' : type, text: frag, offset: m.offset, length: m.length,
       msg: m.message || '', sug: (m.replacements || []).slice(0, 3).map(r => r.value).join(' / ') });
   }
@@ -4297,6 +5200,7 @@ function logWriting(p, idx){
     id: tasks.date + '_' + (idx + 1) + '_' + now().toString(36), date: tasks.date, at: now(), para: idx + 1,
     words: p.words.map(w => ({ word: w.word, meaning: w.meaning })), text: p.text, checks: p.checks || 1,
     issues: p.issues.slice(0, 60),
+    ...(p.ai && p.ai.fixed ? { ai: p.ai } : {}),
   });
   if(writeLog.length > 500) writeLog.length = 500;
   updateHistBadge();
@@ -4316,11 +5220,50 @@ function openHist(){
 }
 function closeHist(){
   const m = $('#histModal'); if(!m || m.hidden) return;
+  histRwFlush();
   m.hidden = true; document.body.style.overflow = '';
 }
+/* Lịch sử: AI sửa đoạn gốc; có thể đưa bản đã sửa vào "Bản viết lại hoàn chỉnh" */
+function histAiBtnSync(){
+  const b = $('#histAiBtn'), e = writeLog.find(x => x.id === histView); if(!b || !e) return;
+  b.innerHTML = I('spark') + t(e.ai && e.ai.fixed ? 'aiAgain' : 'aiBtn');
+}
+async function histAi(){
+  const e = writeLog.find(x => x.id === histView), host = $('#histAi'); if(!e || !host) return;
+  const id = e.id, r = await aiRun(host, e.text, e.words.map(w => w.word), $('#histAiBtn'), 'hist');
+  if(!r) return;
+  e.ai = r; saveTasks();
+  aiExplainLater(r, 'hist');
+  if(histView === id){ const h = $('#histAi'); if(h) h.innerHTML = aiResultHtml(r, e.text, 'hist'); histAiBtnSync(); }
+}
+/* Bản viết lại: tự lưu khi gõ (trễ 700ms), lưu ngay khi rời ô / quay lại / đóng */
+let histRwT = null, histRwPending = null;
+function histRwAtText(e){
+  return e.rewriteAt && (e.rewrite || '').trim() ? esc(t('histRewriteAt', new Date(e.rewriteAt).toLocaleString(histLocale(),
+    { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }))) : '';
+}
+function histRwFlush(){
+  clearTimeout(histRwT);
+  const e = histRwPending; histRwPending = null;
+  if(!e) return;
+  saveTasks();
+  const st = $('#histRwSt');
+  if(st && histView === e.id){ st.className = 'hist-rw-st saved'; st.innerHTML = I('check') + t('histRewriteSaved'); }
+  const at = $('#histRwAt'); if(at && histView === e.id) at.innerHTML = histRwAtText(e);
+}
+$('#histModal').addEventListener('input', ev => {
+  if(ev.target.id !== 'histRw') return;
+  const e = writeLog.find(x => x.id === histView); if(!e) return;
+  e.rewrite = ev.target.value; e.rewriteAt = now();
+  histRwPending = e;
+  const st = $('#histRwSt'); if(st){ st.className = 'hist-rw-st'; st.textContent = t('histRewriteSaving'); }
+  const n = $('#histRwN'); if(n) n.textContent = t('histWordsN', wordCount(e.rewrite));
+  clearTimeout(histRwT); histRwT = setTimeout(histRwFlush, 700);
+});
+$('#histModal').addEventListener('focusout', ev => { if(ev.target.id === 'histRw') histRwFlush(); });
 function histHighlight(text, ws){
   const ranges = [];
-  ws.forEach(w => findTarget(text, w.word).forEach(m => ranges.push([m.index, m.index + m[0].length])));
+  ws.forEach(w => findUse(text, w.word).forEach(m => ranges.push(...m.parts)));
   ranges.sort((a, b) => a[0] - b[0]);
   let html = '', pos = 0;
   for(const [a, b] of ranges){ if(a < pos) continue; html += esc(text.slice(pos, a)) + '<mark>' + esc(text.slice(a, b)) + '</mark>'; pos = b; }
@@ -4345,8 +5288,16 @@ function renderHist(){
         <li class="tk-errli"><span class="tk-etype t-${esc(i.type)}">${t('tkErrType_' + i.type)}</span>
           <div><div class="tk-ewrong ${i.miss ? 'missing' : ''}"><span class="mono">${esc(i.text)}</span></div>
           <div class="tk-emsg">${esc(i.msg)}</div>${i.sug ? `<div class="tk-esug">${I('bulb')}${esc(i.sug)}</div>` : ''}</div></li>`).join('')}</ul>`
-        : `<div class="tk-alert good">${I('check')}<span>${t('histNoIssues')}</span></div>`}`;
+        : `<div class="tk-alert good">${I('check')}<span>${t('histNoIssues')}</span></div>`}
+
+      <div class="hist-ai-row"><span class="ai-ctl" hidden><button class="btn sm ai-btn" data-h="ai" id="histAiBtn" hidden>${I('spark')}${t('aiBtn')}</button></span></div>
+      <div id="histAi">${e.ai && e.ai.fixed ? aiResultHtml(e.ai, e.text, 'hist') : ''}</div>
+      <div class="hist-rw-head"><div class="hist-sec">${t('histRewrite')}</div><span class="hist-rw-st" id="histRwSt"></span></div>
+      <textarea class="tk-wr-box hist-rw" id="histRw" spellcheck="true" placeholder="${esc(t('histRewritePh'))}">${esc(e.rewrite || '')}</textarea>
+      <div class="hist-rw-foot"><span id="histRwN">${t('histWordsN', wordCount(e.rewrite || ''))}</span><span id="histRwAt">${histRwAtText(e)}</span></div>
+`;
     box.scrollTop = 0;
+    aiShowButton($('#histAiBtn')); histAiBtnSync();
     return;
   }
   histView = null;
@@ -4367,6 +5318,7 @@ function renderHist(){
       <span class="hist-words">${x.words.map(w => `<span class="hist-w">${esc(w.word)}</span>`).join('')}</span>
       <span class="hist-snip">${esc(x.text)}</span>
       <span class="hist-meta">${t('histWordsN', wordCount(x.text))} · ${t('histChecks', x.checks)} · ${t('histIssues', x.issues.length)}</span>
+      ${x.rewrite && x.rewrite.trim() ? `<span class="hist-rw-tag">${I('check')}${t('histRewriteTag')}</span>` : ''}
     </button>`;
   }
   box.innerHTML = `<p class="tk-note" style="margin:0 0 4px">${t('histCount', writeLog.length)}</p>` + html;
@@ -4377,8 +5329,9 @@ $('#histModal').addEventListener('click', e => {
   const el = e.target.closest('[data-h]'); if(!el) return;
   const a = el.dataset.h;
   if(a === 'close') closeHist();
-  else if(a === 'back'){ histView = null; renderHist(); }
+  else if(a === 'back'){ histRwFlush(); histView = null; renderHist(); }
   else if(a === 'open'){ histView = el.dataset.id; renderHist(); }
+  else if(a === 'ai') histAi();
 });
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeHist(); });
 
@@ -4594,10 +5547,15 @@ $('#tasksArea').addEventListener('click', e => {
   else if(a === 'start') tkOpen('start');
   else if(a === 'overview'){ recAbort(); stopSpeech(); tkView = 'overview'; renderTasks(); }
   else if(a === 'mode'){
-    const m = el.dataset.m; if(!TASK_MODES[m] || tasks.mode === m) return;
-    tasks.mode = m; taskModePref = m;
+    const m = el.dataset.m; if(!TASK_MODES[m] || tasks.modeSet) return;
+    tkModePick = m; renderTasks();
+  }
+  else if(a === 'modeLock'){
+    const m = tkModePick; if(!TASK_MODES[m] || tasks.modeSet) return;
+    tasks.mode = m; tasks.modeSet = true; tasks.modeAt = now(); taskModePref = m; tkModePick = null;
+    toast(t('tkModeLockedToast', t('tkMode_' + m)));
     if(checkFocusTask()) toast(t('tkFocusDoneToast', focusGoalMin()));
-    saveTasks(); renderTasks();
+    saveTasks(true); renderTasks();
   }
   else if(a === 'goFocus' || a === 'goGarden') activateTab($('.tab-btn[data-tab="focus"]'));
   else if(a === 'goNotes') activateTab($('.tab-btn[data-tab="notes"]'));
@@ -4636,6 +5594,7 @@ $('#tasksArea').addEventListener('click', e => {
   else if(a === 'ctxRemove') ctxUnplace(+el.dataset.s);
   else if(a === 'ctxCheck') ctxCheck();
   else if(a === 'wrCheck') writeCheck();
+  else if(a === 'wrAi') writeAi();
   else if(a === 'wrJump'){
     const box = $('#wrBox'); if(!box) return;
     const o = +el.dataset.o, l = +el.dataset.l;

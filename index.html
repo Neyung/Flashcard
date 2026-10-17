@@ -6,7 +6,7 @@
 <title>Sổ Ngữ · Flashcard</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23FFE0C9'/%3E%3Cpath d='M6 5.5h8.5a3 3 0 0 1 3 3V19H8a2.5 2.5 0 0 1-2.5-2.5z' fill='%23fff' stroke='%2323284A' stroke-width='2'/%3E%3Cpath d='M9.5 9.5h5M9.5 13h5' stroke='%231E5EFF' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#23284A;            /* màu tối — chỉ dùng nhấn chi tiết */
@@ -336,6 +336,113 @@ tbody tr.sel:hover{background:var(--sky)}
   background-size:300% 100%;animation:streakRainbow 3s linear infinite, streakGlow 1s ease-in-out infinite}
 .streak-chip[data-tier="5"] .ic{width:22px;height:22px;color:#B5179E;fill:#FFC83D;animation:flame .45s ease-in-out infinite}
 .streak-chip[data-tier="5"] .num{font-size:16px}
+/* Mốc 50 → 100: lửa đổi màu (xanh lam → tím → vàng kim), to dần, có tàn lửa bay lên */
+.streak-chip .embers{position:absolute;left:8px;bottom:50%;width:26px;height:0;pointer-events:none;display:none}
+.streak-chip .embers i{position:absolute;bottom:0;width:4px;height:4px;border-radius:50%;background:var(--ember,#FFB02E);
+  box-shadow:0 0 6px var(--ember,#FFB02E);opacity:0;animation:ember 1.4s ease-out infinite}
+.streak-chip .embers i:nth-child(1){left:2px;animation-delay:0s}
+.streak-chip .embers i:nth-child(2){left:10px;animation-delay:.35s;width:3px;height:3px}
+.streak-chip .embers i:nth-child(3){left:18px;animation-delay:.7s}
+.streak-chip .embers i:nth-child(4){left:6px;animation-delay:1.05s;width:3px;height:3px}
+.streak-chip .embers i:nth-child(5){left:14px;animation-delay:.55s;width:5px;height:5px}
+.streak-chip[data-tier="6"] .embers,.streak-chip[data-tier="7"] .embers,.streak-chip[data-tier="8"] .embers,
+.streak-chip[data-tier="9"] .embers,.streak-chip[data-tier="10"] .embers,.streak-chip[data-tier="11"] .embers{display:block}
+.streak-chip[data-tier="6"]{--ember:#7FE3FF;color:#fff;background:linear-gradient(110deg,#1F4FD8,#2E8BFF,#38C6F4,#2E8BFF,#1F4FD8);
+  background-size:300% 100%;animation:streakRainbow 3s linear infinite, streakGlowBlue 1s ease-in-out infinite}
+.streak-chip[data-tier="6"] .ic{width:25px;height:25px;color:#E6FAFF;fill:#7FE3FF;
+  filter:drop-shadow(0 0 4px #7FE3FF);animation:flame .4s ease-in-out infinite}
+.streak-chip[data-tier="6"] .num{font-size:17px}
+.streak-chip[data-tier="7"]{--ember:#FF8BF0;color:#fff;background:linear-gradient(110deg,#5B21B6,#9333EA,#DB2777,#9333EA,#5B21B6);
+  background-size:300% 100%;animation:streakRainbow 2.4s linear infinite, streakGlowViolet .9s ease-in-out infinite}
+.streak-chip[data-tier="7"] .ic{width:27px;height:27px;color:#FFE4FB;fill:#E879F9;
+  filter:drop-shadow(0 0 5px #F0ABFC);animation:flame .35s ease-in-out infinite}
+.streak-chip[data-tier="7"] .num{font-size:18px}
+.streak-chip[data-tier="8"]{--ember:#FFE58A;color:#FFF6D6;border-color:#B8860B;
+  background:linear-gradient(110deg,#23284A,#5A3A00,#B8860B,#FFD54A,#B8860B,#5A3A00,#23284A);
+  background-size:300% 100%;animation:streakRainbow 2s linear infinite, streakGlowGold .8s ease-in-out infinite}
+.streak-chip[data-tier="8"] .ic{width:38px;height:38px;margin:-10px -3px -6px;color:#FFFFFF;fill:#FFD54A;
+  filter:drop-shadow(0 0 6px #FFE58A) drop-shadow(0 0 12px #FF9F1C);animation:flame .3s ease-in-out infinite}
+.streak-chip[data-tier="8"] .num{font-size:19px;color:#fff;text-shadow:0 1px 0 #5A3A00,0 0 6px #FF9F1C,0 0 12px #FFD54A}
+.streak-chip[data-tier="8"] > span:not(.num):not(.embers){text-shadow:0 1px 1px #3A2600}
+.streak-chip[data-tier="8"]::before{content:'👑';position:absolute;top:-15px;left:6px;font-size:16px;
+  transform:rotate(-18deg);filter:drop-shadow(0 0 4px #FFD54A);animation:crownBob 1.6s ease-in-out infinite}
+.streak-chip[data-tier="6"]::after{border-color:#38C6F4}
+.streak-chip[data-tier="7"]::after{border-color:#C026D3}
+.streak-chip[data-tier="8"]::after{border-color:#FFD54A;border-width:4px}
+/* Mốc 125 → 200: lửa ngọc lục bảo → lửa cầu vồng → lửa vũ trụ (huyền thoại) */
+.streak-chip[data-tier="9"]{--ember:#6EF7B5;color:#fff;border-color:#065F46;
+  background:linear-gradient(110deg,#064E3B,#059669,#34D399,#A7F3D0,#34D399,#059669,#064E3B);
+  background-size:300% 100%;animation:streakRainbow 1.8s linear infinite, streakGlowJade .8s ease-in-out infinite}
+.streak-chip[data-tier="9"] .ic{width:40px;height:40px;margin:-11px -3px -7px;color:#F0FFF8;fill:#34D399;
+  filter:drop-shadow(0 0 6px #6EF7B5) drop-shadow(0 0 12px #10B981);animation:flame .28s ease-in-out infinite}
+.streak-chip[data-tier="9"] .num{font-size:19px;color:#fff;text-shadow:0 1px 0 #064E3B,0 0 8px #6EF7B5}
+.streak-chip[data-tier="9"]::before{content:'✨';position:absolute;top:-14px;left:4px;font-size:15px;animation:sparkSpin 1.8s ease-in-out infinite}
+.streak-chip[data-tier="10"]{--ember:#fff;color:#fff;border-color:#23284A;
+  background:linear-gradient(110deg,#FF3D6E,#FF9F1C,#FFE14D,#2EE59D,#38C6F4,#7C5CFF,#E040FB,#FF3D6E);
+  background-size:400% 100%;animation:streakRainbow 2.2s linear infinite, streakGlowRainbow 2.2s linear infinite}
+.streak-chip[data-tier="10"] .ic{width:42px;height:42px;margin:-12px -4px -8px;color:#fff;fill:#FF4D8D;
+  filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 10px #FFE14D);animation:flame .26s ease-in-out infinite, fillRainbow 1.5s linear infinite}
+.streak-chip[data-tier="10"] .num{font-size:20px;color:#fff;text-shadow:0 1px 0 #23284A,0 0 8px #fff}
+.streak-chip[data-tier="10"] > span:not(.num):not(.embers){text-shadow:0 1px 1px #23284A}
+.streak-chip[data-tier="10"] .embers i{animation-name:ember,emberRainbow;animation-duration:1.4s,1s}
+.streak-chip[data-tier="10"]::before{content:'💎';position:absolute;top:-16px;left:4px;font-size:17px;
+  filter:drop-shadow(0 0 5px #38C6F4);animation:crownBob 1.4s ease-in-out infinite}
+.streak-chip[data-tier="11"]{--ember:#B9F3FF;color:#fff;border-color:#000;
+  background:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 45% 70%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 70% 25%,#fff,transparent),radial-gradient(1px 1px at 85% 65%,#fff,transparent),
+    radial-gradient(1px 1px at 58% 45%,#FFE58A,transparent),
+    linear-gradient(110deg,#0B0B2B,#2A1060,#0E3A7A,#3B0F5C,#0B0B2B);
+  background-size:100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,300% 100%;
+  animation:streakCosmos 3s linear infinite, streakGlowCosmic 1.6s linear infinite}
+.streak-chip[data-tier="11"] .ic{width:46px;height:46px;margin:-14px -4px -9px;color:#fff;fill:#B9F3FF;
+  filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #7C5CFF) drop-shadow(0 0 20px #E040FB);
+  animation:flame .24s ease-in-out infinite, fillCosmic 2.4s linear infinite}
+.streak-chip[data-tier="11"] .num{font-size:21px;color:#fff;animation:numGlow 1.6s linear infinite}
+.streak-chip[data-tier="11"]::before{content:'👑';position:absolute;top:-19px;left:6px;font-size:20px;
+  filter:drop-shadow(0 0 6px #FFD54A) drop-shadow(0 0 10px #E040FB);animation:crownBob 1.2s ease-in-out infinite}
+.streak-chip[data-tier="9"]::after{border-color:#34D399}
+.streak-chip[data-tier="10"]::after{border-color:#E040FB;border-width:4px}
+.streak-chip[data-tier="11"]::after{border-color:#B9F3FF;border-width:5px}
+@keyframes streakGlowJade{0%,100%{box-shadow:var(--shadow-sm),0 0 16px #34D39999}50%{box-shadow:var(--shadow-sm),0 0 38px #34D399,0 0 64px #10B98166}}
+@keyframes streakGlowRainbow{0%{box-shadow:var(--shadow-sm),0 0 30px #FF3D6E}25%{box-shadow:var(--shadow-sm),0 0 34px #FFE14D}
+  50%{box-shadow:var(--shadow-sm),0 0 34px #2EE59D}75%{box-shadow:var(--shadow-sm),0 0 34px #7C5CFF}100%{box-shadow:var(--shadow-sm),0 0 30px #FF3D6E}}
+@keyframes streakGlowCosmic{0%,100%{box-shadow:var(--shadow-sm),0 0 22px #7C5CFF,0 0 60px #E040FB88}
+  50%{box-shadow:var(--shadow-sm),0 0 34px #38C6F4,0 0 80px #7C5CFFAA}}
+@keyframes streakCosmos{to{background-position:0 0,0 0,0 0,0 0,0 0,300% 0}}
+@keyframes fillRainbow{0%,100%{fill:#FF4D8D}17%{fill:#FF9F1C}33%{fill:#FFE14D}50%{fill:#2EE59D}67%{fill:#38C6F4}83%{fill:#7C5CFF}}
+@keyframes emberRainbow{0%,100%{background:#FF4D8D;box-shadow:0 0 6px #FF4D8D}33%{background:#FFE14D;box-shadow:0 0 6px #FFE14D}
+  66%{background:#38C6F4;box-shadow:0 0 6px #38C6F4}}
+@keyframes fillCosmic{0%,100%{fill:#B9F3FF}33%{fill:#C4B5FD}66%{fill:#F5A3FF}}
+@keyframes sparkSpin{0%,100%{transform:scale(.8) rotate(0)}50%{transform:scale(1.15) rotate(20deg)}}
+@keyframes numGlow{0%,100%{text-shadow:0 0 6px #B9F3FF,0 0 12px #7C5CFF}50%{text-shadow:0 0 8px #FFE58A,0 0 16px #E040FB}}
+.streak-chip[data-tier="6"].tier-up,.streak-chip[data-tier="7"].tier-up,.streak-chip[data-tier="8"].tier-up,
+.streak-chip[data-tier="9"].tier-up,.streak-chip[data-tier="10"].tier-up,.streak-chip[data-tier="11"].tier-up{
+  animation:streakBurst .6s ease-out, streakRainbow 2s linear infinite}
+@keyframes ember{0%{opacity:0;transform:translate(0,0) scale(1)}15%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx,3px),-30px) scale(.4)}}
+.streak-chip .embers i:nth-child(even){--dx:-4px}
+@keyframes streakGlowBlue{0%,100%{box-shadow:var(--shadow-sm),0 0 12px #38C6F477}50%{box-shadow:var(--shadow-sm),0 0 30px #38C6F4EE}}
+@keyframes streakGlowViolet{0%,100%{box-shadow:var(--shadow-sm),0 0 14px #C026D388}50%{box-shadow:var(--shadow-sm),0 0 34px #E879F9F0}}
+@keyframes streakGlowGold{0%,100%{box-shadow:var(--shadow-sm),0 0 16px #FFD54A99}50%{box-shadow:var(--shadow-sm),0 0 40px #FFC107,0 0 70px #FF9F1C66}}
+@keyframes streakBurst{0%{transform:scale(1)}35%{transform:scale(1.22)}70%{transform:scale(.96)}100%{transform:scale(1)}}
+@keyframes crownBob{0%,100%{transform:translateY(0) rotate(-18deg)}50%{transform:translateY(-3px) rotate(-12deg)}}
+/* Mốc 100 (lửa đỏ–vàng) & 200 (lửa xanh): một luồng lửa ngắn thổi thẳng VÀO ngọn lửa nhỏ của chip,
+   ngọn lửa hút dần rồi bùng lên và từ đó giữ cỡ lớn hơn bình thường */
+.flare-cv{position:fixed;left:0;top:0;z-index:90;pointer-events:none}
+.streak-chip.feeding .ic{animation:flareFeed .12s linear infinite!important}
+.streak-chip.ignite .ic{animation:flareIgnite .75s cubic-bezier(.2,1.6,.4,1)!important}
+.streak-chip.ignite{animation:flareHeat .75s ease-out}
+@keyframes flareFeed{0%,100%{transform:scale(.8,.75) rotate(-5deg)}50%{transform:scale(.9,.95) rotate(5deg)}}
+@keyframes flareIgnite{0%{transform:scale(.7)}30%{transform:scale(2.1,2.5)}55%{transform:scale(1.25,1.45)}75%{transform:scale(1.4,1.6)}100%{transform:scale(1)}}
+/* Gãy chuỗi dài: trạng thái tạm của chip trong lúc hiệu ứng chạy */
+.streak-chip.frozen{background:linear-gradient(#EAF8FF,#B5E2FB)!important;border-color:#5AA9D6;color:#2C6E96;transition:background .6s}
+.streak-chip.frozen .ic{color:#7CC4EE}
+.streak-chip.zapped{animation:zapShake .45s linear!important;background:#3A3A44!important;color:#E8E8F0;filter:contrast(1.2)}
+.streak-chip.zapped .ic{color:#FFE14D;fill:#FFE14D}
+.streak-chip.blessed{box-shadow:var(--shadow-sm),0 0 26px #FFD54A!important;transition:box-shadow .6s}
+@keyframes zapShake{0%,100%{transform:none}15%{transform:translate(-5px,2px) rotate(-3deg)}30%{transform:translate(5px,-2px) rotate(3deg)}
+  45%{transform:translate(-4px,1px) rotate(-2deg)}60%{transform:translate(3px,-1px)}80%{transform:translate(-2px,0)}}
+@keyframes flareHeat{0%,100%{transform:scale(1)}30%{transform:scale(1.12) rotate(-1.5deg)}60%{transform:scale(1.05) rotate(1deg)}}
 @keyframes flame{0%,100%{transform:scale(1) rotate(-3deg)}25%{transform:scale(1.1,1.22) rotate(3deg)}
   50%{transform:scale(.94,1.06) rotate(-2deg)}75%{transform:scale(1.08,1.16) rotate(4deg)}}
 @keyframes streakGlow{0%,100%{box-shadow:var(--shadow-sm),0 0 10px #FF6B3D66}50%{box-shadow:var(--shadow-sm),0 0 26px #FF6B3DCC}}
@@ -345,6 +452,123 @@ tbody tr.sel:hover{background:var(--sky)}
 @media (prefers-reduced-motion: reduce){
   *{animation:none!important;transition:none!important}
 }
+
+/* ── Khiên bảo vệ chuỗi: lớp kính trong suốt bao quanh thanh streak, tinh xảo dần theo số khiên ── */
+.streak-chip .shield-aura{position:absolute;inset:-7px;border-radius:999px;pointer-events:none;display:none;z-index:1;
+  border:1.5px solid rgba(140,195,255,.85);
+  background:linear-gradient(160deg,rgba(255,255,255,.28),rgba(190,225,255,.10) 45%,rgba(255,255,255,.04) 55%,rgba(170,215,255,.16));
+  box-shadow:0 0 10px rgba(140,195,255,.55),inset 0 0 9px rgba(255,255,255,.55)}
+.streak-chip .shield-aura::before{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.6;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.7) 49%,transparent 60%);background-size:260% 100%;
+  animation:shieldSheen 5s ease-in-out infinite}
+.streak-chip:not([data-shield="0"])[data-shield] .shield-aura{display:block}
+.streak-chip[data-shield="2"] .shield-aura{box-shadow:0 0 0 3px rgba(170,215,255,.35),0 0 12px rgba(140,195,255,.6),inset 0 0 10px rgba(255,255,255,.6)}
+.streak-chip[data-shield="3"] .shield-aura,.streak-chip[data-shield="4"] .shield-aura,.streak-chip[data-shield="5"] .shield-aura{
+  background:repeating-linear-gradient(60deg,rgba(255,255,255,.12) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(-60deg,rgba(255,255,255,.12) 0 1px,transparent 1px 9px),
+    linear-gradient(160deg,rgba(255,255,255,.3),rgba(190,225,255,.1) 45%,rgba(170,215,255,.18));
+  box-shadow:0 0 0 3px rgba(170,215,255,.4),0 0 14px rgba(140,195,255,.7),inset 0 0 12px rgba(255,255,255,.65)}
+.streak-chip[data-shield="4"] .shield-aura,.streak-chip[data-shield="5"] .shield-aura{border-color:rgba(236,190,80,.95);
+  box-shadow:0 0 0 2px rgba(255,255,255,.55),0 0 0 4px rgba(255,214,120,.5),0 0 16px rgba(255,214,120,.6),inset 0 0 12px rgba(255,255,255,.7)}
+.streak-chip[data-shield="5"] .shield-aura::after{content:'';position:absolute;inset:-6px;border-radius:inherit;
+  border:1.5px dotted rgba(230,180,60,.95);animation:shieldPulse 2.4s ease-in-out infinite}
+.streak-chip .shield-n{position:absolute;top:-12px;right:-9px;z-index:2;display:none;align-items:center;gap:2px;padding:1px 6px 1px 4px;
+  border-radius:999px;background:#fff;border:1.5px solid #8CC3FF;font:800 10.5px 'JetBrains Mono',monospace;color:#2B5C9E;
+  box-shadow:0 1px 4px rgba(60,120,200,.3);text-shadow:none!important}
+.streak-chip .shield-n .sh-ic{width:11px;height:11px;fill:#CFE6FF;stroke:#2B5C9E;stroke-width:2}
+.streak-chip:not([data-shield="0"])[data-shield] .shield-n{display:inline-flex}
+.streak-chip[data-shield="4"] .shield-n,.streak-chip[data-shield="5"] .shield-n{border-color:#E8B730;color:#7A5A00}
+.streak-chip.sh-hit{animation:shHit .4s ease-out}
+@keyframes shHit{0%,100%{transform:none}20%{transform:translate(-2px,1px) scale(.98)}45%{transform:translate(2px,-1px)}70%{transform:translate(-1px,0)}}
+@keyframes shieldSheen{0%,55%{background-position:150% 0}100%{background-position:-110% 0}}
+@keyframes shieldPulse{0%,100%{opacity:.45}50%{opacity:1}}
+
+/* ── Thử thách thiêng (Sacred Challenge) ── */
+.sc-overlay{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;padding:16px;
+  background:radial-gradient(ellipse at 50% 30%,rgba(255,236,170,.4),rgba(20,18,50,.66));backdrop-filter:blur(3px);animation:scFade .35s ease-out}
+.sc-overlay[hidden]{display:none}
+.sc-modal{position:relative;width:min(660px,100%);max-height:calc(100vh - 32px);overflow:auto;
+  background:linear-gradient(180deg,#FFFDF5,#FFF6DD);border:2.5px solid var(--ink);border-radius:20px;
+  box-shadow:6px 6px 0 var(--ink),0 0 60px rgba(255,214,120,.6);padding:26px 22px 22px;animation:scRise .45s cubic-bezier(.2,1.2,.4,1)}
+.sc-modal::before{content:'';position:absolute;inset:8px;border:1.5px solid #E9C66A;border-radius:14px;pointer-events:none;opacity:.8}
+.sc-screen.in{animation:scSwap .4s ease-out}
+.sc-title{font-family:'Cinzel Decorative','Cinzel',Georgia,serif;font-weight:700;font-size:clamp(24px,6vw,32px);text-align:center;letter-spacing:.5px;line-height:1.2;
+  background:linear-gradient(90deg,#9A6B00,#E8B730,#FFF0B0,#E8B730,#9A6B00);background-size:200% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;animation:scShine 4s linear infinite}
+.sc-title.sm{font-size:clamp(18px,4.5vw,22px);text-align:left}
+.sc-flour{display:flex;align-items:center;justify-content:center;gap:10px;color:#C9A03A;font-size:13px;margin:4px 0 10px}
+.sc-flour::before,.sc-flour::after{content:'';height:1.5px;width:64px;background:linear-gradient(90deg,transparent,#D9B24E)}
+.sc-flour::after{transform:scaleX(-1)}
+.sc-sub{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:20px;text-align:center;color:#5A4A20}
+.sc-desc{text-align:center;font-size:14px;line-height:1.55;margin:10px auto 6px;max-width:470px}
+.sc-meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:12px 0}
+.sc-pill{display:inline-flex;align-items:center;gap:5px;font:700 12px 'Manrope',sans-serif;padding:5px 11px;border-radius:999px;
+  border:1.5px solid #D9B24E;background:#FFF4CC;color:#6B5310;white-space:nowrap}
+.sc-pill .ic{width:13px;height:13px}
+.sc-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px;line-height:1.5}
+.sc-note .ic{width:13px;height:13px;vertical-align:-2px}
+.sc-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px}
+.btn.sc-gold{background:linear-gradient(180deg,#FFE58A,#F2C343)}
+.sc-emblem{display:block;margin:0 auto 6px;width:84px;height:84px;filter:drop-shadow(0 0 10px rgba(255,214,120,.7));animation:scFloat 3s ease-in-out infinite}
+.sc-mini{width:44px;height:44px;flex:none}
+.sc-pill .ic{width:13px;height:13px;stroke-width:2.2}
+.sc-top{display:flex;align-items:center;gap:12px;padding-bottom:12px;border-bottom:1.5px dashed #E2CB86}
+.sc-top-t{flex:1;min-width:0}
+.sc-kicker{font-family:'Cinzel Decorative','Cinzel',Georgia,serif;font-weight:700;font-size:11.5px;letter-spacing:.6px;color:#B98A12}
+.sc-h{font-weight:800;font-size:19px;line-height:1.2}
+.sc-prog{display:flex;flex-direction:column;align-items:flex-end;gap:4px;font:800 12px 'JetBrains Mono',monospace;color:#6B5310}
+.sc-dots{display:flex;gap:4px}
+.sc-dots i{width:12px;height:12px;border-radius:50%;border:2px solid #C9B37A;background:#fff}
+.sc-dots i.fill{background:#FFE58A;border-color:#B9A15A}
+.sc-dots i.ok{background:var(--green);border-color:var(--green)}
+.sc-dots i.bad{background:var(--red);border-color:var(--red)}
+.sc-hint{display:flex;align-items:center;gap:7px;margin:12px 0 0;font-size:12.5px;color:#6B6F8E}
+.sc-hint .ic{width:15px;height:15px;flex:none;color:#D9A520}
+.sc-passage{font-size:16.5px;line-height:2.35;background:#fff;border:2px solid var(--ink);border-radius:14px;padding:12px 18px;margin:10px 0 14px;
+  box-shadow:3px 3px 0 #E2CB86}
+.sc-blank{display:inline-flex;align-items:center;gap:6px;min-width:104px;height:32px;padding:0 10px 0 4px;margin:0 3px;vertical-align:middle;
+  border:2px dashed #C9B37A;border-radius:999px;background:#FFFBEA;font:700 14.5px 'Manrope',sans-serif;color:var(--ink);cursor:pointer;
+  transition:background .15s,border-color .15s,transform .12s}
+.sc-blank:hover:not(.ok){transform:translateY(-1px)}
+.sc-blank .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#F2E2A8;color:#6B5310;
+  font:800 11px 'JetBrains Mono',monospace;margin:0;flex:none}
+.sc-blank .w{flex:1;text-align:center}
+.sc-blank.filled{border-style:solid;border-color:var(--ink);background:#FFF1B3}
+.sc-blank.ok{border:2px solid var(--green);background:#C9F4DE;cursor:default}
+.sc-blank.ok .n{background:var(--green);color:#fff}
+.sc-blank.bad{border:2px solid var(--red);background:#FFE3E4;animation:shake .35s}
+.sc-blank.bad .n{background:var(--red);color:#fff}
+.sc-blank.drop{border-color:var(--blue);background:var(--sky)}
+.sc-bank-h{display:flex;align-items:center;justify-content:center;gap:6px;font:800 11px 'JetBrains Mono',monospace;letter-spacing:.5px;
+  text-transform:uppercase;color:#9A8550;margin-bottom:8px}
+.sc-bank-h .ic{width:14px;height:14px}
+.sc-src{text-align:center;font-size:11px;color:var(--muted);margin-top:12px}
+.sc-bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.sc-chip{font:700 14px 'Manrope',sans-serif;padding:7px 13px;border:2px solid var(--ink);border-radius:999px;background:#fff;
+  box-shadow:2px 2px 0 var(--ink);cursor:grab;color:var(--ink);transition:transform .12s}
+.sc-chip.sel{background:var(--lemon);transform:translate(-1px,-3px);box-shadow:3px 5px 0 var(--ink)}
+.sc-chip.used{opacity:.3;pointer-events:none;box-shadow:none}
+.sc-fb{min-height:20px;font-weight:700;font-size:13.5px;text-align:center;margin-top:10px}
+.sc-fb.bad{color:var(--red)} .sc-fb.good{color:var(--green)}
+.sc-preview{display:flex;justify-content:center;margin:34px 0 26px}
+.sc-spin{width:46px;height:46px;margin:20px auto 10px;border-radius:50%;border:4px solid #F2E2A8;border-top-color:#D9A520;animation:scSpin 1s linear infinite}
+.sc-modal.fail{background:linear-gradient(180deg,#F5F4F9,#E6E4EE);box-shadow:6px 6px 0 var(--ink),0 0 40px rgba(110,100,160,.35)}
+.sc-modal.fail::before{border-color:#B8B4CC}
+.sc-modal.fail .sc-title{background:linear-gradient(90deg,#5E5B74,#A9A6BC,#5E5B74);background-size:200% 100%;-webkit-background-clip:text;background-clip:text}
+.sc-modal.fail .sc-emblem{filter:grayscale(1) opacity(.5);animation:none}
+.sc-modal.fail .sc-sub{color:#5E5B74}
+body.sc-open{overflow:hidden}
+@keyframes scFade{from{opacity:0}}
+@keyframes scRise{from{opacity:0;transform:translateY(26px) scale(.96)}}
+@keyframes scSwap{from{opacity:0;transform:translateY(10px)}}
+@keyframes scFloat{50%{transform:translateY(-5px)}}
+@keyframes scShine{to{background-position:-200% 0}}
+@keyframes scSpin{to{transform:rotate(360deg)}}
+/* Độ khó CEFR trong bảng từ */
+.cefr{display:inline-block;margin-left:5px;font:800 10.5px 'JetBrains Mono',monospace;padding:2px 6px;border-radius:6px;
+  border:1.5px solid var(--ink);vertical-align:middle;cursor:help}
+.cefr-A1,.cefr-A2{background:#C9F4DE} .cefr-B1,.cefr-B2{background:#CFE9FF} .cefr-C1,.cefr-C2{background:#E4DBFF}
+.cefr-q{background:#fff;color:var(--muted);border-style:dashed}
 
 /* ── Đăng nhập ───────────────────────────────────────────── */
 .login-overlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
@@ -1268,6 +1492,7 @@ header{align-items:center}
 <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol>
 <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4.5 8.5h15l-4-4M19.5 15.5h-15l4 4"/></symbol>
 <symbol id="i-ext" viewBox="0 0 24 24"><path d="M13.5 4.5h6v6M19.5 4.5l-8 8"/><path d="M17.5 13.5v5a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-11a1 1 0 0 1 1-1h5"/></symbol>
+<symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l7 3v5.5c0 4.4-3 8-7 9.5-4-1.5-7-5.1-7-9.5V6z"/></symbol>
 <symbol id="i-tree" viewBox="0 0 24 24">
   <circle cx="12" cy="9.5" r="6.5"/>
   <path d="M12 16v5M9.5 21h5"/>
@@ -1368,6 +1593,7 @@ header{align-items:center}
         <div id="groupFilter"></div>
         <button class="btn lav sm" id="btnBulkGroup"><svg class="ic"><use href="#i-pin"/></svg><span id="nBulkGroupBtn"></span></button>
         <button class="btn sky sm" id="btnImport"><svg class="ic"><use href="#i-in"/></svg><span id="nImportBtn"></span></button>
+        <button class="btn mint sm" id="btnCefr" hidden><svg class="ic"><use href="#i-target"/></svg><span id="cefrBtnTxt">CEFR</span></button>
         <button class="btn lemon sm" id="btnExport"><svg class="ic"><use href="#i-out"/></svg><span id="nExportBtn"></span></button>
         <input type="file" id="fileInput" accept=".txt,.note,.csv" hidden>
       </div>
@@ -1409,7 +1635,7 @@ header{align-items:center}
           <div class="gsel-menu" id="quizGroupMenu" hidden></div>
         </div>
         <label class="switch-row"><input type="checkbox" id="quizSavedOnly"> <span id="qSavedOnlyLbl"></span> <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg></label>
-        <span class="chip streak-chip" id="streakChip" data-tier="0" style="margin-left:auto"><svg class="ic"><use href="#i-flame"/></svg> <span id="qStreakLbl"></span> <span class="num" id="quizStreak">0</span></span>
+        <span class="chip streak-chip" id="streakChip" data-tier="0" style="margin-left:auto"><span class="embers" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><svg class="ic"><use href="#i-flame"/></svg> <span id="qStreakLbl"></span> <span class="num" id="quizStreak">0</span><span class="shield-aura" aria-hidden="true"></span><span class="shield-n"><svg class="sh-ic" viewBox="0 0 24 24"><use href="#i-shield"/></svg><b>0</b></span></span>
       </div>
       <div id="quizArea"></div>
       <div class="info-corner" id="quizInfo"></div>
@@ -1419,10 +1645,8 @@ header{align-items:center}
   <!-- ════════ TAB 3: FLASHCARD ════════ -->
   <section class="tab-page" id="tab-flash">
     <div class="fc-stage">
-      <div class="q-meta" style="justify-content:center">
-        <select class="themed" id="fcGroup">
-          <option value="" id="fAllGroups"></option>
-        </select>
+      <div class="q-meta">
+        <div id="fcGroupSel"></div>
         <label class="switch-row"><input type="checkbox" id="fcSavedOnly"> <span id="fSavedOnlyLbl"></span> <svg class="ic" style="width:14px;height:14px;fill:#FFC83D"><use href="#i-star"/></svg></label>
       </div>
       <div id="fcArea"></div>
@@ -1539,6 +1763,7 @@ header{align-items:center}
     <span class="tr-info" id="trInfo"></span>
   </div>
 </div>
+<div class="sc-overlay" id="scOverlay" hidden><div class="sc-modal" id="scModal" role="dialog" aria-modal="true" aria-labelledby="scTitle"><div id="scBody"></div></div></div>
 <div id="toast"></div>
 
 <script>
@@ -1640,6 +1865,7 @@ async function deleteUserAccount(user){
   try{ localStorage.removeItem('soTuGarden_' + user); }catch(e){}
   try{ localStorage.removeItem('soTuTasks_' + user); }catch(e){}
   try{ localStorage.removeItem('soTuFocusLog_' + user); }catch(e){}
+  try{ localStorage.removeItem('soTuSacred_' + user); localStorage.removeItem('soTuQuizStreak_' + user); }catch(e){}
   if(cloudOn()){
     try{ await cloudDelete('users/' + user); }catch(e){}
     try{ await cloudDelete('meta/lastLogin/' + user); }catch(e){}
@@ -1707,8 +1933,33 @@ vi:{
   qLabelSingleType:'Gõ từ có nghĩa là…', qLabelPhraseType:'Gõ cụm/câu có nghĩa là…',
   qGroupsN:n=>`${n} nhóm đã chọn`, qGroupsNone:'Chưa chọn nhóm nào',
   qNoGroupPicked:'Chưa chọn nhóm nào — hãy tick ít nhất một nhóm ở bộ lọc phía trên',
-  qLimitBtn:'Hạn chế hôm nay', qLimitedBtn:'Đang hạn chế hôm nay',
-  qLimitTitle:'Từ này chỉ thỉnh thoảng mới xuất hiện xen giữa — chỉ trong hôm nay, sang ngày mai trở lại bình thường',
+  scPlayH:'Hoàn thành đoạn văn', scTitle:'A Sacred Challenge', scMilestone:m=>`Bạn vừa đạt ${m} phút Focus hôm nay`,
+  scDesc:'Hoàn thành một đoạn văn bằng những từ khó nhất trong sổ của bạn. Vượt qua để nhận một chiếc khiên bảo vệ chuỗi đúng.',
+  scBlanksN:n=>`${n} chỗ trống`, scLevelTo:l=>`Độ khó tới ${l}`, scReward:'Thưởng: 1 khiên',
+  scPaused:'Đồng hồ Focus đang tạm dừng — thời gian làm thử thách không được tính vào Focus.',
+  scAccept:'Nhận thử thách', scSkip:'Bỏ qua',
+  scGen:'AI đang soạn đoạn văn từ sổ từ của bạn…', scGenDl:p=>`Đang tải mô hình AI trên máy… ${p}%`,
+  scErrTitle:'Chưa tạo được thử thách', scErrNoAi:'Trình duyệt này chưa có AI trên máy (Gemini Nano) nên chưa thể soạn đoạn văn.',
+  scErrAi:'AI chưa tạo được đoạn văn hợp lệ (thiếu từ mục tiêu hoặc lộ đáp án).', scErrFew:'Sổ từ chưa đủ từ phù hợp — cần ít nhất 2 từ có nghĩa.',
+  scErrExFew:'Không đủ câu ví dụ có chứa từ để ghép thành đoạn văn.', scRetry:'Thử lại với AI', scUseEx:'Dùng câu ví dụ trong sổ',
+  scFillHint:'Chọn một từ rồi chạm vào chỗ trống, hoặc kéo thả. Chạm chỗ đã điền để gỡ ra.',
+  scProgress:(a,n)=>`${a}/${n} chỗ đúng`, scBlankN:n=>`Chỗ trống ${n}`, scWordsLbl:'Ngân hàng từ',
+  scCheck:'Kiểm tra', scExit:'Thoát', scExitConfirm:'Bấm lần nữa để thoát (tính là chưa hoàn thành)',
+  scFillAll:'Hãy điền đủ tất cả chỗ trống', scWrongN:n=>`Còn ${n} chỗ chưa đúng — sửa lại nhé`,
+  scSrcAi:'Đoạn văn do AI trên máy soạn từ sổ từ của bạn', scSrcEx:'Đoạn văn ghép từ câu ví dụ trong sổ của bạn',
+  scDoneTitle:'Challenge Completed', scDoneFirst:'Bình minh đã đẩy lùi bóng đêm — chuỗi đúng của bạn giờ được khiên bảo vệ.',
+  scDoneMore:n=>`Khiên được gia cố — bạn đang có ${n} khiên.`, scTries:n=>`${n} lần kiểm tra`,
+  scShieldHow:n=>`Ở Luyện gõ, khi trả lời sai làm mất chuỗi từ ${n} trở lên, 1 khiên sẽ chịu thay và chuỗi được giữ nguyên.`,
+  scBack:'Quay lại Focus', scFailTitle:'Thử thách chưa hoàn thành', scFailSub:'Chuỗi đúng và khiên của bạn vẫn giữ nguyên.',
+  scPausedSub:'Đang tạm dừng cho thử thách thiêng',
+  shieldSaved:'🛡 Khiên đã chịu đòn — chuỗi đúng được giữ nguyên!', shieldLast:'🌑 Bóng đêm đã nuốt chiếc khiên cuối cùng — nhưng chuỗi đúng của bạn vẫn được giữ nguyên.',
+  shieldTitle:n=>`${n} khiên bảo vệ chuỗi`, qShielded:'Khiên đã bảo vệ chuỗi đúng của bạn.',
+  cefrTitle:'Phân loại độ khó CEFR cho toàn bộ từ bằng AI trên máy (tự tiếp tục nếu bị gián đoạn)',
+  cefrRun:(a,n)=>`CEFR ${a}/${n}`, cefrAll:n=>`CEFR ✓ ${n}`, cefrNoAi:'Trình duyệt chưa có AI trên máy — giữ nguyên dữ liệu, chưa phân loại CEFR.',
+  cefrDone:n=>`Đã phân loại CEFR xong${n ? ` — ${n} từ cần xác minh` : ''}`, cefrVerify:'Chưa đủ cơ sở phân loại — cần xác minh',
+  cefrTip:(l,c)=>`CEFR ${l} · AI trên máy ước lượng · độ tin cậy ${c}%`,
+  qStreakMilestone:n=>`🔥 Tuyệt vời! Chuỗi ${n} câu đúng liên tiếp!`, qLimitBtn:'Hạn chế hôm nay', qLimitedBtn:'Đang hạn chế hôm nay',
+  qLimitTitle:'Từ này chỉ thỉnh thoảng mới xuất hiện xen giữa (dưới 10% số câu) — chỉ trong hôm nay, sang ngày mai trở lại bình thường',
   qLimitOn:w=>`Đã hạn chế "${w}" — chỉ thỉnh thoảng gặp lại, hết hôm nay trở lại bình thường`,
   qLimitOff:w=>`Đã bỏ hạn chế "${w}"`, qSpeakLbl:'Hiện nút loa',
   qPhrasePh:'Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài',
@@ -1803,7 +2054,7 @@ vi:{
   tkModeToday:'Thời lượng hôm nay', tkModeTomorrow:'Đổi được vào ngày mai', tkModeLockedLbl:'Đã chốt hôm nay',
   tkName_focus:g=>`Focus ${g} phút`, tkName_pron:'Phát âm', tkName_listen:'Nghe & viết lại', tkName_context:'Điền từ vào câu', tkName_write:'Viết đoạn văn',
   tkDesc_focus:g=>`Tập trung học từ vựng ít nhất ${g} phút trong tab Tập trung.`,
-  tkDesc_pron:'Ghi âm từ mới rồi đọc câu ví dụ — được chấm điểm phát âm.',
+  tkDesc_pron:'Ghi âm từ vựng rồi đọc câu ví dụ — được chấm điểm phát âm.',
   tkDesc_listen:'Nghe phát âm và gõ lại chính xác từ vừa nghe.',
   tkDesc_context:'Điền đúng từ vào chỗ trống trong các câu ví dụ.',
   tkDesc_write:'Viết đoạn văn dùng đủ 5 từ, được kiểm tra chính tả và ngữ pháp.',
@@ -1971,8 +2222,33 @@ en:{
   qLabelSingleType:'Type the word meaning…', qLabelPhraseType:'Type the phrase/sentence meaning…',
   qGroupsN:n=>`${n} groups selected`, qGroupsNone:'No groups selected',
   qNoGroupPicked:'No groups selected — tick at least one group in the filter above',
-  qLimitBtn:'Limit today', qLimitedBtn:'Limited today',
-  qLimitTitle:'This word will only show up occasionally — today only, back to normal tomorrow',
+  scPlayH:'Complete the Passage', scTitle:'A Sacred Challenge', scMilestone:m=>`You just reached ${m} focus minutes today`,
+  scDesc:'Complete a passage using the hardest words in your notebook. Pass it to earn a shield that protects your streak.',
+  scBlanksN:n=>`${n} blanks`, scLevelTo:l=>`Difficulty up to ${l}`, scReward:'Reward: 1 shield',
+  scPaused:'Your focus timer is paused — time spent on the challenge is not counted as focus.',
+  scAccept:'Accept Challenge', scSkip:'Skip Challenge',
+  scGen:'The AI is writing a passage from your notebook…', scGenDl:p=>`Downloading the on-device AI model… ${p}%`,
+  scErrTitle:"Couldn't create the challenge", scErrNoAi:"This browser has no on-device AI (Gemini Nano), so it can't write a passage yet.",
+  scErrAi:"The AI didn't produce a valid passage (missing target words or leaked answers).", scErrFew:'Not enough suitable words yet — you need at least 2 words with meanings.',
+  scErrExFew:'Not enough example sentences containing the words to build a passage.', scRetry:'Retry with AI', scUseEx:'Use my example sentences',
+  scFillHint:'Pick a word, then tap a blank (or drag and drop). Tap a filled blank to clear it.',
+  scProgress:(a,n)=>`${a}/${n} correct`, scBlankN:n=>`Blank ${n}`, scWordsLbl:'Word bank',
+  scCheck:'Check', scExit:'Exit', scExitConfirm:'Press again to exit (counts as not completed)',
+  scFillAll:'Fill in every blank first', scWrongN:n=>`${n} blank${n>1?'s are':' is'} still wrong — fix ${n>1?'them':'it'}`,
+  scSrcAi:'Passage written by the on-device AI from your notebook', scSrcEx:'Passage built from the example sentences in your notebook',
+  scDoneTitle:'Challenge Completed', scDoneFirst:'Dawn has driven back the night — your streak is now protected by a shield.',
+  scDoneMore:n=>`Your shield grows stronger — you now have ${n} shields.`, scTries:n=>`${n} check${n>1?'s':''}`,
+  scShieldHow:n=>`In Typing, when a wrong answer would break a streak of ${n} or more, a shield takes the hit and the streak is kept.`,
+  scBack:'Back to Focus', scFailTitle:'Challenge not completed', scFailSub:'Your streak and shields are unchanged.',
+  scPausedSub:'Paused for the sacred challenge',
+  shieldSaved:'🛡 A shield took the hit — your streak is safe!', shieldLast:'🌑 The night devoured your last shield — but your streak is safe.',
+  shieldTitle:n=>`${n} streak shield${n>1?'s':''}`, qShielded:'A shield protected your streak.',
+  cefrTitle:'Classify every word by CEFR level with the on-device AI (resumes if interrupted)',
+  cefrRun:(a,n)=>`CEFR ${a}/${n}`, cefrAll:n=>`CEFR ✓ ${n}`, cefrNoAi:'No on-device AI in this browser — data kept as is, CEFR not classified.',
+  cefrDone:n=>`CEFR classification done${n ? ` — ${n} word${n>1?'s':''} need checking` : ''}`, cefrVerify:'Not enough evidence — needs checking',
+  cefrTip:(l,c)=>`CEFR ${l} · estimated by the on-device AI · confidence ${c}%`,
+  qStreakMilestone:n=>`🔥 Amazing! ${n} correct answers in a row!`, qLimitBtn:'Limit today', qLimitedBtn:'Limited today',
+  qLimitTitle:'This word will only show up occasionally (under 10% of questions) — today only, back to normal tomorrow',
   qLimitOn:w=>`"${w}" limited — it will only appear now and then, back to normal after today`,
   qLimitOff:w=>`Limit removed for "${w}"`, qSpeakLbl:'Show speaker button',
   qPhrasePh:'Type the whole phrase/sentence then press Enter — auto-checks once long enough',
@@ -2067,7 +2343,7 @@ en:{
   tkModeToday:"Today's session", tkModeTomorrow:'Can change tomorrow', tkModeLockedLbl:'Locked for today',
   tkName_focus:g=>`Focus ${g} min`, tkName_pron:'Pronunciation', tkName_listen:'Listening & Spelling', tkName_context:'Context Practice', tkName_write:'Writing',
   tkDesc_focus:g=>`Study vocabulary for at least ${g} minutes in the Focus tab.`,
-  tkDesc_pron:'Record new words, then read an example sentence — scored for pronunciation.',
+  tkDesc_pron:'Record words, then read an example sentence — scored for pronunciation.',
   tkDesc_listen:'Listen to a word and type it back with exact spelling.',
   tkDesc_context:'Fill the right word into the gaps in example sentences.',
   tkDesc_write:'Write paragraphs using 5 words each, checked for spelling and grammar.',
@@ -2203,12 +2479,12 @@ const I18N_BINDINGS = [
   ['groupFilter','title','nGroupFilterTitle'], ['nDelSelBtn','text','delSelBtn'], ['nClearSelBtn','text','clearSelBtn'],
   ['wordSelAll','title','selAllTitle'], ['histBtn','title','histTitle'], ['trFab','title','trFab'], ['trFab','aria-label','trFab'], ['trTitle','text','trTitle'],
   ['trIn','placeholder','trPh'], ['trDir','title','trSwap'], ['trSpeak','title','trSpeak'], ['trCopy','title','trCopy'],
-  ['trAddLbl','text','trAdd'], ['trGoogleLbl','text','trOpenGoogle'], ['btnBulkGroup','title','nBulkGroupTitle'],
+  ['trAddLbl','text','trAdd'], ['trGoogleLbl','text','trOpenGoogle'], ['btnBulkGroup','title','nBulkGroupTitle'], ['btnCefr','title','cefrTitle'],
   ['nBulkGroupBtn','text','nBulkGroupBtn'], ['nImportBtn','text','nImportBtn'], ['nExportBtn','text','nExportBtn'],
   ['thWord','text','thWord'], ['thPos','text','thPos'], ['thMeaning','text','thMeaning'], ['thSentence','text','thSentence'],
   ['thNote','text','thNote'], ['thKind','text','thKind'], ['thAcc','text','thAcc'], ['thLv','text','thLv'],
   ['qAllGroups','text','qAllGroups'], ['qSavedOnlyLbl','text','qSavedOnlyLbl'], ['qStreakLbl','text','qStreakLbl'],
-  ['fAllGroups','text','fAllGroups'], ['fSavedOnlyLbl','text','fSavedOnlyLbl'],
+  ['fSavedOnlyLbl','text','fSavedOnlyLbl'],
   ['awayMsg','text','awayDefault'], ['focusSub','text','focusSubDefault'],
   ['focusPauseLbl','text','focusPause'], ['focusStopLbl','text','focusStop'], ['gardenTitle','text','gardenTitle'],
 ];
@@ -2416,6 +2692,7 @@ function normalizeWord(w){
   if(!Array.isArray(w.stats.times)) w.stats.times = [];
   if(typeof w.ipa   !== 'string') w.ipa   = '';
   if(typeof w.audio !== 'string') w.audio = '';
+  if(w.cefr && (typeof w.cefr !== 'object' || !(w.cefr.lv === '' || CEFR.includes(w.cefr.lv)))) delete w.cefr;
 }
 
 /* ── Phiên âm + phát âm: tự tra Free Dictionary API (không cần key) ──
@@ -2650,23 +2927,39 @@ function pickWord(pool){
   return cands[cands.length-1];
 }
 
-/* Hạn chế từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) chỉ xen vào
-   khoảng 1 lần mỗi 8–12 câu, bất kể tỉ lệ đúng/sai. Sang ngày mới limitDay không còn
-   khớp → tự trở lại bình thường, không cần dọn dẹp. */
+/* Hạn chế từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) chỉ thỉnh thoảng
+   xen vào, bất kể tỉ lệ đúng/sai. Mặc định tổng số lần các từ bị hạn chế xuất hiện luôn
+   < 10% số câu trong ngày (đếm chung Luyện gõ + Flashcard, lưu theo ngày để tải lại trang
+   không bị "reset"), và giữa hai lần gặp cách nhau ít nhất 10–14 câu. Sang ngày mới
+   limitDay không còn khớp → tự trở lại bình thường, không cần dọn dẹp. */
 const todayKey = () => { const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 const isLimitedToday = w => w.limitDay === todayKey();
-let sinceLimited = 0, limitedGap = 9;
+const LIMIT_MAX_RATE = 0.10, LIMIT_LS = 'soTuLimitRate_v1';
+let limitLog = null;                                 // {day, total, lim, since, gap}
+const newLimitGap = () => 10 + Math.floor(Math.random() * 5);
+function limitState(){
+  const day = todayKey();
+  if(!limitLog){ try{ limitLog = JSON.parse(localStorage.getItem(LIMIT_LS)); }catch(e){ limitLog = null; } }
+  if(!limitLog || limitLog.day !== day) limitLog = { day, total: 0, lim: 0, since: 0, gap: newLimitGap() };
+  return limitLog;
+}
+function resetLimitLog(){ limitLog = null; try{ localStorage.removeItem(LIMIT_LS); }catch(e){} }
 function pickWordLimited(pool){
+  const st = limitState();
   const lim = pool.filter(isLimitedToday);
-  if(!lim.length) return pickWord(pool);
-  const norm = pool.filter(w => !isLimitedToday(w));
-  if(!norm.length) return pickWord(lim);            // chỉ còn từ bị hạn chế → vẫn cho học
-  if(++sinceLimited >= limitedGap){
-    sinceLimited = 0; limitedGap = 8 + Math.floor(Math.random() * 5);
-    return pickWord(lim);
-  }
-  return pickWord(norm);
+  const norm = lim.length ? pool.filter(w => !isLimitedToday(w)) : pool;
+  let w;
+  if(!lim.length) w = pickWord(pool);
+  else if(!norm.length) w = pickWord(lim);         // chỉ còn từ bị hạn chế → vẫn cho học
+  else if(st.since + 1 >= st.gap && (st.lim + 1) / (st.total + 1) < LIMIT_MAX_RATE){
+    w = pickWord(lim);
+  }else w = pickWord(norm);
+  st.total++;
+  if(w && isLimitedToday(w) && norm.length){ st.lim++; st.since = 0; st.gap = newLimitGap(); }
+  else st.since++;
+  try{ localStorage.setItem(LIMIT_LS, JSON.stringify(st)); }catch(e){}
+  return w;
 }
 
 /* grade: 0 = quên/sai · 1 = mơ hồ · 2 = nhớ/đúng
@@ -2816,7 +3109,8 @@ function makeCheckFilter(root, o){
     }
     sync(); o.onChange();
   });
-  return { ok: k => st.all || st.set.has(k), fill, reset(){ st.all = true; st.set = new Set(); } };
+  return { ok: k => st.all || st.set.has(k), none: () => !st.all && !st.set.size, fill, close: () => toggle(false),
+           reset(){ st.all = true; st.set = new Set(); } };
 }
 
 /* ── Chọn nhiều dòng để xoá hàng loạt (chỉ giữ các dòng đang hiển thị) ── */
@@ -2898,7 +3192,7 @@ const wordSel = makeRowSelection({
 function saveEdit(w){
   const word = $('#eWord').value.trim(), meaning = $('#eMeaning').value.trim();
   if(!word || !meaning){ toast(t('toastWordMeaningEmpty')); return; }
-  const wordChanged = word.toLowerCase() !== w.word.toLowerCase();
+  const wordChanged = word.toLowerCase() !== w.word.toLowerCase(), oldMeaning = w.meaning;
   w.word = word;
   w.pos = $('#ePos').value.trim();
   w.meaning = meaning;
@@ -2907,6 +3201,7 @@ function saveEdit(w){
   w.kind = $('#eKind').value === 'cụm' ? 'cụm' : 'đơn';
   w.group = $('#eGroup').value.trim();
   if(wordChanged || w.kind === 'cụm'){ w.ipa = ''; w.audio = ''; ipaFailed.delete(w.id); }
+  if(wordChanged || meaning !== oldMeaning) delete w.cefr;          // đổi từ/nghĩa → phân loại CEFR lại
   save(); editingId = null; renderTable(); renderStats();
   toast(t('toastUpdated', w.word));
   if(w.kind === 'đơn' && !w.ipa) fetchPhonetics(w).then(ok => { if(ok) renderTable(); });
@@ -2979,7 +3274,7 @@ function renderTable(){
             ? '<span class="muted">—</span>'
             : `<span class="acc-bar"><span class="acc-fill" style="width:${acc}%"></span></span> <span class="mono" style="font-size:11.5px">${acc}%</span>`}
       </td>
-      <td>${lvBadge(w)}</td>
+      <td style="white-space:nowrap">${lvBadge(w)}${cefrBadge(w)}</td>
       <td style="white-space:nowrap">
         <button class="icon-btn" data-act="edit" data-id="${w.id}" title="${t('edit')}">${I('edit')}</button>
         <button class="icon-btn" data-act="del" data-id="${w.id}" title="${t('delete')}">${I('trash')}</button></td>
@@ -3144,7 +3439,7 @@ function focusLogTick(){
   if(++focusLogDirty >= 10){ focusLogDirty = 0; saveFocusLog(); }
   tasksOnFocusProgress();
 }
-window.addEventListener('pagehide', () => { if(currentUser){ saveFocusLog(true); if(tasks) saveTasks(true); } });
+window.addEventListener('pagehide', () => { if(currentUser){ saveFocusLog(true); if(tasks) saveTasks(true); if(sacred) saveSacred(true); } });
 
 /* ── Trạng thái nhiệm vụ ─────────────────────────────────── */
 let tasks = null;              // trạng thái của ngày hiện tại
@@ -3303,9 +3598,9 @@ function updateTasksBadge(){
   b.classList.toggle('done', n === 5);
 }
 
-/* ── Chọn từ vựng: ưu tiên "Mới" (New Word); thiếu thì bù bằng các từ đang
-   học yếu nhất và báo rõ cho người dùng. Không lặp lại cùng một từ. ── */
-const isNewWord = w => !w.stats.seen;
+/* ── Chọn từ vựng: ưu tiên các từ nằm CUỐI danh sách ưu tiên xuất hiện (priorityScore
+   thấp nhất — ít khi được bốc ra ở Luyện gõ/Flashcard) thay vì từ mới, để nhiệm vụ
+   hằng ngày ôn lại những từ dễ bị "bỏ quên". Không lặp lại cùng một từ. ── */
 const PLACEHOLDER_RE = /^(sb|sth|smb|smth|st|someone|somebody|something|one's|someone's|somebody's|sb's|oneself|o\.s\.|\.\.\.|…)$/i;
 const hasPlaceholder = w => w.word.toLowerCase().split(/[\s\/]+/).some(x => PLACEHOLDER_RE.test(x));
 function wordSnap(w){
@@ -3316,14 +3611,13 @@ function pickVocab(n, valid, prefer, opts = {}){
   const seen = new Set(opts.exclude || []);
   const take = w => { const k = w.word.trim().toLowerCase(); if(!k || seen.has(k)) return false; seen.add(k); return true; };
   const pool = words.filter(w => w.word && w.word.trim() && valid(w));
-  const rank = arr => prefer ? arr.sort((a, b) => prefer(b) - prefer(a)) : arr;   // sort ổn định: giữ thứ tự xáo trong cùng hạng
-  const fresh = rank(shuffle(opts.anyWord ? pool : pool.filter(isNewWord)));
-  const rest = opts.anyWord ? [] : rank(shuffle(pool.filter(w => !isNewWord(w)))
-    .sort((a, b) => (a.stats.interval || 0) - (b.stats.interval || 0)));
-  const out = []; let nNew = 0;
-  for(const w of fresh){ if(out.length >= n) break; if(take(w)){ out.push(w); nNew++; } }
-  for(const w of rest){ if(out.length >= n) break; if(take(w)) out.push(w); }
-  return { list: out, nNew, nFill: out.length - nNew };
+  // điểm thấp = cuối danh sách ưu tiên → lấy trước; xáo nhẹ ±8% để mỗi ngày không y hệt,
+  // tiêu chí phụ (prefer, vd. có câu ví dụ) chỉ kéo lên vài điểm chứ không lấn át thứ tự ưu tiên
+  const key = new Map(pool.map(w => [w, priorityScore(w) * (0.92 + Math.random() * 0.16) - (prefer ? prefer(w) * 3 : 0)]));
+  const ranked = pool.slice().sort((a, b) => key.get(a) - key.get(b));
+  const out = [];
+  for(const w of ranked){ if(out.length >= n) break; if(take(w)) out.push(w); }
+  return { list: out, nNew: out.length, nFill: 0 };
 }
 
 /* ── Nhận diện từ mục tiêu kể cả dạng biến đổi hợp lệ (books, studied, went…) ── */
@@ -5707,18 +6001,333 @@ const modeKey = kind => kind === 'đơn' ? 'soTuSingleMode_v1' : 'soTuPhraseMode
 const quizSpeakerOn = () => true;
 
 /* Streak: cấp độ hiệu ứng tăng dần theo số câu đúng liên tiếp */
-const streakTier = n => n >= 20 ? 5 : n >= 10 ? 4 : n >= 6 ? 3 : n >= 3 ? 2 : n >= 1 ? 1 : 0;
-function updateStreakUI(prev){
+const streakTier = n => n >= 200 ? 11 : n >= 150 ? 10 : n >= 125 ? 9 : n >= 100 ? 8 : n >= 75 ? 7 : n >= 50 ? 6 : n >= 20 ? 5 : n >= 10 ? 4 : n >= 6 ? 3 : n >= 3 ? 2 : n >= 1 ? 1 : 0;
+/* Lớp canvas phủ toàn màn hình cho hiệu ứng streak (không bị khung chứa cắt mất) */
+function fxCanvas(){
+  const W = innerWidth, H = innerHeight, dpr = Math.min(2, devicePixelRatio || 1);
+  const cv = document.createElement('canvas'); cv.className = 'flare-cv';
+  cv.width = W * dpr; cv.height = H * dpr; cv.style.width = W + 'px'; cv.style.height = H + 'px';
+  const ctx = cv.getContext('2d'); ctx.scale(dpr, dpr);
+  document.body.appendChild(cv);
+  return { cv, ctx, W, H };
+}
+/* Thổi lửa vào ngọn lửa streak: canvas phủ màn hình (không bị khung cắt). Luồng lửa ngắn phụt từ một điểm
+   cạnh chip (phía còn chỗ trống, hơi cao hơn) THẲNG VÀO ngọn lửa, thu hẹp dần như bị hút vào; ngọn lửa co lại
+   giật giật trong lúc "ăn" lửa, rồi bùng lên với chớp sáng + tia lửa, sau đó giữ cỡ to hơn (CSS theo tier). */
+const FLARE_PAL = {
+  red:  [[255,255,235],[255,230,120],[255,150,40],[235,60,25]],
+  blue: [[245,255,255],[160,240,255],[56,198,244],[59,91,255]],
+};
+function streakFlare(chip, kind){
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const ic = chip.querySelector('.ic') || chip, r = ic.getBoundingClientRect();
+  const { cv, ctx, W, H } = fxCanvas();
+  const tx = r.left + r.width / 2, ty = r.top + r.height / 2;            // đích: ngọn lửa của chip
+  const dir = tx > W / 2 ? -1 : 1, D = 120;
+  const sx = tx + dir * D, sy = ty - 38;                                   // nguồn: cạnh chip, chếch lên
+  const pal = FLARE_PAL[kind] || FLARE_PAL.red, ps = [], sparks = [];
+  const mix = (a, b, t) => a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  const colAt = t => { const x = Math.min(.999, t) * (pal.length - 1), i = Math.floor(x); return mix(pal[i], pal[i + 1], x - i); };
+  const blob = (x, y, R, c, al) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, R);
+    g.addColorStop(0, `rgba(${c},${al})`); g.addColorStop(.5, `rgba(${c},${al * .5})`); g.addColorStop(1, `rgba(${c},0)`);
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fill();
+  };
+  const FEED = 950, t0 = performance.now(); let last = t0, ignited = 0;
+  chip.classList.remove('ignite'); chip.classList.add('feeding');
+  function frame(now){
+    const el = now - t0, dt = Math.min(2.5, (now - last) / 16.7); last = now;
+    if(el < FEED){
+      const n = Math.round(4 * dt * (0.7 + 0.3 * Math.sin(el / 40))) + 1;
+      for(let i = 0; i < n; i++){
+        const ang = Math.atan2(ty - sy, tx - sx) + (Math.random() - .5) * 0.5;
+        const sp = 5.2 + Math.random() * 1.6;
+        ps.push({ x: sx + (Math.random() - .5) * 6, y: sy + (Math.random() - .5) * 6,
+                  vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, d0: Math.hypot(tx - sx, ty - sy), sz: 5 + Math.random() * 5 });
+      }
+    }else if(!ignited){                                                    // ngọn lửa đã "no" → bùng lên
+      ignited = now;
+      chip.classList.remove('feeding'); void chip.offsetWidth; chip.classList.add('ignite');
+      for(let i = 0; i < 22; i++){
+        const a = -Math.PI / 2 + (Math.random() - .5) * 2.4, sp = 3 + Math.random() * 4;
+        sparks.push({ x: tx, y: ty, vx: Math.cos(a) * sp, vy: Math.sin(a) * sp, life: 0, max: 26 + Math.random() * 18 });
+      }
+    }
+    ctx.clearRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'lighter';
+    for(let i = ps.length - 1; i >= 0; i--){                               // luồng lửa bị hút vào đích
+      const p = ps[i], dx = tx - p.x, dy = ty - p.y, d = Math.hypot(dx, dy);
+      if(d < 7){ ps.splice(i, 1); continue; }
+      const k = 0.18 * dt;                                                 // bẻ hướng dần về đích (hội tụ)
+      p.vx += (dx / d * 7 - p.vx) * k; p.vy += (dy / d * 7 - p.vy) * k;
+      p.x += p.vx * dt; p.y += p.vy * dt;
+      const prog = 1 - Math.min(1, d / p.d0);                              // 0 ở nguồn → 1 ở đích
+      const R = p.sz * (1 + Math.sin(prog * Math.PI) * 1.4) * (1 - prog * .55);
+      blob(p.x, p.y, R, colAt(.95 - prog * .7), .45);                   // đỏ cam ở miệng phun → vàng trắng khi vào lửa
+    }
+    if(el < FEED) blob(sx, sy, 14 + 3 * Math.sin(el / 30), pal[2], .55);   // đốm lửa ở miệng phun
+    if(el < FEED + 80) blob(tx, ty, 18 + 22 * Math.min(1, el / FEED), pal[2], .55);   // đích nóng dần
+    if(ignited){
+      const k = (now - ignited) / 520;
+      if(k < 1){                                                           // chớp sáng + vòng sóng
+        blob(tx, ty, 30 + k * 70, pal[0], (1 - k) * .9);
+        ctx.strokeStyle = `rgba(${pal[2]},${(1 - k) * .8})`; ctx.lineWidth = 4 * (1 - k) + 1;
+        ctx.beginPath(); ctx.arc(tx, ty, 20 + k * 80, 0, 7); ctx.stroke();
+      }
+      for(let i = sparks.length - 1; i >= 0; i--){
+        const s = sparks[i]; s.life += dt;
+        if(s.life >= s.max){ sparks.splice(i, 1); continue; }
+        s.vx *= Math.pow(.95, dt); s.vy = s.vy * Math.pow(.95, dt) + 0.08 * dt;
+        s.x += s.vx * dt; s.y += s.vy * dt;
+        blob(s.x, s.y, 5, colAt(s.life / s.max * .9), 1 - s.life / s.max);
+      }
+    }
+    if(!ignited || ps.length || sparks.length || now - ignited < 520) requestAnimationFrame(frame);
+    else cv.remove();
+  }
+  requestAnimationFrame(frame);
+  setTimeout(() => chip.classList.remove('ignite'), FEED + 900);
+}
+/* Gãy chuỗi dài — mỗi mốc một kiểu, gói gọn quanh thanh streak:
+   ≥50 băng vỡ tung · ≥100 sét đánh · ≥150 bóng tối vỡ tan · ≥200 ánh sáng xua màn đêm */
+function streakBreak(chip, prev){
+  const kind = prev >= 200 ? 'light' : prev >= 150 ? 'shadow' : prev >= 100 ? 'bolt' : 'ice';
+  const { cv, ctx, W, H } = fxCanvas();
+  const r = chip.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const cw = r.width + 10, ch = r.height + 10, rnd = (a, b) => a + Math.random() * (b - a);
+  const LR = 130;                                       // bán kính vùng hiệu ứng quanh chip — chỉ gói gọn quanh streak
+  const rr = (x, y, w, h, rad) => { ctx.beginPath(); ctx.moveTo(x + rad, y); ctx.arcTo(x + w, y, x + w, y + h, rad);
+    ctx.arcTo(x + w, y + h, x, y + h, rad); ctx.arcTo(x, y + h, x, y, rad); ctx.arcTo(x, y, x + w, y, rad); ctx.closePath(); };
+  const glow = (x, y, R, c, a) => { const g = ctx.createRadialGradient(x, y, 0, x, y, R);
+    g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fill(); };
+  const ease = k => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
+  const cls = (c, ms) => { chip.classList.add(c); setTimeout(() => chip.classList.remove(c), ms); };
+  let draw, dur;
+
+  // Cắt thanh streak thành các mảnh tam giác (lưới lệch ngẫu nhiên) — dùng cho băng vỡ & bóng tối vỡ
+  const x0 = cx - cw / 2, y0 = cy - ch / 2;
+  const makeShards = (cols, rows, speed) => {
+    const P = [];
+    for(let j = 0; j <= rows; j++) for(let i = 0; i <= cols; i++){
+      const edge = i === 0 || j === 0 || i === cols || j === rows;
+      P.push([x0 + cw * i / cols + (edge && i % cols === 0 ? 0 : rnd(-.3, .3) * cw / cols),
+              y0 + ch * j / rows + (edge && j % rows === 0 ? 0 : rnd(-.3, .3) * ch / rows)]);
+    }
+    const at = (i, j) => P[j * (cols + 1) + i], out = [];
+    for(let j = 0; j < rows; j++) for(let i = 0; i < cols; i++){
+      const q = [at(i, j), at(i + 1, j), at(i + 1, j + 1), at(i, j + 1)];
+      (Math.random() < .5 ? [[q[0], q[1], q[2]], [q[0], q[2], q[3]]] : [[q[0], q[1], q[3]], [q[1], q[2], q[3]]]).forEach(tri => {
+        const gx = (tri[0][0] + tri[1][0] + tri[2][0]) / 3, gy = (tri[0][1] + tri[1][1] + tri[2][1]) / 3;
+        const a = Math.atan2(gy - cy, (gx - cx) * .6) , v = speed * rnd(.6, 1.3);
+        out.push({ gx, gy, pts: tri.map(([x, y]) => [x - gx, y - gy]), x: 0, y: 0, rot: 0,
+                   vx: Math.cos(a) * v, vy: Math.sin(a) * v - rnd(.5, 2), vr: rnd(-.25, .25) });
+      });
+    }
+    return out;
+  };
+  const drawShard = (sd, fill, stroke, alpha) => {
+    ctx.save(); ctx.translate(sd.gx + sd.x, sd.gy + sd.y); ctx.rotate(sd.rot);
+    rr(x0 - sd.gx, y0 - sd.gy, cw, ch, ch / 2); ctx.clip();          // giữ mép bo tròn của thanh streak
+    ctx.beginPath(); sd.pts.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath();
+    ctx.globalAlpha = alpha; ctx.fillStyle = fill; ctx.fill();
+    ctx.strokeStyle = stroke; ctx.lineWidth = 1.4; ctx.stroke();
+    ctx.restore();
+  };
+  const stepShards = (shards, g) => shards.forEach(sd => { sd.vy += g; sd.x += sd.vx; sd.y += sd.vy; sd.rot += sd.vr; });
+  const crackLines = (shards, k, color) => {                          // vết nứt = mép các mảnh, hiện dần từ điểm va chạm
+    ctx.strokeStyle = color; ctx.lineWidth = 1.3; ctx.beginPath();
+    shards.forEach(sd => { if(Math.hypot(sd.gx - cx, (sd.gy - cy) * 2) > k * cw * .6) return;
+      sd.pts.forEach(([x, y], i) => i ? ctx.lineTo(sd.gx + x, sd.gy + y) : ctx.moveTo(sd.gx + x, sd.gy + y)); ctx.closePath(); });
+    ctx.stroke();
+  };
+
+  if(kind === 'ice'){                     // ── Băng vỡ: chip đóng băng, nứt toác rồi vỡ tung toé thành mảnh băng + bụi tuyết
+    dur = 1800; cls('frozen', 700);
+    const BREAK = 620, shards = makeShards(6, 2, 4.2), dust = [];
+    draw = e => {
+      if(e < BREAK){
+        const form = ease(e / 200);
+        rr(x0, y0, cw, ch, ch / 2);
+        const g = ctx.createLinearGradient(0, y0, 0, y0 + ch);
+        g.addColorStop(0, `rgba(235,250,255,${.85 * form})`); g.addColorStop(1, `rgba(140,205,245,${.8 * form})`);
+        ctx.fillStyle = g; ctx.fill(); ctx.strokeStyle = `rgba(90,169,214,${form})`; ctx.lineWidth = 2; ctx.stroke();
+        ctx.fillStyle = `rgba(255,255,255,${.6 * form})`; ctx.fillRect(x0 + 14, y0 + 5, cw * .35, 3);
+        const c = ease((e - 230) / 360);
+        if(c > 0) crackLines(shards, c, `rgba(255,255,255,${.95})`);
+        if(e > 230) glow(cx, cy, 14 + 10 * c, '255,255,255', .5 * c);
+      }else{
+        const t = e - BREAK, f = 1 - ease(t / 1100);
+        if(!dust.length) for(let i = 0; i < 34; i++){ const a = rnd(0, Math.PI * 2), v = rnd(1.5, 5.5);
+          dust.push({ x: cx + rnd(-cw / 3, cw / 3), y: cy + rnd(-6, 6), vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1.5, s: rnd(1.2, 3) }); }
+        if(t < 220) glow(cx, cy, 30 + t * .4, '220,245,255', .9 * (1 - t / 220));      // chớp lạnh lúc vỡ
+        stepShards(shards, .2);
+        shards.forEach(sd => drawShard(sd, 'rgba(190,232,255,.85)', 'rgba(255,255,255,.95)', f));
+        dust.forEach(d => { d.vy += .12; d.x += d.vx; d.y += d.vy;
+          ctx.fillStyle = `rgba(235,250,255,${f})`; ctx.beginPath(); ctx.arc(d.x, d.y, d.s, 0, 7); ctx.fill(); });
+      }
+    };
+    setTimeout(() => { chip.classList.remove('lost'); void chip.offsetWidth; cls('lost', 400); }, BREAK);
+  }else if(kind === 'bolt'){              // ── Sét đánh: trời tối sầm, tia sét giật 3 lần xuống chip, cháy xém + khói
+    dur = 1900;
+    const bolt = (x1, y1, x2, y2, spread, out) => {     // tia sét gấp khúc (chia đôi đoạn + lệch ngẫu nhiên)
+      if(spread < 4){ out.push([x1, y1, x2, y2]); return out; }
+      const mx = (x1 + x2) / 2 + rnd(-spread, spread), my = (y1 + y2) / 2 + rnd(-spread * .3, spread * .3);
+      bolt(x1, y1, mx, my, spread / 2, out); bolt(mx, my, x2, y2, spread / 2, out);
+      if(Math.random() < .15 && spread > 10) bolt(mx, my, mx + rnd(-30, 30), my + rnd(15, 40), spread / 2.5, out);   // nhánh phụ
+      return out;
+    };
+    const bolts = [0, 1, 2].map(() => bolt(cx + rnd(-45, 45), cy - 120, cx + rnd(-8, 8), cy, 30, []));
+    const strikes = [[90, 200], [260, 330], [400, 470]], sparks = [], smoke = [];
+    let hit = false;
+    draw = e => {
+      glow(cx, cy, LR, '12,14,40', .6 * Math.min(1, e / 90) * (1 - ease((e - 700) / 600)));
+      strikes.forEach(([a, b], i) => {
+        if(e < a || e > b) return;
+        const k = 1 - (e - a) / (b - a);
+        glow(cx, cy, LR * .9, '230,240,255', .55 * k);                                 // chớp trắng quanh chip
+        ctx.lineCap = 'round';
+        [[10, `rgba(120,190,255,${.45 * k})`], [4, `rgba(200,230,255,${.9 * k})`], [1.6, `rgba(255,255,255,${k})`]].forEach(([lw, c]) => {
+          ctx.strokeStyle = c; ctx.lineWidth = lw; ctx.beginPath();
+          bolts[i].forEach(([x1, y1, x2, y2]) => { ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); }); ctx.stroke();
+        });
+        glow(cx, cy, 70, '200,230,255', .8 * k);
+      });
+      if(e >= 90 && !hit){
+        hit = true; cls('zapped', 1300);
+        for(let i = 0; i < 26; i++){ const a = rnd(0, Math.PI * 2), v = rnd(1.5, 4);
+          sparks.push({ x: cx + rnd(-cw / 3, cw / 3), y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 2, l: 0, m: rnd(22, 40) }); }
+      }
+      if(e > 420 && e < 1500 && Math.random() < .5)
+        smoke.push({ x: cx + rnd(-cw / 2.5, cw / 2.5), y: cy - 6, r: rnd(6, 10), l: 0, m: rnd(45, 70) });
+      ctx.globalCompositeOperation = 'lighter';
+      for(let i = sparks.length - 1; i >= 0; i--){
+        const p = sparks[i]; p.l++; if(p.l > p.m){ sparks.splice(i, 1); continue; }
+        p.vy += .22; p.x += p.vx; p.y += p.vy;
+        ctx.strokeStyle = `rgba(255,${200 + 55 * (1 - p.l / p.m) | 0},120,${1 - p.l / p.m})`; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.vx * 2, p.y - p.vy * 2); ctx.stroke();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      for(let i = smoke.length - 1; i >= 0; i--){
+        const p = smoke[i]; p.l++; if(p.l > p.m){ smoke.splice(i, 1); continue; }
+        const k = p.l / p.m; p.y -= .9; p.x += Math.sin(p.l / 8) * .4;
+        glow(p.x, p.y, p.r + k * 16, '70,70,80', .35 * (1 - k));
+      }
+    };
+  }else if(kind === 'shadow'){            // ── Bóng tối vỡ tan: thanh streak tối dần, nứt sáng tím rồi vỡ vụn thành mảnh đen
+    dur = 2000;
+    const BREAK = 1000, shards = makeShards(7, 2, 3.2), wisps = [];
+    draw = e => {
+      if(e < BREAK){
+        const k = ease(e / 650);
+        ctx.save(); rr(x0, y0, cw, ch, ch / 2); ctx.clip();
+        ctx.fillStyle = `rgba(14,8,30,${.95 * k})`; ctx.fillRect(x0, y0, cw, ch);
+        for(let i = 0; i < 4; i++)                                   // khói tím cuộn bên trong thanh
+          glow(x0 + cw * (.2 + .2 * i) + Math.sin(e / 200 + i) * 10, cy + Math.cos(e / 260 + i) * 5, 22, '90,40,150', .55 * k);
+        ctx.restore();
+        rr(x0, y0, cw, ch, ch / 2); ctx.strokeStyle = `rgba(120,70,190,${k})`; ctx.lineWidth = 2; ctx.stroke();
+        if(Math.random() < .5 * k) wisps.push({ x: rnd(x0 + 10, x0 + cw - 10), y: y0, l: 0 });
+        const c = ease((e - 650) / 330);
+        if(c > 0){ ctx.shadowColor = '#C77DFF'; ctx.shadowBlur = 8; crackLines(shards, c, 'rgba(215,170,255,.95)'); ctx.shadowBlur = 0; }
+      }else{
+        const t = e - BREAK, f = 1 - ease(t / 950);
+        if(t < 240) glow(cx, cy, 30 + t * .45, '225,190,255', .85 * (1 - t / 240));
+        stepShards(shards, .14);
+        shards.forEach(sd => drawShard(sd, 'rgba(14,8,30,.95)', 'rgba(199,125,255,.95)', f));
+      }
+      for(let i = wisps.length - 1; i >= 0; i--){                    // làn khói đen bốc lên khỏi thanh
+        const w = wisps[i]; w.l++; if(w.l > 40){ wisps.splice(i, 1); continue; }
+        w.y -= .7; glow(w.x + Math.sin(w.l / 6) * 3, w.y, 7 + w.l * .2, '20,10,40', .4 * (1 - w.l / 40));
+      }
+    };
+    setTimeout(() => { chip.classList.remove('lost'); void chip.offsetWidth; cls('lost', 400); }, BREAK);
+  }else{                                  // ── Ánh sáng xua màn đêm: thanh streak chìm vào đêm sao, một dải sáng vàng quét qua
+    dur = 2000;                           //    xua tan bóng tối, rồi vầng hào quang + sao lấp lánh quanh thanh
+    const stars = [...Array(14)].map(() => [rnd(x0 + 8, x0 + cw - 8), rnd(y0 + 5, y0 + ch - 5), rnd(.7, 1.6), rnd(0, 6)]);
+    const twinkles = [...Array(9)].map((_, i) => { const a = i / 9 * Math.PI * 2 + rnd(-.3, .3);
+      return [cx + Math.cos(a) * (cw / 2 + rnd(10, 24)), cy + Math.sin(a) * (ch / 2 + rnd(8, 18)), rnd(7, 12), rnd(0, 300)]; });
+    const S0 = 420, S1 = 1150, sparks = [];
+    const star4 = (x, y, R, a) => { ctx.fillStyle = `rgba(255,236,160,${a})`; ctx.beginPath();
+      for(let i = 0; i < 8; i++){ const rr2 = i % 2 ? R * .25 : R, an = i * Math.PI / 4 - Math.PI / 2;
+        ctx.lineTo(x + Math.cos(an) * rr2, y + Math.sin(an) * rr2); } ctx.closePath(); ctx.fill(); };
+    draw = e => {
+      const night = ease(e / 300), sx = x0 - 20 + (cw + 40) * ease((e - S0) / (S1 - S0));   // vị trí dải sáng
+      ctx.save(); rr(x0, y0, cw, ch, ch / 2); ctx.clip();
+      if(e < S1 + 50){                                               // màn đêm trên thanh — phần đã bị quét thì biến mất
+        ctx.save(); ctx.beginPath(); ctx.rect(e < S0 ? x0 - 30 : sx, y0 - 5, cw + 60, ch + 10); ctx.clip();
+        const g = ctx.createLinearGradient(0, y0, 0, y0 + ch);
+        g.addColorStop(0, `rgba(10,14,48,${.95 * night})`); g.addColorStop(1, `rgba(28,20,70,${.95 * night})`);
+        ctx.fillStyle = g; ctx.fillRect(x0, y0, cw, ch);
+        stars.forEach(([x, y, r2, ph]) => { ctx.fillStyle = `rgba(255,255,235,${night * (.55 + .45 * Math.sin(e / 120 + ph))})`;
+          ctx.beginPath(); ctx.arc(x, y, r2, 0, 7); ctx.fill(); });
+        ctx.restore();
+      }
+      const sweeping = e > S0 && e < S1 + 80;
+      if(sweeping){                                                  // dải sáng chéo vàng rực
+        const g = ctx.createLinearGradient(sx - 46, 0, sx + 14, 0);
+        g.addColorStop(0, 'rgba(255,200,60,0)'); g.addColorStop(.55, 'rgba(255,214,90,.9)'); g.addColorStop(.85, 'rgba(255,255,235,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+        ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(sx - 52, y0 + ch); ctx.lineTo(sx - 30, y0); ctx.lineTo(sx + 18, y0); ctx.lineTo(sx - 4, y0 + ch); ctx.closePath(); ctx.fill();
+        for(let i = 0; i < 2; i++) sparks.push({ x: sx + rnd(-8, 8), y: rnd(y0, y0 + ch), vx: rnd(-2, 1), vy: rnd(-2.4, .6), l: 0 });
+      }
+      ctx.restore();
+      if(sweeping){ ctx.globalCompositeOperation = 'lighter'; glow(sx - 8, cy, 34, '255,210,90', .55); ctx.globalCompositeOperation = 'source-over'; }
+      ctx.globalCompositeOperation = 'lighter';
+      for(let i = sparks.length - 1; i >= 0; i--){
+        const p = sparks[i]; p.l++; if(p.l > 28){ sparks.splice(i, 1); continue; }
+        p.x += p.vx; p.y += p.vy; p.vy += .03; glow(p.x, p.y, 4, '255,215,110', 1 - p.l / 28);
+      }
+      const h = e - S1;
+      if(h > 0){                                                     // hào quang bo theo thanh nở ra + sao 4 cánh
+        const k = ease(h / 650), a = 1 - ease(h / 850);
+        rr(x0 - 4 - 14 * k, y0 - 4 - 14 * k, cw + 8 + 28 * k, ch + 8 + 28 * k, ch / 2 + 14 * k);
+        ctx.strokeStyle = `rgba(255,214,90,${a})`; ctx.lineWidth = 5 * a + .5; ctx.shadowColor = '#FFC107'; ctx.shadowBlur = 18;
+        ctx.stroke(); ctx.shadowBlur = 0;
+        if(h < 40) for(let i = 0; i < 16; i++){ const an = i / 16 * Math.PI * 2, v = rnd(2.2, 3.6);   // chùm tia vàng bung ra
+          sparks.push({ x: cx + Math.cos(an) * cw * .45, y: cy + Math.sin(an) * ch * .5, vx: Math.cos(an) * v, vy: Math.sin(an) * v * .6, l: 0 }); }
+        glow(cx, cy, cw * .55, '255,225,140', .35 * a);
+        twinkles.forEach(([x, y, R, d]) => { const q = (h - d) / 450; if(q > 0 && q < 1) star4(x, y, R * Math.sin(q * Math.PI), Math.sin(q * Math.PI)); });
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    };
+    cls('blessed', 1900);
+  }
+
+  const t0 = performance.now();
+  (function frame(now){
+    const e = now - t0;
+    ctx.clearRect(0, 0, W, H);
+    if(e >= dur){ cv.remove(); return; }
+    ctx.save(); ctx.beginPath(); ctx.ellipse(cx, cy, cw / 2 + LR, LR + 10, 0, 0, 7); ctx.clip();
+    draw(e);
+    ctx.restore();
+    requestAnimationFrame(frame);
+  })(t0);
+}
+function updateStreakUI(prev, shielded){
   const chip = $('#streakChip'), num = $('#quizStreak'); if(!chip || !num) return;
   const n = quizStreak, oldTier = parseInt(chip.dataset.tier || '0', 10), tier = streakTier(n);
   const retrigger = (el, cls) => { el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); };
   num.textContent = n;
   chip.dataset.tier = tier;
+  if(currentUser) try{ localStorage.setItem(streakKey(), String(n)); }catch(e){}   // giữ chuỗi khi tải lại trang
+  if(shielded){                                    // khiên vừa chịu đòn: vỡ 1 lớp (lớp cuối → thiên thần ôm chuỗi)
+    const last = shieldsLeft() === 0;
+    renderShieldAura(chip, shieldsLeft() + 1);
+    (last ? fxNightDevour : fxShieldCrack)(chip, () => renderShieldAura(chip, shieldsLeft()));
+    toast(t(last ? 'shieldLast' : 'shieldSaved'));
+    return;
+  }
+  renderShieldAura(chip, shieldsLeft());
   if(n > (prev || 0)){
     retrigger(num, 'pop');
-    if(tier > oldTier && tier >= 2) retrigger(chip, 'tier-up');
+    if(tier > oldTier && tier >= 2){
+      retrigger(chip, 'tier-up');
+      clearTimeout(chip._tu); chip._tu = setTimeout(() => chip.classList.remove('tier-up'), 750);
+      if(tier >= 6) toast(t('qStreakMilestone', n));             // mốc 50 / 75 / 100 / 125 / 150 / 200
+      if(tier === 8 || tier === 11) streakFlare(chip, tier === 11 ? 'blue' : 'red');
+    }
   }else if(n === 0 && (prev || 0) >= 3){
-    retrigger(chip, 'lost'); setTimeout(() => chip.classList.remove('lost'), 400);
+    if(prev >= 50 && !matchMedia('(prefers-reduced-motion: reduce)').matches) streakBreak(chip, prev);   // gãy chuỗi dài → hiệu ứng riêng
+    else { retrigger(chip, 'lost'); setTimeout(() => chip.classList.remove('lost'), 400); }
   }
 }
 
@@ -5904,7 +6513,7 @@ function tilesHtml(){
 document.addEventListener('keydown', e=>{
   if(!quiz) return;
   if(!$('#tab-quiz').classList.contains('active')) return;
-  if(e.target.matches('textarea,select,input:not([type=checkbox])') || e.target.closest('.gsel')) return;
+  if(e.target.matches('textarea,select,input:not([type=checkbox])') || e.target.closest('.gsel') || document.body.classList.contains('sc-open')) return;
   if(quiz.graded){
     // Enter: sang từ kế ngay lập tức, ngắt giọng đọc đang chạy (không đợi đọc xong)
     if(e.key === 'Enter' && !e.repeat){ e.preventDefault(); stopSpeech(); startQuiz(); }
@@ -5950,6 +6559,7 @@ function checkQuiz(){
     : normPhrase(w.word).replace(/\s/g,'').length;
   const fb = $('#quizFb');
   const prevStreak = quizStreak;
+  let shielded = false;
   if(correct){
     quizStreak++;
     applyGrade(w, quiz.hintLevel ? 1 : 2, timeMs, charCount, quiz.hintLevel);    
@@ -5965,15 +6575,16 @@ function checkQuiz(){
       if(quiz === cur) startQuiz();
     });
   }else{
-    quizStreak = 0;
+    shielded = prevStreak >= SHIELD_MIN && sacredConsume('quiz_' + w.id + '_' + quiz.startAt);
+    if(!shielded) quizStreak = 0;        // còn khiên → khiên chịu thay, chuỗi giữ nguyên
     applyGrade(w, 0, timeMs, charCount);
     fb.className = 'feedback show bad';
     fb.innerHTML = `${I('x')} ${t('qWrong')} <span class="ans">${esc(w.word)}</span>
-      ${w.note?`<br>${I('pin')} ${esc(w.note)}`:''}<br>
+      ${w.note?`<br>${I('pin')} ${esc(w.note)}`:''}${shielded?`<br>${I('shield')} ${t('qShielded')}`:''}<br>
       <button class="btn sm mint" style="margin-top:8px" onclick="startQuiz()">${t('qNextWord')} ${I('next')}</button>`;
     $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('bad'));
   }
-  updateStreakUI(prevStreak);
+  updateStreakUI(prevStreak, shielded);
 }
 $('#quizSavedOnly').addEventListener('change', startQuiz);
 
@@ -5982,10 +6593,20 @@ $('#quizSavedOnly').addEventListener('change', startQuiz);
    ═══════════════════════════════════════════════════════════ */
 let fc = null; // {w, opts, correctIdx, startAt, answered, picked, flipped}
 
+/* Bộ lọc nhóm giống hệt Luyện gõ: tick nhiều nhóm + "Tất cả nhóm" + "Không nhóm" */
+let fcGroupDebounce = null;
+const fcGroupFilter = makeCheckFilter($('#fcGroupSel'), {
+  allKey:'qAllGroups', noneKey:'qGroupsNone', nKey:'qGroupsN',
+  total: () => words.length,
+  items: () => {
+    const cnt = {}; words.forEach(w => { const k = wordGroupKey(w); cnt[k] = (cnt[k] || 0) + 1; });
+    return quizGroupKeys().map(k => ({ k, label: k === NO_GROUP ? t('optNoGroup') : k, n: cnt[k] || 0 }));
+  },
+  onChange: () => { clearTimeout(fcGroupDebounce); fcGroupDebounce = setTimeout(startFc, 300); },   // tick liên tiếp chỉ làm lại 1 lần
+});
 function fcPool(){
   const savedOnly = $('#fcSavedOnly').checked;
-  const g = $('#fcGroup').value;
-  return words.filter(w => (!savedOnly || w.saved) && (!g || w.group === g));
+  return words.filter(w => (!savedOnly || w.saved) && fcGroupFilter.ok(wordGroupKey(w)));
 }
 
 /* Tạo 4 phương án: 1 nghĩa đúng + 3 nghĩa nhiễu
@@ -6012,7 +6633,7 @@ function startFc(){
   const area = $('#fcArea');
   if(!pool.length){
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
-      ${t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
+      ${fcGroupFilter.none() ? t('qNoGroupPicked') : t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     fc = null; return;
   }
   const w = pickWordLimited(pool);
@@ -6164,7 +6785,7 @@ function answerFc(i){
 document.addEventListener('keydown', e=>{
   if(!fc) return;
   if(!$('#tab-flash').classList.contains('active')) return;
-  if(e.target.matches('input,textarea,select')) return;
+  if(e.target.matches('input,textarea,select') || e.target.closest('.gsel') || document.body.classList.contains('sc-open')) return;
   if(!fc.answered && /^[1-4]$/.test(e.key)){
     const i = +e.key - 1;
     if(i < fc.opts.length) answerFc(i);
@@ -6173,7 +6794,6 @@ document.addEventListener('keydown', e=>{
   }
 });
 $('#fcSavedOnly').addEventListener('change', startFc);
-$('#fcGroup').addEventListener('change', startFc);
 
 /* ═══════════════════════════════════════════════════════════
    §9 TẬP TRUNG — hẹn giờ, chuông nhắc khi rời cửa sổ, hoa nở
@@ -6387,7 +7007,9 @@ function focusTickStart(){
   clearInterval(focus.tick);
   focus.tick = setInterval(() => {
     focus.elapsed++;
+    const before = focusTodaySec();
     if(!isAway()) focusLogTick();        // chỉ tính khi đang ở trong cửa sổ ứng dụng
+    if(scOnFocusSecond(before)) return;  // vừa chạm mốc 25 phút → mời thử thách (đồng hồ đã đóng băng)
     setTitle();
     if(focus.elapsed >= focus.target){ focusDone(); return; }
     renderFocus();
@@ -6398,6 +7020,7 @@ function startFocus(){
   focus = { target: focusMin * 60, elapsed: 0, running: true, tick: null };
   awayCount = 0;
   askNotifPermission();
+  if(typeof scWarm === 'function') scWarm();              // nạp sẵn mô hình AI cho thử thách
   $('#focusSub').textContent = t('focusRunning');
   focusTickStart(); renderFocus();
 }
@@ -6509,6 +7132,823 @@ $('#focusPause').addEventListener('click', pauseFocus);
 $('#focusStop').addEventListener('click', () => stopFocus(false));
 
 /* ═══════════════════════════════════════════════════════════
+   §10 THỬ THÁCH THIÊNG (Sacred Challenge) + KHIÊN BẢO VỆ CHUỖI
+   ═══════════════════════════════════════════════════════════
+   • Mốc = mỗi 25 phút Focus TÍCH LUỸ trong ngày, đọc từ focusLog (cùng bộ đếm với nhiệm vụ
+     Focus — không có bộ đếm riêng). Chỉ mời khi vượt mốc lúc đang Focus; id = ngày_phút nên
+     mỗi mốc/ngày đúng một lần, kể cả tải lại trang hay đồng bộ nhiều máy.
+   • Từ lúc mời tới khi xong, đồng hồ Focus đóng băng → thời gian làm không được cộng.
+   • Hoàn thành đúng toàn bộ → 1 khiên, id khiên = 'sh_' + id thử thách → không thể nhận 2 lần.
+   • Khiên bảo vệ "chuỗi đúng" ở Luyện gõ (chuỗi duy nhất của app): khi một câu sai làm mất
+     chuỗi ≥ SHIELD_MIN, 1 khiên bị tiêu thụ thay cho chuỗi (mỗi câu chỉ xử lý 1 lần). */
+const SC_STEP = 25 * 60, SHIELD_MIN = 3;
+const CEFR = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const SC_RANK = { offered: 1, generating: 1, error: 1, active: 2, skipped: 3, abandoned: 3, completed: 4 };
+const SC_OPEN = ['offered', 'generating', 'error', 'active'];
+let sacred = null, sacredSaveT = null;
+let scCur = null, scSel = -1, scExitArm = false, scBusy = false, scView = '', scFb = null, scFirst = false;
+const sacredKey = () => 'soTuSacred_' + currentUser;
+const streakKey = () => 'soTuQuizStreak_' + currentUser;
+const shieldsLeft = () => sacred ? sacred.shields.filter(x => !x.used).length : 0;
+const cefrRank = w => w.cefr && w.cefr.lv ? CEFR.indexOf(w.cefr.lv) + 1 : 0;
+
+function scNormCh(c){
+  if(!SC_RANK[c.status]) c.status = 'offered';
+  if(c.pz && typeof c.pz === 'object'){
+    c.pz.parts = asArr(c.pz.parts).map(x => typeof x === 'string' ? x.replace(/[*`]+/g, '') : '');
+    c.pz.blanks = asArr(c.pz.blanks).filter(b => b && typeof b.ans === 'string');
+    c.pz.bank = asArr(c.pz.bank).filter(b => b && typeof b.t === 'string').map(b => ({ ...b, t: b.t.replace(/[*`]+/g, '').trim() }));
+    c.pz.blanks.forEach(b => { b.ans = b.ans.replace(/[*`]+/g, '').trim(); });
+    if(c.pz.parts.length !== c.pz.blanks.length + 1 || !c.pz.blanks.length) delete c.pz;
+  }else delete c.pz;
+  if(c.status === 'active' && !c.pz) c.status = 'offered';          // mất dữ liệu đoạn văn → soạn lại, không tính thắng/thua
+  const n = c.pz ? c.pz.blanks.length : 0;
+  c.slots = Array.from({ length: n }, (_, i) => Number.isInteger(asArr(c.slots)[i]) ? c.slots[i] : -1);
+  c.res = Array.from({ length: n }, (_, i) => [0, 1, 2].includes(asArr(c.res)[i]) ? c.res[i] : 0);
+  c.words = asArr(c.words);
+  return c;
+}
+function sacredNorm(v){
+  const s = { challenges: {}, shields: [], blessed: false, upd: 0 };
+  if(v && typeof v === 'object'){
+    if(v.challenges && typeof v.challenges === 'object')
+      for(const [id, c] of Object.entries(v.challenges)) if(c && typeof c === 'object' && c.id === id) s.challenges[id] = scNormCh(c);
+    s.shields = asArr(v.shields).filter(x => x && typeof x.id === 'string' && typeof x.ch === 'string');
+    s.blessed = !!v.blessed; s.upd = +v.upd || 0;
+  }
+  return s;
+}
+/* Gộp bản trên máy + trên mây: trạng thái thử thách "tiến xa hơn" thắng; khiên gộp theo id,
+   khiên đã dùng ở bất kỳ bản nào thì coi là đã dùng (không bao giờ "hồi sinh" khiên) */
+function sacredMerge(a, b){
+  const s = sacredNorm(a), o = sacredNorm(b);
+  for(const [id, c] of Object.entries(o.challenges)){
+    const m = s.challenges[id], rc = SC_RANK[c.status], rm = m ? SC_RANK[m.status] : 0;
+    if(!m || rc > rm || (rc === rm && (c.upd || 0) > (m.upd || 0))) s.challenges[id] = c;
+  }
+  const byId = new Map(s.shields.map(x => [x.id, x]));
+  o.shields.forEach(x => { const m = byId.get(x.id); if(!m || (x.used && !m.used)) byId.set(x.id, x); });
+  s.shields = [...byId.values()].sort((x, y) => (x.at || 0) - (y.at || 0));
+  s.blessed = s.blessed || o.blessed;
+  return s;
+}
+function saveSacred(immediate){
+  if(!currentUser || !sacred) return;
+  sacred.upd = now();
+  const snap = JSON.stringify(sacred);
+  try{ localStorage.setItem(sacredKey(), snap); }catch(e){}
+  if(!cloudOn()) return;
+  clearTimeout(sacredSaveT);
+  const user = currentUser, put = () => cloudPut('users/' + user + '/sacred', JSON.parse(snap)).catch(() => {});
+  if(immediate) put(); else sacredSaveT = setTimeout(put, 2000);
+}
+async function loadSacred(){
+  scCur = null; scBusy = false; $('#scOverlay').hidden = true; document.body.classList.remove('sc-open');
+  let local = null, remote = null;
+  try{ local = JSON.parse(localStorage.getItem(sacredKey()) || 'null'); }catch(e){}
+  if(cloudOn()) try{ remote = await cloudGet('users/' + currentUser + '/sacred'); }catch(e){}
+  sacred = sacredMerge(local, remote);
+  Object.values(sacred.challenges).forEach(c => { if(c.status === 'completed') grantShield(c); });   // bù khiên nếu lỡ mất (idempotent)
+  const cut = Date.now() - 60 * 86400000;                                      // dọn thử thách > 60 ngày (khiên giữ nguyên)
+  Object.values(sacred.challenges).forEach(c => { if((c.at || 0) < cut && !SC_OPEN.includes(c.status)) delete sacred.challenges[c.id]; });
+  try{ quizStreak = Math.max(0, parseInt(localStorage.getItem(streakKey()), 10) || 0); }catch(e){ quizStreak = 0; }
+  saveSacred();
+}
+function grantShield(c){
+  const id = 'sh_' + c.id;
+  if(sacred.shields.some(x => x.id === id)) return false;
+  sacred.shields.push({ id, ch: c.id, at: c.doneAt || now(), used: 0 });
+  return true;
+}
+/* Tiêu thụ 1 khiên (cũ nhất) cho một sự kiện — cùng sự kiện xử lý lại sẽ không trừ thêm */
+function sacredConsume(ev){
+  if(!sacred || !shieldsLeft() || sacred.shields.some(x => x.ev === ev)) return false;
+  const sh = sacred.shields.find(x => !x.used);
+  sh.used = now(); sh.ev = ev;
+  saveSacred(true);
+  return true;
+}
+function renderShieldAura(chip, n){
+  if(!chip) return;
+  n = Math.max(0, n);
+  chip.dataset.shield = Math.min(5, n);
+  const b = chip.querySelector('.shield-n b'); if(b) b.textContent = n;
+  chip.title = n ? t('shieldTitle', n) : '';
+}
+
+/* ── Mốc Focus → mời thử thách ── */
+function scOnFocusSecond(before){
+  if(!sacred || !currentUser) return false;
+  const after = focusTodaySec(), k = Math.floor(after / SC_STEP);
+  scPrepare((k + 1) * 25);                // soạn sẵn đoạn văn cho mốc kế tiếp ngay từ đầu chặng 25 phút (mỗi mốc chỉ soạn 1 lần)
+  if(k < 1 || Math.floor(before / SC_STEP) >= k) return false;
+  const day = todayKey(), id = day + '_' + (k * 25);
+  if(sacred.challenges[id]) return false;                                      // mốc này hôm nay đã xử lý
+  sacred.challenges[id] = { id, day, min: k * 25, status: 'offered', at: now(), upd: now(), slots: [], res: [], words: [] };
+  saveSacred(true);
+  scOpen(id);
+  return true;
+}
+function scFreeze(){
+  if(!focus || !focus.running) return;
+  clearInterval(focus.tick); focus.running = false; focus.frozen = true;
+  stopAwayAlarm(false); saveFocusLog(true);
+  $('#focusSub').textContent = t('scPausedSub');
+  setTitle(); renderFocus();
+}
+function scWarm(){ scLmReady().then(ok => { if(ok) scSession().then(x => { try{ x.destroy(); }catch(e){} }).catch(() => {}); }); }
+function scResume(){
+  if(!focus || !focus.frozen) return;
+  focus.frozen = false; focus.running = true;
+  $('#focusSub').textContent = t('focusRunning');
+  focusTickStart(); renderFocus();
+}
+function scOpen(id){
+  const c = sacred && sacred.challenges[id]; if(!c) return;
+  scCur = id; scSel = -1; scExitArm = false; scView = ''; scFb = null;
+  if(SC_OPEN.includes(c.status)) scFreeze();
+  $('#scOverlay').hidden = false; document.body.classList.add('sc-open');
+  if(c.status === 'offered') scPrepare(c.min);                             // soạn trong lúc người dùng đọc lời mời
+  if(c.status === 'generating' && !scBusy) scGenerate(c, c.mode);          // tải lại giữa lúc đang soạn → soạn lại
+  else scRender();
+}
+function scClose(resume){
+  $('#scOverlay').hidden = true; document.body.classList.remove('sc-open');
+  scCur = null;
+  if(resume) scResume();
+}
+function scShowPending(){
+  if(!sacred) return;
+  const p = Object.values(sacred.challenges).filter(c => SC_OPEN.includes(c.status)).sort((a, b) => (a.at || 0) - (b.at || 0))[0];
+  if(p) scOpen(p.id);
+}
+
+/* ── Độ khó: theo mốc Focus + năng lực thực tế (tỉ lệ đúng, mức CEFR đã nắm) ── */
+function scAbility(){                    // mức CEFR cao nhất người dùng đã trả lời đúng ổn định
+  let best = 0;
+  words.forEach(w => { const r = cefrRank(w); if(r && w.stats.correct >= 2 && accuracy(w) >= .6) best = Math.max(best, r); });
+  if(best) return best;
+  const rs = words.map(cefrRank).filter(Boolean).sort((a, b) => a - b);   // chưa có lịch sử → trình độ của chính sổ từ (trung vị)
+  return rs.length ? Math.max(3, rs[Math.floor(rs.length / 2)]) : 3;
+}
+function scPlan(min){
+  const k = Math.max(1, Math.round(min / 25)), tier = k <= 2 ? 0 : k <= 5 ? 1 : 2;
+  const seen = words.filter(w => w.stats.seen);
+  const acc = seen.length >= 5 ? seen.reduce((a, w) => a + accuracy(w), 0) / seen.length : .7;   // ít dữ liệu → chưa điều chỉnh
+  const blanks = [3, 5, 6][tier] + (acc >= .85 && tier < 2 ? 1 : 0) - (acc < .6 ? 1 : 0);
+  return { tier, blanks: Math.max(2, blanks), distract: [1, 2, 3][tier], len: [[30, 45], [45, 70], [70, 100]][tier],
+           cap: Math.min(6, scAbility() + (tier ? 1 : 0)) };
+}
+/* Chọn từ: CEFR cao (trong tầm năng lực) + hay sai/hay quên; tránh từ của 3 thử thách gần nhất */
+function scPickWords(plan){
+  const recent = new Set(Object.values(sacred.challenges).filter(c => c.words.length)
+    .sort((a, b) => (b.at || 0) - (a.at || 0)).slice(0, 3).flatMap(c => c.words));
+  const pool = words.filter(w => w.word && w.word.trim() && w.meaning && !hasPlaceholder(w) && w.word.trim().split(/\s+/).length <= 3);
+  const score = w => {
+    const r = cefrRank(w) || 3;                       // chưa phân loại: xếp như B1 (chỉ để sắp xếp, không lưu)
+    let v = r * 10 - Math.max(0, r - plan.cap) * 14;
+    v += (1 - accuracy(w)) * (w.stats.seen ? 14 : 3) + Math.min(10, (w.stats.lapses || 0) * 2.5);
+    if(recent.has(w.id)) v -= 40;
+    return v + Math.random() * 6;
+  };
+  const keys = new Set();
+  const ranked = pool.map(w => [w, score(w)]).sort((a, b) => b[1] - a[1]).map(x => x[0])
+    .filter(w => { const k = w.word.trim().toLowerCase(); return !keys.has(k) && keys.add(k); });
+  const n = Math.min(plan.blanks, ranked.length), targets = ranked.slice(0, n);
+  const poses = new Set(targets.map(w => (w.pos || '').toLowerCase()));
+  const rest = ranked.slice(n), close = rest.filter(w => poses.has((w.pos || '').toLowerCase()));   // nhiễu cùng loại từ = khó đoán mò
+  const distract = [...close, ...rest.filter(w => !close.includes(w))].slice(0, plan.distract);
+  return { targets, distract, ranked, n };
+}
+
+/* ── Soạn đoạn văn ── */
+const SC_SYS = 'Write one short, natural English paragraph for a vocabulary exercise. Use every target word once, with the given '
+  + 'meaning, in context that makes the meaning clear. Reply with the paragraph only.';
+/* Phiên AI gốc (đã nạp lời dặn) được giữ lại; mỗi lần soạn chỉ clone → không phải khởi động lại mô hình */
+let scBaseP = null, scPre = null;
+async function scSession(){
+  if(!scBaseP){
+    scBaseP = LanguageModel.create({ ...AI_LANG, initialPrompts: [{ role: 'system', content: SC_SYS }],
+      monitor: m => m.addEventListener('downloadprogress', e => { const el = $('#scProg'); if(el) el.textContent = t('scGenDl', Math.round(e.loaded * 100)); }) });
+    scBaseP.catch(() => { scBaseP = null; });
+  }
+  const b = await scBaseP;
+  if(b.clone) return await b.clone();
+  scBaseP = null; return b;
+}
+const scLmReady = () => aiStatus().then(st => !!(st && st.kind === 'lm' && st.avail === 'available'));
+/* Soạn sẵn (chỉ giữ trong bộ nhớ, chỉ dùng khi người dùng nhận thử thách đúng mốc đó) */
+function scPrepare(min){
+  const key = todayKey() + '_' + min;
+  if(!sacred || !words || scBusy || (scPre && scPre.key === key) || sacred.challenges[key] && sacred.challenges[key].status !== 'offered') return;
+  const plan = scPlan(min), pick = scPickWords(plan);
+  if(pick.targets.length < 2) return;
+  scPre = { key, plan, pick, p: scLmReady().then(ok => ok ? scFromAi(pick, plan, 1) : null).catch(() => null) };
+}
+const scSameWord = (inner, word) => { const m = findTarget(inner, word)[0]; return !!m && m.index === 0 && m[0].length === inner.length; };
+const scErr = (key, extra) => Object.assign(new Error(key), { key }, extra || {});
+function scBank(blanks, distract){
+  const seen = new Set(blanks.map(b => b.ans.toLowerCase()));
+  const extra = distract.map(w => w.word.trim()).filter(x => !seen.has(x.toLowerCase()) && seen.add(x.toLowerCase()));
+  const low = x => x[0] === x[0].toUpperCase() && x.slice(1) === x.slice(1).toLowerCase() ? x.toLowerCase() : x;
+  return shuffle([...blanks.map(b => ({ t: low(b.ans) })), ...extra.map(x => ({ t: x }))]);
+}
+/* Bỏ mọi dấu định dạng AI hay chèn: [[ ]], **đậm**, *nghiêng*, __gạch__, `code`, tiêu đề # */
+const scClean = t => String(t || '').replace(/\[\[|\]\]/g, '').replace(/[*`]+/g, '').replace(/__+/g, '').replace(/^#+\s*/gm, '')
+  .replace(/[ \t]+/g, ' ').replace(/\s*\n\s*/g, ' ').trim();
+/* Không phụ thuộc AI đánh dấu đúng: tìm từng từ mục tiêu (kể cả dạng chia) trong đoạn văn; từ xuất hiện
+   ĐÚNG 1 lần mới thành chỗ trống (xuất hiện 2 lần sẽ lộ đáp án → để nguyên như chữ thường) */
+function scParse(txt, targets, distract){
+  const plain = scClean(txt);
+  if(plain.split(' ').length < 12) return null;
+  const hits = [];
+  targets.forEach(w => { const ms = findTarget(plain, w.word); if(ms.length === 1) hits.push({ w, i: ms[0].index, s: ms[0][0] }); });
+  hits.sort((a, b) => a.i - b.i);
+  const keep = []; let end = -1;
+  hits.forEach(h => { if(h.i >= end){ keep.push(h); end = h.i + h.s.length; } });
+  if(keep.length < Math.max(2, Math.ceil(targets.length * .6))) return null;
+  const parts = [], blanks = []; let pos = 0;
+  keep.forEach(h => { parts.push(plain.slice(pos, h.i)); blanks.push({ ans: h.s, id: h.w.id }); pos = h.i + h.s.length; });
+  parts.push(plain.slice(pos));
+  return { parts, blanks, bank: scBank(blanks, distract), src: 'ai' };
+}
+async function scFromAi(pick, plan, tries){
+  const style = ['simple', 'moderately complex', 'complex'][plan.tier];
+  const q = `${plan.len[0]}-${plan.len[1]} words, ${style} sentences. Targets:\n`
+    + pick.targets.map(w => `- ${w.word.trim()}${w.pos ? ` (${w.pos})` : ''}: ${w.meaning}`).join('\n');
+  for(let attempt = 0; attempt < (tries || 2); attempt++){
+    const ses = await scSession(), ac = new AbortController(), timer = setTimeout(() => ac.abort(), 60000);
+    let raw = '';
+    try{ raw = await ses.prompt(q, { signal: ac.signal }); }                   // văn bản thường: nhanh hơn ràng buộc JSON
+    catch(e){ if(attempt + 1 >= (tries || 2)) throw e; }
+    finally{ clearTimeout(timer); try{ ses.destroy(); }catch(e){} }
+    const para = String(raw || '').split(/\n+/).map(x => x.replace(/^["“*#\s]+|["”*\s]+$/g, '')).sort((a, b) => b.length - a.length)[0] || '';
+    const pz = scParse(para, pick.targets, pick.distract);
+    if(pz) return pz;
+  }
+  return null;
+}
+/* Không có AI → người dùng có thể chọn ghép đoạn văn từ chính câu ví dụ trong sổ (dữ liệu thật) */
+function scFromExamples(pick){
+  const items = [];
+  for(const w of pick.ranked){
+    if(items.length >= pick.n) break;
+    const sn = (w.sentence || '').trim(), m = sn && findTarget(sn, w.word)[0];
+    if(m && findTarget(sn, w.word).length === 1) items.push({ w, sn, m });
+  }
+  if(items.length < 2) return null;
+  const parts = [], blanks = [];
+  let cur = '';
+  items.forEach(({ w, sn, m }, i) => {
+    cur += (i ? ' ' : '') + sn.slice(0, m.index); parts.push(cur);
+    blanks.push({ ans: m[0], id: w.id }); cur = sn.slice(m.index + m[0].length);
+  });
+  parts.push(cur);
+  const ids = new Set(items.map(x => x.w.id));
+  return { parts, blanks, bank: scBank(blanks, pick.distract.filter(w => !ids.has(w.id))), src: 'ex' };
+}
+async function scGenerate(c, mode){
+  if(scBusy) return;
+  scBusy = true; c.status = 'generating'; c.mode = mode || 'ai'; c.err = ''; scFb = null;
+  saveSacred(); if(scCur === c.id) scRender();
+  try{
+    const pre = c.mode === 'ai' && scPre && scPre.key === c.id ? scPre : null;   // đoạn văn đã soạn sẵn cho mốc này
+    scPre = null;
+    const plan = pre ? (c.plan = pre.plan) : c.plan || (c.plan = scPlan(c.min));
+    const pick = pre ? pre.pick : scPickWords(plan);
+    if(pick.targets.length < 2) throw scErr('scErrFew');
+    let pz = null;
+    if(c.mode === 'ex'){ pz = scFromExamples(pick); if(!pz) throw scErr('scErrExFew'); }
+    else{
+      if(pre) pz = await pre.p;
+      if(!pz){
+        const st = await aiStatus();
+        if(!st || st.kind !== 'lm') throw scErr('scErrNoAi');
+        pz = await scFromAi(pick, plan, pre ? 1 : 2);
+      }
+      if(!pz) throw scErr('scErrAi');
+    }
+    c.pz = pz; c.words = pz.blanks.map(b => b.id);
+    c.slots = pz.blanks.map(() => -1); c.res = pz.blanks.map(() => 0); c.checks = 0;
+    c.status = 'active'; c.startAt = now();
+  }catch(e){
+    c.status = 'error'; c.err = e.key || 'scErrAi';                          // không tự đánh dấu thắng/thua
+  }finally{
+    scBusy = false; c.upd = now(); saveSacred(true);
+    if(scCur === c.id){ scView = ''; scRender(); }
+  }
+}
+
+/* ── Giao diện ── */
+const SC_EMBLEM = `<svg class="sc-emblem" viewBox="0 0 96 96" aria-hidden="true"><g stroke="#E2A72E" stroke-width="3" stroke-linecap="round"><line x1="86.0" y1="48.0" x2="93.0" y2="48.0"/><line x1="80.9" y1="67.0" x2="87.0" y2="70.5"/><line x1="67.0" y1="80.9" x2="70.5" y2="87.0"/><line x1="48.0" y1="86.0" x2="48.0" y2="93.0"/><line x1="29.0" y1="80.9" x2="25.5" y2="87.0"/><line x1="15.1" y1="67.0" x2="9.0" y2="70.5"/><line x1="10.0" y1="48.0" x2="3.0" y2="48.0"/><line x1="15.1" y1="29.0" x2="9.0" y2="25.5"/><line x1="29.0" y1="15.1" x2="25.5" y2="9.0"/><line x1="48.0" y1="10.0" x2="48.0" y2="3.0"/><line x1="67.0" y1="15.1" x2="70.5" y2="9.0"/><line x1="80.9" y1="29.0" x2="87.0" y2="25.5"/></g><circle cx="48" cy="48" r="32" fill="#FFF1B3" stroke="#23284A" stroke-width="3"/><circle cx="48" cy="48" r="25.5" fill="none" stroke="#E2A72E" stroke-width="1.6" stroke-dasharray="1.5 4" stroke-linecap="round"/><path d="M30 60V42c6-3.2 12-3.2 18 .8c6-4 12-4 18-.8v18c-6-3.2-12-3.2-18 .8c-6-4-12-4-18-.8z" fill="#fff" stroke="#23284A" stroke-width="2.5" stroke-linejoin="round"/><path d="M48 43v18" stroke="#23284A" stroke-width="2.2" stroke-linecap="round"/><path d="M35 47.5c3.5-1.4 6.5-1.2 9 .4M35 53c3.5-1.4 6.5-1.2 9 .4M52 47.9c2.5-1.6 5.5-1.8 9-.4M52 53.4c2.5-1.6 5.5-1.8 9-.4" stroke="#B9A15A" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M48 22.5l1.9 4.6 4.6 1.9-4.6 1.9-1.9 4.6-1.9-4.6-4.6-1.9 4.6-1.9z" fill="#E2A72E" stroke="#23284A" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+const SC_SEAL_MINI = `<svg class="sc-mini" viewBox="0 0 96 96" aria-hidden="true"><g stroke="#E2A72E" stroke-width="3" stroke-linecap="round"><line x1="86.0" y1="48.0" x2="93.0" y2="48.0"/><line x1="80.9" y1="67.0" x2="87.0" y2="70.5"/><line x1="67.0" y1="80.9" x2="70.5" y2="87.0"/><line x1="48.0" y1="86.0" x2="48.0" y2="93.0"/><line x1="29.0" y1="80.9" x2="25.5" y2="87.0"/><line x1="15.1" y1="67.0" x2="9.0" y2="70.5"/><line x1="10.0" y1="48.0" x2="3.0" y2="48.0"/><line x1="15.1" y1="29.0" x2="9.0" y2="25.5"/><line x1="29.0" y1="15.1" x2="25.5" y2="9.0"/><line x1="48.0" y1="10.0" x2="48.0" y2="3.0"/><line x1="67.0" y1="15.1" x2="70.5" y2="9.0"/><line x1="80.9" y1="29.0" x2="87.0" y2="25.5"/></g><circle cx="48" cy="48" r="32" fill="#FFF1B3" stroke="#23284A" stroke-width="3"/><circle cx="48" cy="48" r="25.5" fill="none" stroke="#E2A72E" stroke-width="1.6" stroke-dasharray="1.5 4" stroke-linecap="round"/><path d="M30 60V42c6-3.2 12-3.2 18 .8c6-4 12-4 18-.8v18c-6-3.2-12-3.2-18 .8c-6-4-12-4-18-.8z" fill="#fff" stroke="#23284A" stroke-width="2.5" stroke-linejoin="round"/><path d="M48 43v18" stroke="#23284A" stroke-width="2.2" stroke-linecap="round"/><path d="M35 47.5c3.5-1.4 6.5-1.2 9 .4M35 53c3.5-1.4 6.5-1.2 9 .4M52 47.9c2.5-1.6 5.5-1.8 9-.4M52 53.4c2.5-1.6 5.5-1.8 9-.4" stroke="#B9A15A" stroke-width="1.6" stroke-linecap="round" fill="none"/><path d="M48 22.5l1.9 4.6 4.6 1.9-4.6 1.9-1.9 4.6-1.9-4.6-4.6-1.9 4.6-1.9z" fill="#E2A72E" stroke="#23284A" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+function scRender(){
+  const c = sacred && sacred.challenges[scCur]; if(!c) return;
+  const anim = scView !== c.status ? ' in' : '';
+  scView = c.status;
+  $('#scModal').classList.toggle('fail', c.status === 'abandoned');
+  const body = $('#scBody');
+  if(c.status === 'offered'){
+    const plan = c.plan || scPlan(c.min);
+    body.innerHTML = `<div class="sc-screen${anim}">${SC_EMBLEM}
+      <div class="sc-title" id="scTitle">${t('scTitle')}</div><div class="sc-flour">✦</div>
+      <div class="sc-sub">${esc(t('scMilestone', c.min))}</div>
+      <p class="sc-desc">${esc(t('scDesc'))}</p>
+      <div class="sc-meta"><span class="sc-pill">${I('edit')}${t('scBlanksN', plan.blanks)}</span><span class="sc-pill">${I('target')}${t('scLevelTo', CEFR[plan.cap - 1])}</span>
+        <span class="sc-pill">${I('shield')}${t('scReward')}</span></div>
+      <div class="sc-actions"><button class="btn sc-gold" data-sc="accept">${t('scAccept')}</button>
+        <button class="btn" data-sc="skip">${t('scSkip')}</button></div>
+      <div class="sc-note">${I('clock')} ${esc(t('scPaused'))}</div></div>`;
+  }else if(c.status === 'generating'){
+    body.innerHTML = `<div class="sc-screen${anim}"><div class="sc-title" id="scTitle">${t('scTitle')}</div><div class="sc-flour">✦</div>
+      <div class="sc-spin"></div><p class="sc-desc" id="scProg">${esc(t('scGen'))}</p>
+      <div class="sc-note">${I('clock')} ${esc(t('scPaused'))}</div></div>`;
+  }else if(c.status === 'error'){
+    const canAi = c.err !== 'scErrNoAi' && c.err !== 'scErrFew', canEx = c.err !== 'scErrFew' && c.err !== 'scErrExFew';
+    body.innerHTML = `<div class="sc-screen${anim}"><div class="sc-title" id="scTitle">${t('scErrTitle')}</div><div class="sc-flour">✦</div>
+      <p class="sc-desc">${esc(t(c.err || 'scErrAi'))}</p>
+      <div class="sc-actions">${canAi ? `<button class="btn sc-gold" data-sc="retry">${t('scRetry')}</button>` : ''}
+        ${canEx ? `<button class="btn mint" data-sc="useEx">${t('scUseEx')}</button>` : ''}
+        <button class="btn" data-sc="skip">${t('scSkip')}</button></div>
+      <div class="sc-note">${I('clock')} ${esc(t('scPaused'))}</div></div>`;
+  }else if(c.status === 'active'){
+    const pz = c.pz, okN = c.res.filter(x => x === 1).length, used = new Set(c.slots.filter(x => x >= 0));
+    let p = '';
+    pz.blanks.forEach((b, i) => {
+      const sl = c.slots[i], cls = c.res[i] === 1 ? 'ok' : c.res[i] === 2 ? 'bad' : sl >= 0 ? 'filled' : '';
+      p += esc(pz.parts[i]) + `<button class="sc-blank ${cls}" data-si="${i}" aria-label="${esc(t('scBlankN', i + 1))}"${c.res[i] === 1 ? ' aria-disabled="true"' : ''}>`
+        + `<span class="n">${c.res[i] === 1 ? '✓' : i + 1}</span><span class="w">${sl >= 0 && pz.bank[sl] ? esc(pz.bank[sl].t) : ''}</span></button>`;
+    });
+    p += esc(pz.parts[pz.blanks.length]);
+    const bank = pz.bank.map((x, i) => `<button class="sc-chip${used.has(i) ? ' used' : ''}${scSel === i ? ' sel' : ''}" data-bi="${i}" draggable="true"${used.has(i) ? ' tabindex="-1"' : ''}>${esc(x.t)}</button>`).join('');
+    const dots = c.res.map((r, i) => `<i class="${r === 1 ? 'ok' : r === 2 ? 'bad' : c.slots[i] >= 0 ? 'fill' : ''}"></i>`).join('');
+    body.innerHTML = `<div class="sc-screen${anim}">
+      <div class="sc-top">${SC_SEAL_MINI}<div class="sc-top-t"><div class="sc-kicker">${t('scTitle')}</div>
+        <div class="sc-h" id="scTitle">${t('scPlayH')}</div></div>
+        <div class="sc-prog" title="${esc(t('scProgress', okN, pz.blanks.length))}"><div class="sc-dots">${dots}</div><span>${okN}/${pz.blanks.length}</span></div></div>
+      <div class="sc-hint">${I('bulb')}<span>${esc(t('scFillHint'))}</span></div>
+      <div class="sc-passage">${p}</div>
+      <div class="sc-bank-h">${I('cards')}${esc(t('scWordsLbl'))}</div>
+      <div class="sc-bank" role="group" aria-label="${esc(t('scWordsLbl'))}">${bank}</div>
+      <div class="sc-fb ${scFb ? scFb[0] : ''}" role="status">${scFb ? esc(scFb[1]) : ''}</div>
+      <div class="sc-actions"><button class="btn sc-gold" data-sc="check">${I('check')}${t('scCheck')}</button>
+        <button class="btn" data-sc="exit">${t(scExitArm ? 'scExitConfirm' : 'scExit')}</button></div>
+      <div class="sc-src">${esc(t(pz.src === 'ex' ? 'scSrcEx' : 'scSrcAi'))}</div></div>`;
+  }else if(c.status === 'completed'){
+    body.innerHTML = `<div class="sc-screen${anim}"><div class="sc-title" id="scTitle">${t('scDoneTitle')}</div><div class="sc-flour">✦</div>
+      <div class="sc-preview" id="scPrev"></div>
+      <p class="sc-desc">${esc(scFirst ? t('scDoneFirst') : t('scDoneMore', shieldsLeft()))}</p>
+      <div class="sc-meta"><span class="sc-pill">${I('shield')}${t('shieldTitle', shieldsLeft())}</span><span class="sc-pill">${t('scTries', c.checks || 1)}</span></div>
+      <p class="sc-note">${esc(t('scShieldHow', SHIELD_MIN))}</p>
+      <div class="sc-actions"><button class="btn sc-gold" data-sc="back">${I('play')}${t('scBack')}</button></div></div>`;
+  }else{                                                                    // abandoned
+    body.innerHTML = `<div class="sc-screen${anim}">${SC_EMBLEM}<div class="sc-title" id="scTitle">${t('scFailTitle')}</div><div class="sc-flour">✦</div>
+      <div class="sc-sub">${esc(t('scFailSub'))}</div>
+      <div class="sc-actions"><button class="btn" data-sc="back">${I('play')}${t('scBack')}</button></div></div>`;
+  }
+  const f = body.querySelector('[data-sc="accept"],[data-sc="check"],[data-sc="back"],[data-sc="retry"],[data-sc="useEx"]');
+  if(anim && f) f.focus({ preventScroll: true });
+}
+const scCh = () => sacred && sacred.challenges[scCur];
+function scPlace(bi, si){
+  const c = scCh(); if(!c || c.status !== 'active' || c.res[si] === 1) return;
+  const prev = c.slots.indexOf(bi);
+  if(prev >= 0){ if(c.res[prev] === 1) return; c.slots[prev] = -1; c.res[prev] = 0; }
+  c.slots[si] = bi; c.res[si] = 0; scSel = -1; scFb = null; c.upd = now();
+  saveSacred(); scRender();
+  const nx = $('#scBody .sc-chip:not(.used)'); if(nx) nx.focus({ preventScroll: true });
+}
+function scCheck(){
+  const c = scCh(); if(!c) return;
+  if(c.slots.some(x => x < 0)){ scFb = ['bad', t('scFillAll')]; scRender(); return; }
+  c.checks = (c.checks || 0) + 1;
+  c.res = c.slots.map((bi, i) => c.pz.bank[bi].t.trim().toLowerCase() === c.pz.blanks[i].ans.trim().toLowerCase() ? 1 : 2);
+  const bad = c.res.filter(x => x === 2).length;
+  c.upd = now();
+  if(!bad) return scComplete(c);
+  scFb = ['bad', t('scWrongN', bad)];
+  saveSacred(); scRender();
+}
+function scComplete(c){
+  c.status = 'completed'; c.doneAt = now(); c.upd = now();
+  scFirst = !sacred.blessed;
+  grantShield(c); sacred.blessed = true;
+  saveSacred(true);
+  scRender(); chime('done');
+  const main = $('#streakChip');
+  renderShieldAura(main, shieldsLeft());
+  const host = $('#scPrev');
+  if(host && main){                                  // bản sao thanh streak ngay trong cửa sổ để thấy khiên được trao
+    const cl = main.cloneNode(true);
+    cl.id = 'scPreviewChip'; cl.style.marginLeft = '0';
+    cl.classList.remove('tier-up', 'lost', 'ignite', 'feeding', 'frozen', 'zapped', 'blessed');
+    cl.querySelectorAll('[id]').forEach(x => x.removeAttribute('id'));
+    host.appendChild(cl);
+    renderShieldAura(cl, shieldsLeft() - 1);
+    requestAnimationFrame(() => (scFirst ? fxShieldDawn : fxShieldUp)(cl, () => renderShieldAura(cl, shieldsLeft())));
+  }
+}
+$('#scBody').addEventListener('click', e => {
+  const c = scCh(); if(!c) return;
+  const a = e.target.closest('[data-sc]');
+  if(a){
+    const act = a.dataset.sc;
+    if(act === 'accept'){ c.plan = c.plan || scPlan(c.min); scGenerate(c, 'ai'); }
+    else if(act === 'retry') scGenerate(c, 'ai');
+    else if(act === 'useEx') scGenerate(c, 'ex');
+    else if(act === 'skip'){ c.status = 'skipped'; c.upd = now(); saveSacred(true); scClose(true); }
+    else if(act === 'check') scCheck();
+    else if(act === 'exit'){
+      if(!scExitArm){ scExitArm = true; scRender(); setTimeout(() => { if(scExitArm){ scExitArm = false; if(scCh() && scCh().status === 'active') scRender(); } }, 4000); return; }
+      scExitArm = false; c.status = 'abandoned'; c.upd = now(); saveSacred(true); scRender();
+    }
+    else if(act === 'back') scClose(true);
+    return;
+  }
+  if(c.status !== 'active') return;
+  const chip = e.target.closest('.sc-chip');
+  if(chip){ const bi = +chip.dataset.bi; scSel = scSel === bi ? -1 : bi; scRender();
+    const s = $(`#scBody .sc-chip[data-bi="${bi}"]`); if(s) s.focus({ preventScroll: true }); return; }
+  const bl = e.target.closest('.sc-blank');
+  if(bl){
+    const si = +bl.dataset.si;
+    if(c.res[si] === 1) return;
+    if(scSel >= 0) scPlace(scSel, si);
+    else if(c.slots[si] >= 0){ c.slots[si] = -1; c.res[si] = 0; scFb = null; saveSacred(); scRender(); }
+  }
+});
+$('#scBody').addEventListener('dragstart', e => {
+  const chip = e.target.closest('.sc-chip'); if(!chip) return;
+  e.dataTransfer.setData('text/plain', chip.dataset.bi); e.dataTransfer.effectAllowed = 'move';
+});
+$('#scBody').addEventListener('dragover', e => {
+  const bl = e.target.closest('.sc-blank:not(.ok)'); if(!bl) return;
+  e.preventDefault(); bl.classList.add('drop');
+});
+$('#scBody').addEventListener('dragleave', e => { const bl = e.target.closest('.sc-blank'); if(bl) bl.classList.remove('drop'); });
+$('#scBody').addEventListener('drop', e => {
+  const bl = e.target.closest('.sc-blank:not(.ok)'); if(!bl) return;
+  e.preventDefault();
+  const bi = parseInt(e.dataTransfer.getData('text/plain'), 10);
+  if(Number.isInteger(bi)) scPlace(bi, +bl.dataset.si);
+});
+
+/* ═══ Độ khó CEFR cho toàn bộ từ vựng ═══
+   AI trên máy (Gemini Nano) phân loại theo NGHĨA người dùng đã lưu. Mỗi từ chỉ phân loại 1 lần
+   (lưu w.cefr = { lv, conf, src, at } trong dữ liệu từ, đồng bộ cùng sổ) → không gọi lại mỗi lần
+   mở app; bị gián đoạn thì lần sau tiếp tục từ những từ còn thiếu. Độ tin cậy < 0.5 → lv = ''
+   + chk = 1 (cần xác minh) thay vì bịa ra một cấp độ chắc chắn. Không có AI → giữ nguyên dữ liệu. */
+const CEFR_SYS = 'You are an expert on CEFR vocabulary levels as used in the English Vocabulary Profile and the Oxford 3000/5000. '
+  + 'For each numbered English word or phrase you get the meaning (in Vietnamese) that the learner saved. Give the CEFR level '
+  + '(A1, A2, B1, B2, C1 or C2) of THAT meaning and usage, judged by how common and essential it is for learners. Do not choose '
+  + 'C1/C2 just because a word is long, rare-looking or academic. If you are not sure, give a confidence below 0.5 or level '
+  + '"unknown". Reply with JSON only.';
+const CEFR_SCHEMA = { type: 'object', required: ['items'], properties: { items: { type: 'array', items: { type: 'object',
+  required: ['n', 'level', 'confidence'], properties: { n: { type: 'integer' }, level: { type: 'string', enum: [...CEFR, 'unknown'] },
+  confidence: { type: 'number' } } } } } };
+let cefrRun = null;
+const cefrFailed = new Set();
+const cefrTodo = () => words.filter(w => w.word && w.word.trim() && !w.cefr && !cefrFailed.has(w.id));
+function cefrBadge(w){
+  if(!w.cefr) return '';
+  if(!w.cefr.lv) return `<span class="cefr cefr-q" title="${esc(t('cefrVerify'))}">?</span>`;
+  return `<span class="cefr cefr-${w.cefr.lv}" title="${esc(t('cefrTip', w.cefr.lv, Math.round((w.cefr.conf || 0) * 100)))}">${w.cefr.lv}</span>`;
+}
+function cefrBtnSync(){
+  const el = $('#cefrBtnTxt'); if(!el || !words) return;
+  const done = words.filter(w => w.cefr).length;
+  el.textContent = cefrRun ? t('cefrRun', done, words.length) : done >= words.length ? t('cefrAll', done) : t('cefrRun', done, words.length);
+}
+async function cefrInit(){
+  const st = await aiStatus();
+  const b = $('#btnCefr');
+  if(b) b.hidden = !(st && st.kind === 'lm');
+  cefrBtnSync();
+  cefrClassify(false);
+}
+function cefrClassify(interactive){
+  if(cefrRun) return cefrRun;
+  if(!words || !cefrTodo().length){ if(interactive) toast(t('cefrDone', words ? words.filter(w => w.cefr && !w.cefr.lv).length : 0)); return Promise.resolve(); }
+  cefrRun = (async () => {
+    const st = await aiStatus();
+    if(!st || st.kind !== 'lm'){ if(interactive) toast(t('cefrNoAi')); return; }
+    if(st.avail !== 'available' && !interactive) return;                 // cần tải mô hình → chỉ khi người dùng bấm nút
+    const user = currentUser;
+    cefrBtnSync();
+    for(;;){
+      if(currentUser !== user) return;
+      const batch = cefrTodo().slice(0, 10);
+      if(!batch.length) break;
+      const q = batch.map((w, i) => `${i + 1}. ${w.word.trim()}${w.pos ? ` (${w.pos})` : ''} — ${w.meaning || '?'}`
+        + (w.sentence ? ` — e.g. "${w.sentence.slice(0, 160)}"` : '')).join('\n');
+      let raw = '';
+      try{
+        const ses = await LanguageModel.create({ ...AI_LANG, initialPrompts: [{ role: 'system', content: CEFR_SYS }] });
+        try{ raw = await ses.prompt(q, { responseConstraint: CEFR_SCHEMA }); } finally{ try{ ses.destroy(); }catch(e){} }
+      }catch(e){ batch.forEach(w => cefrFailed.add(w.id)); continue; }      // lỗi → bỏ qua trong phiên này, lần sau thử lại
+      const items = asArr((aiParseJson(raw) || {}).items);
+      batch.forEach((w, i) => {
+        const it = items.find(x => x && x.n === i + 1);
+        if(!it){ cefrFailed.add(w.id); return; }
+        const lv = CEFR.includes(it.level) ? it.level : '', conf = Math.max(0, Math.min(1, +it.confidence || 0));
+        w.cefr = lv && conf >= .5 ? { lv, conf: +conf.toFixed(2), src: 'gemini-nano', at: now() }
+                                  : { lv: '', guess: lv, conf: +conf.toFixed(2), src: 'gemini-nano', at: now(), chk: 1 };
+      });
+      save(); cefrBtnSync();
+      if($('#tab-notes') && $('#tab-notes').classList.contains('active') && editingId == null) renderTable();
+    }
+    if(interactive) toast(t('cefrDone', words.filter(w => w.cefr && !w.cefr.lv).length));
+  })().catch(() => {}).finally(() => { cefrRun = null; cefrBtnSync(); });
+  return cefrRun;
+}
+$('#btnCefr').addEventListener('click', () => { cefrFailed.clear(); cefrClassify(true); });
+
+/* ═══ Hiệu ứng khiên & thiên sứ (canvas phủ màn hình, gói gọn quanh thanh streak) ═══ */
+const fxReduced = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fxEase = k => 1 - Math.pow(1 - Math.min(1, Math.max(0, k)), 3);
+function fxRun(dur, draw, done){
+  const { cv, ctx, W, H } = fxCanvas(), t0 = performance.now();
+  (function frame(nw){
+    const e = nw - t0;
+    ctx.clearRect(0, 0, W, H);
+    if(e >= dur){ cv.remove(); if(done) done(); return; }
+    ctx.save(); draw(ctx, e); ctx.restore();
+    requestAnimationFrame(frame);
+  })(t0);
+}
+function fxGlow(ctx, x, y, R, c, a){
+  if(R <= 0 || a <= 0) return;
+  const g = ctx.createRadialGradient(x, y, 0, x, y, R);
+  g.addColorStop(0, `rgba(${c},${a})`); g.addColorStop(1, `rgba(${c},0)`);
+  ctx.fillStyle = g; ctx.beginPath(); ctx.arc(x, y, R, 0, 7); ctx.fill();
+}
+function fxRR(ctx, x, y, w, h, r){
+  r = Math.min(r, h / 2, w / 2);
+  ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath();
+}
+function fxBox(chip, pad){
+  const r = chip.getBoundingClientRect();
+  return { cx: r.left + r.width / 2, cy: r.top + r.height / 2, x: r.left - pad, y: r.top - pad, w: r.width + pad * 2, h: r.height + pad * 2 };
+}
+function fxShards(B, n, sp, big){
+  return Array.from({ length: n }, (_, i) => {
+    const a = i / n * Math.PI * 2 + Math.random() * .25, v = sp * (.6 + Math.random() * .8), z = (big ? 6 : 4) + Math.random() * (big ? 8 : 6);
+    return { x: B.cx + Math.cos(a) * B.w / 2, y: B.cy + Math.sin(a) * B.h / 2, vx: Math.cos(a) * v, vy: Math.sin(a) * v * .7 - .8,
+             r: Math.random() * 6, vr: (Math.random() - .5) * .3, p: [[0, -z], [z * .8, z * .6], [-z * .7, z * .5]] };
+  });
+}
+function fxShardsDraw(ctx, list, k, fill, stroke){
+  list.forEach(q => {
+    q.vy += .12; q.x += q.vx; q.y += q.vy; q.r += q.vr;
+    ctx.save(); ctx.translate(q.x, q.y); ctx.rotate(q.r); ctx.globalAlpha = Math.max(0, k);
+    ctx.beginPath(); q.p.forEach(([x, y], i) => i ? ctx.lineTo(x, y) : ctx.moveTo(x, y)); ctx.closePath();
+    ctx.fillStyle = fill; ctx.fill(); ctx.strokeStyle = stroke; ctx.lineWidth = 1.2; ctx.stroke(); ctx.restore();
+  });
+}
+function fxSparks(ctx, list, c){
+  ctx.globalCompositeOperation = 'lighter';
+  for(let i = list.length - 1; i >= 0; i--){
+    const p = list[i]; p.l++; if(p.l > p.m){ list.splice(i, 1); continue; }
+    p.x += p.vx; p.y += p.vy; p.vy += p.g || 0;
+    fxGlow(ctx, p.x, p.y, p.r || 4, p.c || c, 1 - p.l / p.m);
+  }
+  ctx.globalCompositeOperation = 'source-over';
+}
+/* Lần đầu nhận khiên — "Bình minh": thanh streak chìm trong đêm sao, một vầng dương nhô lên sau thanh, dải sáng
+   vàng quét qua xua tan bóng đêm, huy hiệu khiên sáng rực hạ xuống rồi tan thành lớp khiên kính bao quanh thanh,
+   hào quang + sao 4 cánh lấp lánh. Gói gọn quanh thanh streak. */
+function fxShieldDawn(chip, done){
+  if(fxReduced()) return done && done();
+  let B = fxBox(chip, 7), cb = done;
+  const fire = () => { if(cb){ const f = cb; cb = null; f(); } };
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const stars = [...Array(14)].map(() => [rnd(.06, .94), rnd(.15, .85), rnd(.7, 1.5), rnd(0, 6)]);
+  const twinkles = [...Array(6)].map((_, i) => [i / 6 * Math.PI * 2 + rnd(-.25, .25), rnd(3, 8), rnd(4, 6.5), rnd(0, 200)]);
+  const sparks = [], S0 = 260, S1 = 760, CREST = 760, RING = 1050;
+  const star4 = (ctx, x, y, R, a) => { ctx.fillStyle = `rgba(255,236,160,${a})`; ctx.beginPath();
+    for(let i = 0; i < 8; i++){ const r2 = i % 2 ? R * .25 : R, an = i * Math.PI / 4 - Math.PI / 2; ctx.lineTo(x + Math.cos(an) * r2, y + Math.sin(an) * r2); }
+    ctx.closePath(); ctx.fill(); };
+  const shieldPath = (ctx, x, y, z) => { ctx.beginPath(); ctx.moveTo(x, y - z); ctx.lineTo(x + z * .85, y - z * .62); ctx.lineTo(x + z * .85, y + z * .05);
+    ctx.quadraticCurveTo(x + z * .8, y + z * .78, x, y + z * 1.1); ctx.quadraticCurveTo(x - z * .8, y + z * .78, x - z * .85, y + z * .05);
+    ctx.lineTo(x - z * .85, y - z * .62); ctx.closePath(); };
+  fxRun(2000, (ctx, e) => {
+    B = fxBox(chip, 7);
+    const { cx, cy, x: x0, y: y0, w: cw, h: ch } = B;
+    const night = fxEase(e / 220), sx = x0 - 24 + (cw + 48) * fxEase((e - S0) / (S1 - S0));
+    // vầng dương nhô lên phía sau thanh
+    const sun = fxEase((e - S0) / 500) * (1 - fxEase((e - 1450) / 500));
+    if(sun > 0){ ctx.globalCompositeOperation = 'lighter';
+      fxGlow(ctx, cx, cy + ch * .7 - 10 * sun, cw * .36, '255,200,90', .4 * sun);
+      fxGlow(ctx, cx, cy + ch * .7 - 10 * sun, cw * .2, '255,240,190', .45 * sun);
+      ctx.globalCompositeOperation = 'source-over'; }
+    // màn đêm trên thanh — phần đã bị dải sáng quét qua thì tan biến
+    ctx.save(); fxRR(ctx, x0, y0, cw, ch, ch / 2); ctx.clip();
+    if(e < S1 + 60){
+      ctx.save(); ctx.beginPath(); ctx.rect(e < S0 ? x0 - 30 : sx, y0 - 5, cw + 60, ch + 10); ctx.clip();
+      const g = ctx.createLinearGradient(0, y0, 0, y0 + ch);
+      g.addColorStop(0, `rgba(10,14,48,${.95 * night})`); g.addColorStop(1, `rgba(30,20,72,${.95 * night})`);
+      ctx.fillStyle = g; ctx.fillRect(x0, y0, cw, ch);
+      stars.forEach(([fx, fy, r2, ph]) => { ctx.fillStyle = `rgba(255,255,235,${night * (.55 + .45 * Math.sin(e / 110 + ph))})`;
+        ctx.beginPath(); ctx.arc(x0 + cw * fx, y0 + ch * fy, r2, 0, 7); ctx.fill(); });
+      ctx.restore();
+    }
+    if(e > S0 && e < S1 + 80){
+      const g = ctx.createLinearGradient(sx - 46, 0, sx + 14, 0);
+      g.addColorStop(0, 'rgba(255,200,60,0)'); g.addColorStop(.55, 'rgba(255,214,90,.9)'); g.addColorStop(.85, 'rgba(255,255,235,1)'); g.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.fillStyle = g; ctx.beginPath(); ctx.moveTo(sx - 52, y0 + ch); ctx.lineTo(sx - 30, y0); ctx.lineTo(sx + 18, y0); ctx.lineTo(sx - 4, y0 + ch); ctx.closePath(); ctx.fill();
+      for(let i = 0; i < 1; i++) sparks.push({ x: sx + (Math.random() - .5) * 14, y: y0 + Math.random() * ch, vx: (Math.random() - 1.2) * 1.4, vy: -.4 - Math.random() * 1.6, g: .03, l: 0, m: 28, r: 3.5 });
+    }
+    ctx.restore();
+    if(e > S0 && e < S1 + 80){ ctx.globalCompositeOperation = 'lighter'; fxGlow(ctx, sx - 8, cy, 22, '255,210,90', .45); ctx.globalCompositeOperation = 'source-over'; }
+    // huy hiệu khiên sáng rực hạ xuống, tan vào thanh
+    const cr = e - CREST;
+    if(cr > -250 && cr < 520){
+      const k = fxEase((cr + 250) / 420), fade = 1 - fxEase((cr - 260) / 260), sy = cy - ch / 2 - 16 + 14 * fxEase(cr / 520);
+      ctx.globalCompositeOperation = 'lighter'; fxGlow(ctx, cx, sy, 16, '255,226,140', .6 * k * fade); ctx.globalCompositeOperation = 'source-over';
+      shieldPath(ctx, cx, sy, 7.5 * (.6 + .4 * k));
+      const sg = ctx.createLinearGradient(0, sy - 8, 0, sy + 9); sg.addColorStop(0, `rgba(255,250,225,${k * fade})`); sg.addColorStop(1, `rgba(240,190,60,${k * fade})`);
+      ctx.fillStyle = sg; ctx.fill(); ctx.strokeStyle = `rgba(154,107,0,${k * fade})`; ctx.lineWidth = 1.6; ctx.stroke();
+    }
+    // lớp khiên kính kết tinh quanh thanh + hào quang xoay
+    const rk = fxEase((e - RING + 160) / 360), fa = 1 - fxEase((e - 1500) / 450);
+    if(rk > 0){
+      ctx.globalCompositeOperation = 'lighter';
+      for(let i = 0; i < 10; i++){
+        const an = i / 10 * Math.PI * 2 + e / 1500, L = (cw / 2 + 8) * rk;
+        const gg = ctx.createLinearGradient(cx, cy, cx + Math.cos(an) * L, cy + Math.sin(an) * L * .55);
+        gg.addColorStop(0, 'rgba(255,236,170,0)'); gg.addColorStop(.6, `rgba(255,236,170,${.26 * fa})`); gg.addColorStop(1, 'rgba(255,236,170,0)');
+        ctx.fillStyle = gg; ctx.beginPath(); ctx.moveTo(cx, cy);
+        ctx.lineTo(cx + Math.cos(an - .06) * L, cy + Math.sin(an - .06) * L * .55); ctx.lineTo(cx + Math.cos(an + .06) * L, cy + Math.sin(an + .06) * L * .55);
+        ctx.closePath(); ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      const gr = 7 * (1 - rk);
+      fxRR(ctx, x0 - gr, y0 - gr, cw + gr * 2, ch + gr * 2, ch / 2 + gr);
+      ctx.fillStyle = `rgba(210,235,255,${.18 * rk * fa})`; ctx.fill();
+      ctx.strokeStyle = `rgba(255,226,140,${fa})`; ctx.lineWidth = 2.5; ctx.shadowColor = '#FFD54A'; ctx.shadowBlur = 10; ctx.stroke(); ctx.shadowBlur = 0;
+      if(rk >= 1) fire();
+      const h = e - RING;
+      twinkles.forEach(([an, dx, R, d]) => { const q = (h - d) / 420; if(q > 0 && q < 1)
+        star4(ctx, cx + Math.cos(an) * (cw / 2 + dx), cy + Math.sin(an) * (ch / 2 + dx * .7), R * Math.sin(q * Math.PI), Math.sin(q * Math.PI)); });
+      if(h > 0 && h < 300 && Math.random() < .35){ const an = Math.random() * 7;
+        sparks.push({ x: cx + Math.cos(an) * cw / 2, y: cy + Math.sin(an) * ch / 2, vx: Math.cos(an) * .4, vy: -.4 - Math.random() * .6, l: 0, m: 30, r: 2.2 }); }
+    }
+    fxSparks(ctx, sparks, '255,215,110');
+  }, fire);
+}
+/* Nhận thêm khiên: một vệt sáng chạy quanh viền khiên + sao lấp lánh — gọn, không che thanh streak */
+function fxShieldUp(chip, done){
+  if(fxReduced()) return done && done();
+  let B = fxBox(chip, 7), cb = done;
+  const sparks = [];
+  fxRun(1000, (ctx, e) => {
+    B = fxBox(chip, 7);
+    const k = fxEase(e / 700), fa = 1 - fxEase((e - 700) / 300);
+    fxRR(ctx, B.x, B.y, B.w, B.h, B.h / 2);
+    ctx.strokeStyle = `rgba(150,205,255,${.5 * fa})`; ctx.lineWidth = 2; ctx.stroke();
+    const per = 2 * (B.w - B.h) + Math.PI * B.h;
+    ctx.setLineDash([per * .18, per]); ctx.lineDashOffset = -per * k;
+    ctx.strokeStyle = `rgba(255,236,170,${fa})`; ctx.lineWidth = 3; ctx.shadowColor = '#FFD54A'; ctx.shadowBlur = 9; ctx.stroke();
+    ctx.setLineDash([]); ctx.shadowBlur = 0;
+    if(e < 700 && Math.random() < .3){ const a = Math.random() * 7;
+      sparks.push({ x: B.cx + Math.cos(a) * B.w / 2, y: B.cy + Math.sin(a) * B.h / 2, vx: Math.cos(a) * .8, vy: Math.sin(a) * .8 - .3, l: 0, m: 24, r: 3 }); }
+    fxSparks(ctx, sparks, '255,226,140');
+    if(e > 380 && cb){ const f = cb; cb = null; f(); }
+  }, () => { if(cb){ const f = cb; cb = null; f(); } });
+}
+/* Khiên chịu đòn — gợn sóng lục giác: điểm va chạm loé sáng trên mép khiên, một gợn sóng lan khắp mặt khiên kính
+   làm lưới lục giác sáng lên theo đợt sóng, rồi vài mảnh lục giác nhỏ bong ra rơi xuống. Gọn trong viền khiên. */
+function fxShieldCrack(chip, done){
+  if(fxReduced()) return done && done();
+  let B = fxBox(chip, 7), cb = done, frags = null;
+  const fire = () => { if(cb){ const f = cb; cb = null; f(); } };
+  const fx = .25 + Math.random() * .5, CHIP = 300, rnd = (a, b) => a + Math.random() * (b - a);
+  const hex = (ctx, x, y, r) => { ctx.beginPath();
+    for(let i = 0; i < 6; i++){ const a = Math.PI / 3 * i + Math.PI / 6; i ? ctx.lineTo(x + Math.cos(a) * r, y + Math.sin(a) * r) : ctx.moveTo(x + Math.cos(a) * r, y + Math.sin(a) * r); }
+    ctx.closePath(); };
+  chip.classList.remove('sh-hit'); void chip.offsetWidth; chip.classList.add('sh-hit');
+  setTimeout(() => chip.classList.remove('sh-hit'), 450);
+  fxRun(1000, (ctx, e) => {
+    if(!frags) B = fxBox(chip, 7);
+    const ix = B.x + B.w * fx, iy = B.y + 1;
+    const R = fxEase(e / 600) * B.w * .8, fa = 1 - fxEase((e - 300) / 500);
+    ctx.save(); fxRR(ctx, B.x - 1, B.y - 1, B.w + 2, B.h + 2, B.h / 2 + 1); ctx.clip();
+    const hr = 5.5, dx = hr * Math.sqrt(3), dy = hr * 1.5;
+    for(let row = 0, y = B.y - hr; y < B.y + B.h + hr; row++, y += dy)
+      for(let x = B.x - dx + (row % 2 ? dx / 2 : 0); x < B.x + B.w + dx; x += dx){
+        const w = 1 - Math.min(1, Math.abs(Math.hypot(x - ix, (y - iy) * 1.5) - R) / 16);
+        if(w <= 0) continue;
+        hex(ctx, x, y, hr - .9);
+        ctx.fillStyle = `rgba(150,205,255,${.45 * w * fa})`; ctx.fill();
+        ctx.strokeStyle = `rgba(70,150,240,${w * fa})`; ctx.lineWidth = 1.4; ctx.stroke();
+      }
+    ctx.restore();
+    fxRR(ctx, B.x, B.y, B.w, B.h, B.h / 2);
+    ctx.strokeStyle = `rgba(150,205,255,${.85 * fa})`; ctx.lineWidth = 2; ctx.shadowColor = '#9CD0FF'; ctx.shadowBlur = 8; ctx.stroke(); ctx.shadowBlur = 0;
+    ctx.globalCompositeOperation = 'lighter';
+    fxGlow(ctx, ix, iy, 14 + 10 * fxEase(e / 200), '255,120,140', .7 * (1 - fxEase(e / 280)));
+    fxGlow(ctx, ix, iy, 9, '225,242,255', .9 * (1 - fxEase(e / 380)));
+    ctx.globalCompositeOperation = 'source-over';
+    if(e >= CHIP && !frags){
+      fire();
+      frags = [...Array(6)].map(() => ({ x: ix + rnd(-8, 8), y: iy + rnd(0, 4), vx: rnd(-1.3, 1.3), vy: rnd(-1.8, -.6), r: rnd(2.2, 3.6), a: rnd(0, 3), va: rnd(-.2, .2) }));
+    }
+    if(frags){
+      const k = 1 - fxEase((e - CHIP) / 650);
+      frags.forEach(f => { f.vy += .08; f.x += f.vx; f.y += f.vy; f.a += f.va;
+        ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.a); hex(ctx, 0, 0, f.r);
+        ctx.fillStyle = `rgba(200,232,255,${.75 * k})`; ctx.fill(); ctx.strokeStyle = `rgba(255,255,255,${k})`; ctx.lineWidth = 1; ctx.stroke(); ctx.restore(); });
+    }
+  }, fire);
+}
+/* Khiên cuối cùng — "Đêm nuốt chửng": vòng phù chú hắc ám xoay quanh thanh, những xúc tu bóng tối bò từ hai đầu
+   vào, nuốt trọn thanh (một đôi mắt đỏ loé lên trong bóng tối), lớp khiên vỡ thành mảnh đen viền tím cùng tàn lửa
+   tím–đỏ; rồi bóng tối tan đi, thanh streak hiện lại nguyên vẹn (chuỗi vẫn được giữ). */
+function fxNightDevour(chip, done){
+  if(fxReduced()) return done && done();
+  let B = fxBox(chip, 7), cb = done, shards = null;
+  const BREAK = 1000, sparks = [], smoke = [];
+  const rnd = (a, b) => a + Math.random() * (b - a);
+  const tentacles = [...Array(6)].map((_, i) => ({ side: i % 2 ? 1 : -1, off: rnd(-.7, .7), ph: rnd(0, 6), w: rnd(2.2, 3.6), d: rnd(0, 160) }));
+  const RUNES = [[[0,-4,0,4],[0,-4,3,-1]], [[-3,-4,3,4],[3,-4,-3,4]], [[0,-4,0,4],[-3,0,3,0]], [[-3,4,0,-4],[0,-4,3,4]],
+                 [[-3,-4,-3,4],[-3,0,3,-4],[-3,0,3,4]], [[0,-4,0,4],[0,-1,3,-4],[0,-1,-3,-4]], [[-3,-3,3,-3],[0,-3,0,4],[-2,4,2,4]]];
+  fxRun(2200, (ctx, e) => {
+    if(!shards) B = fxBox(chip, 7);
+    const { cx, cy, x: x0, y: y0, w: cw, h: ch } = B;
+    const dark = fxEase(e / 380) * (1 - fxEase((e - 1250) / 800));
+    // quầng tối bao quanh
+    fxGlow(ctx, cx, cy, cw * .44, '14,6,26', .45 * dark);
+    // vòng phù chú tím xoay quanh thanh
+    const rn = fxEase(e / 350) * (1 - fxEase((e - 1100) / 500));
+    if(rn > 0){
+      ctx.save(); ctx.lineCap = 'round'; ctx.shadowColor = '#B026FF'; ctx.shadowBlur = 9;
+      ctx.strokeStyle = `rgba(150,60,220,${.35 * rn})`; ctx.lineWidth = 1.2; ctx.setLineDash([3, 5]);
+      ctx.beginPath(); ctx.ellipse(cx, cy, cw / 2 + 9, ch / 2 + 8, 0, 0, 7); ctx.stroke(); ctx.setLineDash([]);
+      for(let i = 0; i < 12; i++){
+        const an = i / 12 * Math.PI * 2 - e / 900, gx = cx + Math.cos(an) * (cw / 2 + 9), gy = cy + Math.sin(an) * (ch / 2 + 8);
+        ctx.save(); ctx.translate(gx, gy); ctx.rotate(an + Math.PI / 2);
+        ctx.strokeStyle = `rgba(${i % 3 ? '205,120,255' : '255,70,90'},${rn * (.6 + .4 * Math.sin(e / 90 + i))})`; ctx.lineWidth = 1.3; ctx.scale(.8, .8);
+        ctx.beginPath(); RUNES[i % RUNES.length].forEach(([a, b, c2, d]) => { ctx.moveTo(a, b); ctx.lineTo(c2, d); }); ctx.stroke();
+        ctx.restore();
+      }
+      ctx.restore();
+    }
+    // xúc tu bóng tối bò từ hai đầu vào giữa
+    const tg = fxEase((e - 100) / 550) * (1 - fxEase((e - 1000) / 400));
+    if(tg > 0){
+      ctx.lineCap = 'round';
+      tentacles.forEach(tn => {
+        const k = Math.max(0, Math.min(1, tg * 1.15 - tn.d / 1000)); if(!k) return;
+        const sx = cx + tn.side * (cw / 2 + 10), ex = cx + tn.side * (cw / 2 - cw * .55 * k);
+        ctx.strokeStyle = `rgba(16,6,30,${.85 * tg})`; ctx.lineWidth = tn.w;
+        ctx.beginPath();
+        for(let i = 0; i <= 16; i++){
+          const u = i / 16, x = sx + (ex - sx) * u, y = cy + tn.off * ch * .45 * (1 - u * .5) + Math.sin(u * 7 + e / 110 + tn.ph) * 3.5 * (1 - u * .4);
+          i ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+        }
+        ctx.stroke();
+      });
+    }
+    // lớp khiên còn lại: nhấp nháy, nhuốm tím trước khi vỡ
+    if(e < BREAK){
+      const fl = .55 + .45 * Math.sin(e / 35) * Math.sin(e / 13);
+      fxRR(ctx, x0, y0, cw, ch, ch / 2);
+      ctx.strokeStyle = `rgba(${Math.round(150 - 40 * fxEase(e / 700))},${Math.round(205 - 150 * fxEase(e / 700))},255,${.9 * fl})`;
+      ctx.lineWidth = 2.5; ctx.shadowColor = '#8A3FFF'; ctx.shadowBlur = 10; ctx.stroke(); ctx.shadowBlur = 0;
+    }
+    // bóng tối nuốt trọn thanh + đôi mắt đỏ
+    const sw = fxEase((e - 400) / 400) * (1 - fxEase((e - 1200) / 600));
+    if(sw > 0){
+      ctx.save(); fxRR(ctx, x0, y0, cw, ch, ch / 2); ctx.clip();
+      ctx.fillStyle = `rgba(10,4,20,${.93 * sw})`; ctx.fillRect(x0, y0, cw, ch);
+      for(let i = 0; i < 4; i++) fxGlow(ctx, x0 + cw * (.2 + .2 * i) + Math.sin(e / 180 + i) * 8, cy + Math.cos(e / 230 + i) * 4, 20, '80,20,120', .5 * sw);
+      ctx.restore();
+      const ey = (e - 620) / 360;
+      if(ey > 0 && ey < 1){ const a = Math.sin(ey * Math.PI);
+        ctx.globalCompositeOperation = 'lighter';
+        [-1, 1].forEach(sd => { fxGlow(ctx, cx + sd * 9, cy - 2, 7, '255,40,60', .85 * a);
+          ctx.fillStyle = `rgba(255,190,190,${a})`; ctx.beginPath(); ctx.ellipse(cx + sd * 9, cy - 2, 2.8, 1.2 * a + .3, sd * .25, 0, 7); ctx.fill(); });
+        ctx.globalCompositeOperation = 'source-over'; }
+    }
+    if(e >= BREAK){
+      if(cb){ const f = cb; cb = null; f(); shards = fxShards(B, 16, 2);
+        for(let i = 0; i < 18; i++){ const an = Math.random() * 7, v = .8 + Math.random() * 2;
+          sparks.push({ x: cx + Math.cos(an) * cw / 3, y: cy + Math.sin(an) * ch / 3, vx: Math.cos(an) * v, vy: Math.sin(an) * v * .7 - .4,
+                        l: 0, m: 22 + Math.random() * 14, r: 2 + Math.random() * 1.5, c: Math.random() < .55 ? '190,90,255' : '255,60,80' }); }
+        for(let i = 0; i < 6; i++){ const an = Math.random() * 7;
+          smoke.push({ x: cx + Math.cos(an) * cw / 3, y: cy + Math.sin(an) * ch / 3, vx: Math.cos(an) * .6, vy: Math.sin(an) * .35 - .25, l: 0, m: 45 + Math.random() * 20 }); } }
+      const t2 = e - BREAK;
+      if(t2 < 240){ ctx.globalCompositeOperation = 'lighter'; fxGlow(ctx, cx, cy, 18 + t2 * .3, '170,80,255', .75 * (1 - t2 / 240)); ctx.globalCompositeOperation = 'source-over'; }
+      fxShardsDraw(ctx, shards, 1 - fxEase(t2 / 800), 'rgba(16,8,30,.92)', 'rgba(190,110,255,.95)');
+      for(let i = smoke.length - 1; i >= 0; i--){ const p = smoke[i]; p.l++; if(p.l > p.m){ smoke.splice(i, 1); continue; }
+        p.x += p.vx; p.y += p.vy; fxGlow(ctx, p.x, p.y, 7 + p.l * .22, '20,8,36', .4 * (1 - p.l / p.m)); }
+      fxSparks(ctx, sparks);
+    }
+  }, () => { if(cb){ const f = cb; cb = null; f(); } });
+}
+
+/* ═══════════════════════════════════════════════════════════
    TABS + NGÔN NGỮ + STATS
    ═══════════════════════════════════════════════════════════ */
 function activateTab(btn){
@@ -6518,8 +7958,8 @@ function activateTab(btn){
   queueInfoLayout();
   const tab = btn.dataset.tab;
   if(tab==='quiz'){ fillQuizGroups(); startQuiz(); }
-  if(tab==='flash'){ fillGroupSelect($('#fcGroup')); startFc(); }
-  if(tab==='notes') renderTable();
+  if(tab==='flash'){ fcGroupFilter.fill(); startFc(); }
+  if(tab==='notes'){ renderTable(); cefrClassify(false); }
   if(tab==='focus'){ renderFocus(); renderGarden(); }
   if(tab==='tasks') renderTasks(); else recAbort();
 }
@@ -6531,7 +7971,7 @@ function refreshCurrentView(){
   const tab = activeTab.dataset.tab;
   if(tab==='notes') renderTable();
   else if(tab==='quiz'){ fillQuizGroups(); if(quiz) renderQuiz(); else startQuiz(); }
-  else if(tab==='flash'){ fillGroupSelect($('#fcGroup')); if(fc) renderFc(); else startFc(); }
+  else if(tab==='flash'){ fcGroupFilter.fill(); if(fc) renderFc(); else startFc(); }
   else if(tab==='tasks') renderTasks();
   else if(tab==='focus'){ renderFocus(); renderGarden(); }
 }
@@ -6747,10 +8187,11 @@ async function enterApp(){
   loginSteps().innerHTML = `<p class="login-sub">${t('openingBook', currentUser)}</p>`;
   await loadUser();
   await loadTasks();
+  await loadSacred();
   markLogin();
   $('#userName').textContent = currentUser;
   $('#loginOverlay').style.display = 'none';
-  quiz = null; fc = null; quizStreak = 0; quizGroupAll = true; quizGroupSet = new Set(); groupFilter.reset(); wordSel.sel.clear(); sinceLimited = 0; updateStreakUI(0); lastShownId = null;
+  quiz = null; fc = null; quizGroupAll = true; quizGroupSet = new Set(); groupFilter.reset(); fcGroupFilter.reset(); wordSel.sel.clear(); resetLimitLog(); updateStreakUI(quizStreak); lastShownId = null;
   applyI18n();
   activateTab($('.tab-btn[data-tab="tasks"]'));
   $('#trFab').hidden = false;
@@ -6759,6 +8200,8 @@ async function enterApp(){
   renderStats();
   prefetchPhonetics();
   if(memoryOnly) toast(t('memoryOnlyWarn'));
+  cefrInit();
+  scShowPending();                       // thử thách còn dang dở (tải lại trang giữa chừng) → mở lại
 }
 
 /* Đổi người dùng */

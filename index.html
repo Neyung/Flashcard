@@ -1999,10 +1999,11 @@ vi:{
   cefrRun:(a,n)=>`CEFR ${a}/${n}`, cefrAll:n=>`CEFR ✓ ${n}`, cefrNoAi:'Trình duyệt chưa có AI trên máy — giữ nguyên dữ liệu, chưa phân loại CEFR.',
   cefrDone:n=>`Đã phân loại CEFR xong${n ? ` — ${n} từ cần xác minh` : ''}`, cefrVerify:'Chưa đủ cơ sở phân loại — cần xác minh',
   cefrTip:(l,c)=>`CEFR ${l} · AI trên máy ước lượng · độ tin cậy ${c}%`,
-  qStreakMilestone:n=>`🔥 Tuyệt vời! Chuỗi ${n} câu đúng liên tiếp!`, qLimitBtn:'Hạn chế hôm nay', qLimitedBtn:'Đang hạn chế hôm nay',
-  qLimitTitle:'Bỏ qua từ này trong hôm nay — chỉ hiếm hoi xuất hiện lại do may rủi (dưới 5%), sang ngày mai trở lại bình thường',
-  qLimitOn:w=>`Đã hạn chế "${w}" — hôm nay gần như không gặp lại, hết hôm nay trở lại bình thường`,
-  qLimitOff:w=>`Đã bỏ hạn chế "${w}"`, qSpeakLbl:'Hiện nút loa',
+  qStreakMilestone:n=>`🔥 Tuyệt vời! Chuỗi ${n} câu đúng liên tiếp!`, qLimitBtn:'Bỏ qua hôm nay', qLimitedBtn:'Đã bỏ qua hôm nay',
+  qLimitTitle:'Bỏ qua hoàn toàn từ này trong hôm nay (cả Luyện gõ và Flashcard) — sang ngày mai trở lại bình thường',
+  qLimitOn:w=>`Đã bỏ qua "${w}" — hôm nay sẽ không gặp lại, sang ngày mai trở lại bình thường`,
+  qLimitOff:w=>`Đã bỏ chọn bỏ qua "${w}"`,
+  qAllSkipped:'Tất cả các từ đang chọn đều đã được bỏ qua hôm nay — sang ngày mai sẽ trở lại, hoặc chọn thêm nhóm / bỏ lọc để luyện tiếp.', qSpeakLbl:'Hiện nút loa',
   qPhrasePh:'Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài',
   qAnsPlaceholder:'Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ',
   qHintBtn:'Gợi ý', qCheckBtn:'Kiểm tra', qSkipBtn:'Bỏ qua',
@@ -2302,10 +2303,11 @@ en:{
   cefrRun:(a,n)=>`CEFR ${a}/${n}`, cefrAll:n=>`CEFR ✓ ${n}`, cefrNoAi:'No on-device AI in this browser — data kept as is, CEFR not classified.',
   cefrDone:n=>`CEFR classification done${n ? ` — ${n} word${n>1?'s':''} need checking` : ''}`, cefrVerify:'Not enough evidence — needs checking',
   cefrTip:(l,c)=>`CEFR ${l} · estimated by the on-device AI · confidence ${c}%`,
-  qStreakMilestone:n=>`🔥 Amazing! ${n} correct answers in a row!`, qLimitBtn:'Limit today', qLimitedBtn:'Limited today',
-  qLimitTitle:'Skip this word today — it only rarely comes back by luck (under 5%), back to normal tomorrow',
-  qLimitOn:w=>`"${w}" limited — you will barely see it today, back to normal tomorrow`,
-  qLimitOff:w=>`Limit removed for "${w}"`, qSpeakLbl:'Show speaker button',
+  qStreakMilestone:n=>`🔥 Amazing! ${n} correct answers in a row!`, qLimitBtn:'Skip today', qLimitedBtn:'Skipped today',
+  qLimitTitle:'Skip this word completely for today (Typing and Flashcards) — back to normal tomorrow',
+  qLimitOn:w=>`"${w}" skipped — you won't see it again today, back to normal tomorrow`,
+  qLimitOff:w=>`"${w}" is no longer skipped`,
+  qAllSkipped:'Every word in your current selection has been skipped for today — they come back tomorrow, or pick more groups / clear the filter to keep practising.', qSpeakLbl:'Show speaker button',
   qPhrasePh:'Type the whole phrase/sentence then press Enter — auto-checks once long enough',
   qAnsPlaceholder:'Tap the words below in the right order — auto-checks once complete',
   qHintBtn:'Hint', qCheckBtn:'Check', qSkipBtn:'Skip',
@@ -2998,22 +3000,17 @@ function pickWord(pool){
   return cands[cands.length-1];
 }
 
-/* Hạn chế từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) gần như bị bỏ qua
-   hoàn toàn — mỗi lần chọn từ chỉ "quay xổ số" với xác suất 4% (< 5%) mới cho một từ bị
-   hạn chế xen vào, bất kể tỉ lệ đúng/sai (hên xui, không đếm theo tỉ lệ chính xác).
-   Nếu chỉ còn toàn từ bị hạn chế thì vẫn cho học. Sang ngày mới limitDay không còn khớp
+/* Bỏ qua từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) không xuất hiện lại
+   trong Luyện gõ lẫn Flashcard cho tới hết ngày. Sang ngày mới limitDay không còn khớp
    → tự trở lại bình thường, không cần dọn dẹp. */
 const todayKey = () => { const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 const isLimitedToday = w => w.limitDay === todayKey();
-const LIMIT_LOTTERY = 0.04, LIMIT_LS = 'soTuLimitRate_v1';
+const LIMIT_LS = 'soTuLimitRate_v1';
 function resetLimitLog(){ try{ localStorage.removeItem(LIMIT_LS); }catch(e){} }   // dọn khoá cũ (bản đếm tỉ lệ)
-function pickWordLimited(pool){
-  const lim = pool.filter(isLimitedToday);
-  if(!lim.length) return pickWord(pool);
+function pickWordLimited(pool){                    // null = mọi từ trong phạm vi đều đã bỏ qua hôm nay
   const norm = pool.filter(w => !isLimitedToday(w));
-  if(!norm.length) return pickWord(lim);           // chỉ còn từ bị hạn chế → vẫn cho học
-  return Math.random() < LIMIT_LOTTERY ? pickWord(lim) : pickWord(norm);
+  return norm.length ? pickWord(norm) : null;
 }
 
 /* Nghĩa có thể gồm nhiều phần ngăn bởi ";" hoặc "/" — vd "một cách tập trung; dồn hết sự chú ý…".
@@ -6613,6 +6610,10 @@ function startQuiz(){
     quiz = null; return;
   }
   const w = pickWordLimited(pool);
+  if(!w){
+    area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>${t('qAllSkipped')}</div></div>`;
+    quiz = null; return;
+  }
   lastShownId = w.id;
   preloadWordAudio(w);
   quiz = { w, mode: w.kind, meaning: pickMeaningPart(w), startAt: now(), hintLevel:0, typed:[], pickedIdx:[],
@@ -6909,6 +6910,10 @@ function startFc(){
     fc = null; return;
   }
   const w = pickWordLimited(pool);
+  if(!w){
+    area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>${t('qAllSkipped')}</div></div>`;
+    fc = null; return;
+  }
   lastShownId = w.id;
   preloadWordAudio(w);
   const { opts, correctIdx } = buildOptions(w);

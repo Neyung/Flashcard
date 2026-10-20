@@ -1400,9 +1400,24 @@ header{align-items:center}
 .tr-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:var(--blue);text-decoration:none}
 .tr-link .ic{width:13px;height:13px}
 .tr-link:hover{text-decoration:underline}
+/* Tra dạng từ & đồng/trái nghĩa — nút nổi ngay trên nút dịch */
+.tr-fab.lx-fab{bottom:80px;background:var(--peach)}
+.tr-fab.lx-fab.on{background:var(--ink)}
+.lx-panel{bottom:142px;max-height:calc(100vh - 160px)}
+.lx-tabs{display:flex;gap:6px;margin-top:10px}
+.lx-tab{flex:1;border:2px solid var(--ink);border-radius:999px;background:#fff;padding:5px 8px;font:800 12px 'Manrope',sans-serif;cursor:pointer;color:var(--ink)}
+.lx-tab.on{background:var(--ink);color:#fff}
+.lx-sec[hidden]{display:none}
+.lx-sec .tr-in{min-height:0;resize:none;margin-top:10px}
+.lx-grp + .lx-grp{margin-top:10px}
+.lx-grp .tr-pos small{font-weight:700;color:var(--muted)}
+.lx-chip.self{background:var(--mint);font-weight:800;box-shadow:2px 2px 0 var(--ink)}
+.lx-none{font-size:12px;font-weight:600;color:var(--muted)}
 @media (max-width:760px){
   .tr-fab{right:14px;bottom:14px}
+  .tr-fab.lx-fab{bottom:74px}
   .tr-panel{bottom:76px;right:10px;left:10px;width:auto}
+  .lx-panel{bottom:136px}
 }
 /* Tab: huy hiệu tiến độ nhiệm vụ */
 .tab-badge.done{background:var(--mint)}
@@ -1488,6 +1503,7 @@ header{align-items:center}
 <symbol id="i-back" viewBox="0 0 24 24"><path d="M19.5 12h-15"/><path d="M10 6.5L4.5 12l5.5 5.5"/></symbol>
 <symbol id="i-skip" viewBox="0 0 24 24"><path d="M5.5 5.5l9 6.5-9 6.5z"/><path d="M18.5 5.5v13"/></symbol>
 <symbol id="i-blossom" viewBox="0 0 24 24"><path d="M12 9.3C10.2 7.6 10.4 4.6 12 3.5c1.6 1.1 1.8 4.1 0 5.8zM14.6 11.1c.6-2.4 3.4-3.6 5.2-2.8-.1 1.9-2.6 3.6-5.2 2.8zM13.6 14.2c2.4.3 4.1 2.8 3.5 4.6-1.9.3-4-1.8-3.5-4.6zM10.4 14.2c.5 2.8-1.6 4.9-3.5 4.6-.6-1.8 1.1-4.3 3.5-4.6zM9.4 11.1c-2.6.8-5.1-.9-5.2-2.8 1.8-.8 4.6.4 5.2 2.8z"/><circle cx="12" cy="11.8" r="2"/></symbol>
+<symbol id="i-forms" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="12" r="2"/><path d="M6 7v10M8 5.6c4.5.8 8 2.6 8 4.6M8 18.4c4.5-.8 8-2.6 8-4.6"/></symbol>
 <symbol id="i-translate" viewBox="0 0 24 24"><path d="M3.5 6h9M8 4v2M5.5 6c.6 2.8 2.6 5 5.5 6.2M10.5 6c-.7 3-2.8 5.6-6 7"/><path d="M12.5 20.5l4-9.5 4 9.5M13.8 17.6h5.4"/></symbol>
 <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8.5" y="8.5" width="11" height="11" rx="2"/><path d="M15.5 8.5V6a1.5 1.5 0 0 0-1.5-1.5H6A1.5 1.5 0 0 0 4.5 6v8A1.5 1.5 0 0 0 6 15.5h2.5"/></symbol>
 <symbol id="i-swap" viewBox="0 0 24 24"><path d="M4.5 8.5h15l-4-4M19.5 15.5h-15l4 4"/></symbol>
@@ -1763,6 +1779,31 @@ header{align-items:center}
     <span class="tr-info" id="trInfo"></span>
   </div>
 </div>
+<!-- Tra dạng từ & đồng/trái nghĩa — nút nổi ngay trên nút dịch, 2 mục tìm kiếm riêng -->
+<button class="tr-fab lx-fab" id="lxFab" hidden><svg class="ic"><use href="#i-forms"/></svg></button>
+<div class="tr-panel lx-panel" id="lxPanel" hidden role="dialog" aria-labelledby="lxTitle">
+  <div class="tr-head">
+    <span class="tr-logo" style="background:var(--peach)"><svg class="ic"><use href="#i-forms"/></svg></span>
+    <b id="lxTitle"></b>
+    <button class="icon-btn tr-x" id="lxClose"><svg class="ic"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="lx-tabs">
+    <button class="lx-tab on" data-lx="forms" id="lxTabForms"></button>
+    <button class="lx-tab" data-lx="syn" id="lxTabSyn"></button>
+  </div>
+  <div class="lx-sec" data-sec="forms">
+    <input id="lxInForms" class="tr-in" autocomplete="off" spellcheck="false">
+    <div class="tr-out" id="lxOutForms"></div>
+  </div>
+  <div class="lx-sec" data-sec="syn" hidden>
+    <input id="lxInSyn" class="tr-in" autocomplete="off" spellcheck="false">
+    <div class="tr-out" id="lxOutSyn"></div>
+  </div>
+  <div class="tr-foot">
+    <a class="tr-link" id="lxExt" target="_blank" rel="noopener"><span id="lxExtLbl"></span><svg class="ic"><use href="#i-ext"/></svg></a>
+    <span class="tr-info" id="lxInfo"></span>
+  </div>
+</div>
 <div class="sc-overlay" id="scOverlay" hidden><div class="sc-modal" id="scModal" role="dialog" aria-modal="true" aria-labelledby="scTitle"><div id="scBody"></div></div></div>
 <div id="toast"></div>
 
@@ -1959,8 +2000,8 @@ vi:{
   cefrDone:n=>`Đã phân loại CEFR xong${n ? ` — ${n} từ cần xác minh` : ''}`, cefrVerify:'Chưa đủ cơ sở phân loại — cần xác minh',
   cefrTip:(l,c)=>`CEFR ${l} · AI trên máy ước lượng · độ tin cậy ${c}%`,
   qStreakMilestone:n=>`🔥 Tuyệt vời! Chuỗi ${n} câu đúng liên tiếp!`, qLimitBtn:'Hạn chế hôm nay', qLimitedBtn:'Đang hạn chế hôm nay',
-  qLimitTitle:'Từ này chỉ thỉnh thoảng mới xuất hiện xen giữa (dưới 10% số câu) — chỉ trong hôm nay, sang ngày mai trở lại bình thường',
-  qLimitOn:w=>`Đã hạn chế "${w}" — chỉ thỉnh thoảng gặp lại, hết hôm nay trở lại bình thường`,
+  qLimitTitle:'Bỏ qua từ này trong hôm nay — chỉ hiếm hoi xuất hiện lại do may rủi (dưới 5%), sang ngày mai trở lại bình thường',
+  qLimitOn:w=>`Đã hạn chế "${w}" — hôm nay gần như không gặp lại, hết hôm nay trở lại bình thường`,
   qLimitOff:w=>`Đã bỏ hạn chế "${w}"`, qSpeakLbl:'Hiện nút loa',
   qPhrasePh:'Gõ cả cụm/câu rồi nhấn Enter — tự kiểm tra khi đủ độ dài',
   qAnsPlaceholder:'Bấm các từ bên dưới theo đúng thứ tự — tự kiểm tra khi xếp đủ',
@@ -2003,6 +2044,20 @@ vi:{
   trAdd:'Thêm vào sổ', trAdded:w=>`Đã thêm "${w}" vào sổ từ vựng`, trExists:w=>`"${w}" đã có trong sổ`,
   trTooLong:'Chỉ thêm được từ hoặc cụm từ ngắn (tối đa 6 từ)', trOpenGoogle:'Mở Google Dịch',
   trNote:'Bản dịch bởi Google Dịch — nội dung bạn nhập được gửi tới Google. Chọn một nghĩa bên trên để dùng nghĩa đó khi thêm vào sổ.',
+  /* ── Tra dạng từ & đồng/trái nghĩa ── */
+  lxTitle:'Dạng từ & Đồng nghĩa', lxFab:'Tra dạng từ, từ đồng nghĩa & trái nghĩa',
+  lxTabForms:'Dạng từ', lxTabSyn:'Đồng / Trái nghĩa',
+  lxPhForms:'Nhập từ để tra các dạng từ…', lxPhSyn:'Nhập từ để tra đồng nghĩa, trái nghĩa…',
+  lxSubForms:'Dạng từ: họ từ chia theo từ loại (danh / động / tính / trạng từ) và các biến thể.',
+  lxSubSyn:'Đồng / Trái nghĩa: từ cùng nghĩa và ngược nghĩa theo từ loại. Bấm một từ trong kết quả để tra tiếp từ đó.',
+  lxEmpty:'Gõ một từ tiếng Anh rồi nhấn Enter.', lxLoading:'Đang tra…', lxNone:'Không tìm thấy kết quả cho từ này.',
+  lxErr:'Không tra được — kiểm tra kết nối mạng rồi thử lại.', lxEnOnly:'Chỉ tra được từ tiếng Anh.', lxOneWord:'Mục Dạng từ chỉ tra được một từ đơn.',
+  lxPos_n:'Danh từ', lxPos_v:'Động từ', lxPos_adj:'Tính từ', lxPos_adv:'Trạng từ', lxPos_other:'Khác',
+  lxInfl:'Biến thể (-s, -ed, -ing, so sánh…)', lxSyn:'Đồng nghĩa', lxAnt:'Trái nghĩa', lxNear:'Gần nghĩa',
+  lxNoSyn:'Không có từ đồng nghĩa — dưới đây là các từ gần nghĩa.', lxNoAnt:'Không có từ trái nghĩa cho từ này.',
+  lxExtForms:'Xem trên Cambridge', lxExtSyn:'Xem trên Thesaurus.com',
+  lxTip:'Ví dụ: decide → decision, decisive, decisively, indecisive · biến thể: decides, decided, deciding. Mẹo: bôi đen một từ trên trang rồi bấm nút này để tra ngay.',
+  lxNote:'Dữ liệu từ Datamuse và Free Dictionary API — từ bạn nhập được gửi tới hai dịch vụ này. Dạng từ được lọc tự động theo gốc từ nên đôi khi thiếu hoặc lẫn từ; kiểm tra lại bằng từ điển khi cần.',
   /* ── Lịch sử bài viết ── */
   histBtn:'Lịch sử viết', histTitle:'Lịch sử bài viết', histBack:'Danh sách',
   histEmpty:'Chưa có bài viết nào — hoàn thành một đoạn văn trong nhiệm vụ Viết đoạn văn để lưu tại đây.',
@@ -2248,8 +2303,8 @@ en:{
   cefrDone:n=>`CEFR classification done${n ? ` — ${n} word${n>1?'s':''} need checking` : ''}`, cefrVerify:'Not enough evidence — needs checking',
   cefrTip:(l,c)=>`CEFR ${l} · estimated by the on-device AI · confidence ${c}%`,
   qStreakMilestone:n=>`🔥 Amazing! ${n} correct answers in a row!`, qLimitBtn:'Limit today', qLimitedBtn:'Limited today',
-  qLimitTitle:'This word will only show up occasionally (under 10% of questions) — today only, back to normal tomorrow',
-  qLimitOn:w=>`"${w}" limited — it will only appear now and then, back to normal after today`,
+  qLimitTitle:'Skip this word today — it only rarely comes back by luck (under 5%), back to normal tomorrow',
+  qLimitOn:w=>`"${w}" limited — you will barely see it today, back to normal tomorrow`,
   qLimitOff:w=>`Limit removed for "${w}"`, qSpeakLbl:'Show speaker button',
   qPhrasePh:'Type the whole phrase/sentence then press Enter — auto-checks once long enough',
   qAnsPlaceholder:'Tap the words below in the right order — auto-checks once complete',
@@ -2292,6 +2347,20 @@ en:{
   trAdd:'Add to book', trAdded:w=>`Added "${w}" to your vocabulary`, trExists:w=>`"${w}" is already in your book`,
   trTooLong:'Only short words or phrases can be added (max 6 words)', trOpenGoogle:'Open Google Translate',
   trNote:'Translated by Google Translate — what you type is sent to Google. Pick a meaning above to use it when adding to your book.',
+  /* ── Word forms & synonyms ── */
+  lxTitle:'Word forms & Synonyms', lxFab:'Look up word forms, synonyms & antonyms',
+  lxTabForms:'Word forms', lxTabSyn:'Synonyms / Antonyms',
+  lxPhForms:'Type a word to find its forms…', lxPhSyn:'Type a word to find synonyms, antonyms…',
+  lxSubForms:'Word forms: the word family by part of speech (noun / verb / adjective / adverb) and inflections.',
+  lxSubSyn:'Synonyms / Antonyms: words with the same and opposite meaning, by part of speech. Tap any word in the results to look it up.',
+  lxEmpty:'Type an English word and press Enter.', lxLoading:'Looking up…', lxNone:'No results for this word.',
+  lxErr:"Couldn't look it up — check your connection and try again.", lxEnOnly:'Only English words can be looked up.', lxOneWord:'Word forms only works for a single word.',
+  lxPos_n:'Nouns', lxPos_v:'Verbs', lxPos_adj:'Adjectives', lxPos_adv:'Adverbs', lxPos_other:'Other',
+  lxInfl:'Inflections (-s, -ed, -ing, comparatives…)', lxSyn:'Synonyms', lxAnt:'Antonyms', lxNear:'Similar meaning',
+  lxNoSyn:'No synonyms — here are words with a similar meaning.', lxNoAnt:'No antonyms for this word.',
+  lxExtForms:'See on Cambridge', lxExtSyn:'See on Thesaurus.com',
+  lxTip:'Example: decide → decision, decisive, decisively, indecisive · inflections: decides, decided, deciding. Tip: select a word on the page, then tap this button.',
+  lxNote:'Data from Datamuse and the Free Dictionary API — what you type is sent to these services. Word forms are filtered automatically by root, so a few may be missing or off; double-check with a dictionary when needed.',
   /* ── Writing history ── */
   histBtn:'Writing history', histTitle:'Writing history', histBack:'All entries',
   histEmpty:'No writing yet — finish a paragraph in the Writing task and it will be saved here.',
@@ -2477,7 +2546,7 @@ const I18N_BINDINGS = [
   ['nSentenceLbl','text','nSentenceLbl'], ['nNoteLbl','text','nNoteLbl'], ['fNote','placeholder','nNotePh'],
   ['nAddBtn','text','nAddBtn'], ['nClearBtn','text','nClearBtn'], ['nListTitle','text','nListTitle'], ['search','placeholder','nSearchPh'],
   ['groupFilter','title','nGroupFilterTitle'], ['nDelSelBtn','text','delSelBtn'], ['nClearSelBtn','text','clearSelBtn'],
-  ['wordSelAll','title','selAllTitle'], ['histBtn','title','histTitle'], ['trFab','title','trFab'], ['trFab','aria-label','trFab'], ['trTitle','text','trTitle'],
+  ['wordSelAll','title','selAllTitle'], ['histBtn','title','histTitle'], ['trFab','title','trFab'], ['trFab','aria-label','trFab'], ['lxFab','title','lxFab'], ['lxFab','aria-label','lxFab'], ['lxTitle','text','lxTitle'], ['lxTabForms','text','lxTabForms'], ['lxTabSyn','text','lxTabSyn'], ['lxInForms','placeholder','lxPhForms'], ['lxInSyn','placeholder','lxPhSyn'], ['trTitle','text','trTitle'],
   ['trIn','placeholder','trPh'], ['trDir','title','trSwap'], ['trSpeak','title','trSpeak'], ['trCopy','title','trCopy'],
   ['trAddLbl','text','trAdd'], ['trGoogleLbl','text','trOpenGoogle'], ['btnBulkGroup','title','nBulkGroupTitle'], ['btnCefr','title','cefrTitle'],
   ['nBulkGroupBtn','text','nBulkGroupBtn'], ['nImportBtn','text','nImportBtn'], ['nExportBtn','text','nExportBtn'],
@@ -2512,6 +2581,8 @@ function applyI18n(){
   $('#gardenInfo').innerHTML = tkInfo([t('gardenInfo')]);
   $('#quizInfo').innerHTML = tkInfo([t('qTilesHelp')]);
   $('#trInfo').innerHTML = tkInfo([t('trTip'), t('trNote')]);
+  $('#lxInfo').innerHTML = tkInfo([t('lxSubForms'), t('lxSubSyn'), t('lxTip'), t('lxNote')]);
+  if(window.lxReady){ lxRender('forms'); lxRender('syn'); }
   if(typeof renderStats === 'function' && words) renderStats();
 }
 let currentLoginStep = null;
@@ -2927,40 +2998,29 @@ function pickWord(pool){
   return cands[cands.length-1];
 }
 
-/* Hạn chế từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) chỉ thỉnh thoảng
-   xen vào, bất kể tỉ lệ đúng/sai. Mặc định tổng số lần các từ bị hạn chế xuất hiện luôn
-   < 10% số câu trong ngày (đếm chung Luyện gõ + Flashcard, lưu theo ngày để tải lại trang
-   không bị "reset"), và giữa hai lần gặp cách nhau ít nhất 10–14 câu. Sang ngày mới
-   limitDay không còn khớp → tự trở lại bình thường, không cần dọn dẹp. */
+/* Hạn chế từ trong hôm nay: từ bị đánh dấu (w.limitDay = ngày hôm nay) gần như bị bỏ qua
+   hoàn toàn — mỗi lần chọn từ chỉ "quay xổ số" với xác suất 4% (< 5%) mới cho một từ bị
+   hạn chế xen vào, bất kể tỉ lệ đúng/sai (hên xui, không đếm theo tỉ lệ chính xác).
+   Nếu chỉ còn toàn từ bị hạn chế thì vẫn cho học. Sang ngày mới limitDay không còn khớp
+   → tự trở lại bình thường, không cần dọn dẹp. */
 const todayKey = () => { const d = new Date();
   return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); };
 const isLimitedToday = w => w.limitDay === todayKey();
-const LIMIT_MAX_RATE = 0.10, LIMIT_LS = 'soTuLimitRate_v1';
-let limitLog = null;                                 // {day, total, lim, since, gap}
-const newLimitGap = () => 10 + Math.floor(Math.random() * 5);
-function limitState(){
-  const day = todayKey();
-  if(!limitLog){ try{ limitLog = JSON.parse(localStorage.getItem(LIMIT_LS)); }catch(e){ limitLog = null; } }
-  if(!limitLog || limitLog.day !== day) limitLog = { day, total: 0, lim: 0, since: 0, gap: newLimitGap() };
-  return limitLog;
-}
-function resetLimitLog(){ limitLog = null; try{ localStorage.removeItem(LIMIT_LS); }catch(e){} }
+const LIMIT_LOTTERY = 0.04, LIMIT_LS = 'soTuLimitRate_v1';
+function resetLimitLog(){ try{ localStorage.removeItem(LIMIT_LS); }catch(e){} }   // dọn khoá cũ (bản đếm tỉ lệ)
 function pickWordLimited(pool){
-  const st = limitState();
   const lim = pool.filter(isLimitedToday);
-  const norm = lim.length ? pool.filter(w => !isLimitedToday(w)) : pool;
-  let w;
-  if(!lim.length) w = pickWord(pool);
-  else if(!norm.length) w = pickWord(lim);         // chỉ còn từ bị hạn chế → vẫn cho học
-  else if(st.since + 1 >= st.gap && (st.lim + 1) / (st.total + 1) < LIMIT_MAX_RATE){
-    w = pickWord(lim);
-  }else w = pickWord(norm);
-  st.total++;
-  if(w && isLimitedToday(w) && norm.length){ st.lim++; st.since = 0; st.gap = newLimitGap(); }
-  else st.since++;
-  try{ localStorage.setItem(LIMIT_LS, JSON.stringify(st)); }catch(e){}
-  return w;
+  if(!lim.length) return pickWord(pool);
+  const norm = pool.filter(w => !isLimitedToday(w));
+  if(!norm.length) return pickWord(lim);           // chỉ còn từ bị hạn chế → vẫn cho học
+  return Math.random() < LIMIT_LOTTERY ? pickWord(lim) : pickWord(norm);
 }
+
+/* Nghĩa có thể gồm nhiều phần ngăn bởi ";" hoặc "/" — vd "một cách tập trung; dồn hết sự chú ý…".
+   Khi hiển thị để đoán từ (Luyện gõ, Flashcard) chỉ lấy ngẫu nhiên MỘT phần. */
+const meaningParts = m => { const ps = String(m || '').split(/[;\/]/).map(x => x.trim()).filter(Boolean);
+  return ps.length ? ps : [String(m || '').trim()]; };
+const pickMeaningPart = w => { const ps = meaningParts(w.meaning); return ps[Math.floor(Math.random() * ps.length)]; };
 
 /* grade: 0 = quên/sai · 1 = mơ hồ · 2 = nhớ/đúng
    charCount (tuỳ chọn): số ký tự đã gõ trong Luyện gõ — dùng để chuẩn hoá
@@ -5713,6 +5773,7 @@ function trRender(){
 }
 function trOpen(){
   const sel = (window.getSelection && String(window.getSelection())).trim();
+  lxClose();
   $('#trPanel').hidden = false; $('#trFab').classList.add('on');
   const inp = $('#trIn');
   if(sel && sel.length < 500 && !$('#trPanel').contains(window.getSelection().anchorNode)){ inp.value = sel; trRun(true); }
@@ -5765,6 +5826,216 @@ $('#trAdd').addEventListener('click', () => {
   toast(t('trAdded', en));
 });
 document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('#trPanel').hidden) trClose(); });
+
+/* ═════════════ TRA DẠNG TỪ & ĐỒNG / TRÁI NGHĨA ═════════════
+   Hai mục tìm kiếm riêng, mỗi mục có ô nhập và kết quả của nó:
+   - Dạng từ: họ từ cùng gốc (decide → decision, decisive, indecisive…) chia theo từ loại, cộng
+     biến thể (-s, -ed, -ing, so sánh, động từ bất quy tắc). Ứng viên lấy từ Datamuse (các từ chứa
+     phần gốc), rồi lọc bằng quy tắc hậu tố: phần khác nhau giữa hai từ phải là chuỗi hậu tố hợp lệ.
+   - Đồng / Trái nghĩa: Free Dictionary API (theo từ loại) + Datamuse rel_syn / rel_ant;
+     không có đồng nghĩa thì đưa các từ gần nghĩa (Datamuse ml). */
+const lx = { tab: 'forms', forms: { q: '', res: null, reqId: 0 }, syn: { q: '', res: null, reqId: 0 } };
+const LX_DER = new Set(('ss ly ily ion ions tion sion ation ations ition ive ives ative itive sive tive ness iness ment ments able ible '
+  + 'ably ibly abilities ability ibility ility ilities al als ally ial ially ity ities ality ize ise izes ises ization isation ful fully '
+  + 'less lessly lessness ous ously ious iously ence ences ency ance ances ancy ent ents ant ants ently antly ic ics ical ically ism '
+  + 'isms ist ists ure ures age ery ory ee or ors ship hood ward wards wise ate ates ator ators ary ish sis tic tical tically ify '
+  + 'ifies ification nation nations').split(' '));
+const LX_INF = new Set('s es d ed ing ings r er ers st est ies ied'.split(' '));
+const LX_WREM = new Set(['', 'e', 'y', 'de', 'te', 'se', 'ce', 've', 'le', 're', 'ze', 'ate', 'in']);   // đuôi của từ gốc có thể rụng
+const LX_CW = new Set(['e', 'de', 'te', 'se', 'ce', 've', 'ze', 'in']);   // đuôi được phép ở từ ứng viên (vd decision → decide)
+const LX_NEG = ['un', 'in', 'im', 'il', 'ir', 'dis', 'non', 'mis'];
+const LX_POS = { noun: 'n', verb: 'v', adjective: 'adj', adverb: 'adv' };
+const LX_IRR = ('be was were been|go went gone|have had|do did done|say said|get got gotten|make made|know knew known|think thought|'
+  + 'take took taken|see saw seen|come came|give gave given|find found|tell told|become became|leave left|feel felt|bring brought|'
+  + 'begin began begun|keep kept|hold held|write wrote written|stand stood|hear heard|let|mean meant|set|meet met|run ran|pay paid|'
+  + 'sit sat|speak spoke spoken|lie lay lain|lead led|read|grow grew grown|lose lost|fall fell fallen|send sent|build built|'
+  + 'understand understood|draw drew drawn|break broke broken|spend spent|cut|rise rose risen|drive drove driven|buy bought|wear wore worn|'
+  + 'choose chose chosen|seek sought|throw threw thrown|catch caught|deal dealt|win won|forget forgot forgotten|lend lent|teach taught|'
+  + 'eat ate eaten|drink drank drunk|sing sang sung|swim swam swum|fly flew flown|hide hid hidden|ride rode ridden|shake shook shaken|'
+  + 'steal stole stolen|wake woke woken|fight fought|feed fed|sleep slept|sell sold|shoot shot|shine shone|bite bit bitten|'
+  + 'blow blew blown|freeze froze frozen|forgive forgave forgiven|hang hung|hurt|put|quit|shut|spread|strike struck|swear swore sworn|'
+  + 'tear tore torn|bear bore borne|beat beaten|bend bent|bind bound|bleed bled|breed bred|burn burnt|dig dug|dream dreamt|'
+  + 'flee fled|forbid forbade forbidden|grind ground|kneel knelt|lay laid|lean leant|leap leapt|light lit|mistake mistook mistaken|'
+  + 'overcome overcame|ring rang rung|seek sought|sew sewn|shrink shrank shrunk|sink sank sunk|slide slid|spin spun|split|'
+  + 'spring sprang sprung|stick stuck|sting stung|stink stank stunk|strive strove striven|sweep swept|swing swung|tread trod trodden|'
+  + 'undergo underwent undergone|undertake undertook undertaken|withdraw withdrew withdrawn|good better best|bad worse worst|'
+  + 'far farther further farthest furthest|little less least|many more most|much more most').split('|').map(g => g.split(' '));
+const lxLcp = (a, b) => { let i = 0; while(i < a.length && i < b.length && a[i] === b[i]) i++; return i; };
+const lxDecoMemo = new Map();
+function lxDeco(r, afterInf){             // r có tách được thành chuỗi hậu tố hợp lệ không
+  if(!r) return true;
+  if(afterInf) return r === 'ly' || r === 'ness';   // sau hậu tố biến thể chỉ còn -ly / -ness (decidedly)
+  if(lxDecoMemo.has(r)) return lxDecoMemo.get(r);
+  let ok = false;
+  for(const x of LX_DER) if(r.startsWith(x) && lxDeco(r.slice(x.length))){ ok = true; break; }
+  if(!ok) for(const x of LX_INF) if(r.startsWith(x) && lxDeco(r.slice(x.length), true)){ ok = true; break; }
+  lxDecoMemo.set(r, ok);
+  return ok;
+}
+function lxRelated(w, c){
+  if(c === w) return true;
+  for(const p of ['', ...LX_NEG]){
+    if(p && !c.startsWith(p)) continue;
+    const cc = c.slice(p.length), i = lxLcp(w, cc);
+    if(i < 3 || i < w.length - 2) continue;
+    const wr = w.slice(i), cr = cc.slice(i);
+    if(wr[0] === 'y' && cr[0] === 'i' && lxDeco(cr.slice(1))) return true;          // happy → happiness
+    if(!(LX_WREM.has(wr) || lxDeco(wr))) continue;
+    if(cr.startsWith('ss') && !wr) continue;                                        // care ≠ caress
+    if(lxDeco(cr) || (LX_CW.has(cr) && wr && lxDeco(wr))) return true;
+  }
+  return false;
+}
+function lxBases(w){                      // từ gốc + các dạng đã bỏ một hậu tố (decision → decis, deci)
+  const bs = [w];
+  for(let k = 4; k < w.length; k++){ const r = w.slice(k);
+    if(LX_DER.has(r) || ['s', 'es', 'ed', 'ing', 'ies', 'ied'].includes(r)) bs.push(w.slice(0, k)); }
+  return bs;
+}
+function lxIsInfl(b, c){                  // c là biến thể ngữ pháp của b (-s, -ed, -ing, -er, -est)
+  if(c === b) return false;
+  const i = lxLcp(b, c), wr = b.slice(i), cr = c.slice(i);
+  if(!wr){
+    if(['s', 'es', 'ed', 'ing', 'er', 'est'].includes(cr)) return true;
+    if(b.endsWith('e') && ['d', 'r', 's', 'st'].includes(cr)) return true;
+    if(cr.length >= 3 && cr[0] === b[b.length - 1] && ['ed', 'ing', 'er', 'est'].includes(cr.slice(1))) return true;   // stop → stopped
+  }
+  if(wr === 'e' && ['ed', 'ing', 'er', 'est'].includes(cr)) return true;
+  if(wr === 'y' && ['ies', 'ied', 'ier', 'iest'].includes(cr)) return true;
+  return false;
+}
+async function lxDm(params){
+  const r = await fetch('https://api.datamuse.com/words?' + params);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+const lxFreq = x => { const f = (x.tags || []).find(s => s.startsWith('f:')); return f ? parseFloat(f.slice(2)) || 0 : 0; };
+const lxPosOf = x => (x.tags || []).map(s => s.toLowerCase()).find(s => ['n', 'v', 'adj', 'adv'].includes(s)) || 'other';
+async function lxForms(q){
+  const n = q.length, bs = lxBases(q), root = bs.reduce((a, b) => b.length < a.length ? b : a);
+  let P = n <= 3 ? q : q.slice(0, Math.max(Math.min(4, n - 1), Math.min(5, n - 2)));
+  if(lxLcp(P, root) >= 3) P = P.slice(0, lxLcp(P, root));
+  const lists = await Promise.all([lxDm('sp=' + P + '*&md=pf&max=1000'), lxDm('sp=*' + P + '*&md=pf&max=1000'), lxDm('sp=' + q + '&md=pf&max=1')]);
+  const seen = new Map();
+  lists.flat().forEach(x => { if(!seen.has(x.word)) seen.set(x.word, x); });
+  const by = { n: [], v: [], adj: [], adv: [], infl: [], other: [] }, irr = LX_IRR.find(g => g.includes(q) || bs.some(b => g[0] === b));
+  for(const x of seen.values()){
+    const c = x.word;
+    if(!/^[a-z]+$/.test(c) || (x.tags || []).includes('prop')) continue;
+    if(c !== q && lxFreq(x) < 0.3) continue;
+    if(!bs.some(b => lxRelated(b, c))) continue;
+    const g = c !== q && bs.some(b => lxIsInfl(b, c)) ? 'infl' : lxPosOf(x);
+    by[g].push({ w: c, f: lxFreq(x) });
+  }
+  if(irr) irr.forEach(f => { if(f !== q && !by.infl.some(x => x.w === f)) by.infl.push({ w: f, f: 1e6 }); });
+  if(!Object.values(by).some(l => l.some(x => x.w === q))) by.other.unshift({ w: q, f: 1e9 });
+  return ['n', 'v', 'adj', 'adv', 'infl', 'other'].map(k => ({ lbl: k === 'infl' ? 'lxInfl' : 'lxPos_' + k,
+    items: by[k].sort((a, b) => b.f - a.f).slice(0, 18).map(x => x.w) })).filter(g => g.items.length);
+}
+async function lxSyns(q){
+  const enc = encodeURIComponent(q);
+  const [syn, ant, self, dict] = await Promise.all([lxDm('rel_syn=' + enc + '&md=p&max=40'), lxDm('rel_ant=' + enc + '&md=p&max=20'),
+    lxDm('sp=' + enc + '&md=p&max=1'),
+    fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + enc).then(r => r.ok ? r.json() : []).catch(() => [])]);
+  const S = {}, A = {};
+  const add = (M, pos, w) => { w = String(w || '').trim(); if(!w || w.toLowerCase() === q) return;
+    const l = M[pos] || (M[pos] = []); if(!l.some(x => x.toLowerCase() === w.toLowerCase())) l.push(w); };
+  (Array.isArray(dict) ? dict : []).forEach(e => (e.meanings || []).forEach(m => {
+    const pos = LX_POS[m.partOfSpeech] || 'other';
+    (m.synonyms || []).forEach(w => add(S, pos, w)); (m.antonyms || []).forEach(w => add(A, pos, w));
+    (m.definitions || []).forEach(d => { (d.synonyms || []).forEach(w => add(S, pos, w)); (d.antonyms || []).forEach(w => add(A, pos, w)); });
+  }));
+  /* Datamuse gắn từ loại của chính từ đồng/trái nghĩa (content → danh từ) → quy về từ loại của từ đang tra */
+  const own = (((self[0] || {}).word === q && self[0].tags) || []).map(x => x.toLowerCase()).filter(x => ['n', 'v', 'adj', 'adv'].includes(x));
+  Object.keys(S).concat(Object.keys(A)).forEach(p => { if(p !== 'other' && !own.includes(p)) own.push(p); });
+  const posFor = x => { const ts = (x.tags || []).map(s => s.toLowerCase()); return own.find(p => ts.includes(p)) || own[0] || lxPosOf(x); };
+  syn.forEach(x => add(S, posFor(x), x.word));
+  ant.forEach(x => add(A, posFor(x), x.word));
+  const order = ['n', 'v', 'adj', 'adv', 'other'];
+  const groups = [];
+  order.forEach(p => { if(S[p]) groups.push({ lbl: 'lxSyn', pos: p, items: S[p].slice(0, 18) }); });
+  if(!groups.length){
+    const near = (await lxDm('ml=' + enc + '&md=p&max=30')).filter(x => !/\s/.test(x.word) || q.includes(' '));
+    const N = {}; near.forEach(x => add(N, lxPosOf(x), x.word));
+    groups.push({ note: 'lxNoSyn' });
+    order.forEach(p => { if(N[p]) groups.push({ lbl: 'lxNear', pos: p, items: N[p].slice(0, 12) }); });
+  }
+  const ants = order.filter(p => A[p]).map(p => ({ lbl: 'lxAnt', pos: p, items: A[p].slice(0, 18) }));
+  return groups.concat(ants.length ? ants : [{ note: 'lxNoAnt' }]);
+}
+const lxIn = kind => $(kind === 'forms' ? '#lxInForms' : '#lxInSyn');
+async function lxRun(kind, force){
+  const st = lx[kind];
+  const q = lxIn(kind).value.trim().toLowerCase().replace(/\s+/g, ' ');
+  if(!q){ st.q = ''; st.res = null; lxRender(kind); return; }
+  if(q === st.q && st.res && !force) return;
+  const id = ++st.reqId;
+  st.q = q;
+  if(VI_RE.test(q)){ st.res = { msg: 'lxEnOnly' }; lxRender(kind); return; }
+  if(kind === 'forms' && !/^[a-z][a-z'-]*$/.test(q)){ st.res = { msg: 'lxOneWord' }; lxRender(kind); return; }
+  st.res = { loading: true }; lxRender(kind);
+  try{
+    const groups = await (kind === 'forms' ? lxForms(q) : lxSyns(q));
+    if(id !== st.reqId) return;
+    st.res = groups.some(g => g.items && g.items.length) ? { groups } : { msg: 'lxNone' };
+  }catch(e){
+    if(id !== st.reqId) return;
+    st.res = { msg: 'lxErr', err: true };
+  }
+  lxRender(kind);
+}
+function lxRender(kind){
+  const st = lx[kind], out = $(kind === 'forms' ? '#lxOutForms' : '#lxOutSyn'), r = st.res;
+  if(kind === lx.tab){
+    const q = encodeURIComponent(st.q || lxIn(kind).value.trim().toLowerCase());
+    $('#lxExt').href = kind === 'forms' ? 'https://dictionary.cambridge.org/dictionary/english/' + q : 'https://www.thesaurus.com/browse/' + q;
+    $('#lxExtLbl').textContent = t(kind === 'forms' ? 'lxExtForms' : 'lxExtSyn');
+  }
+  if(!r){ out.innerHTML = `<div class="tr-empty">${t('lxEmpty')}</div>`; return; }
+  if(r.loading){ out.innerHTML = `<div class="tk-loading" style="padding:6px"><span class="tk-spin"></span>${t('lxLoading')}</div>`; return; }
+  if(r.msg){ out.innerHTML = `<div class="tr-empty" ${r.err ? 'style="color:var(--red)"' : ''}>${t(r.msg)}</div>`; return; }
+  out.innerHTML = r.groups.map(g => g.note ? `<div class="lx-grp lx-none">${t(g.note)}</div>`
+    : `<div class="lx-grp"><div class="tr-pos">${t(g.lbl)}${g.pos ? ` <small>· ${t('lxPos_' + g.pos)}</small>` : ''}</div>
+      <div class="tr-alt-row">${g.items.map(w => `<button class="tr-alt lx-chip ${w === st.q ? 'self' : ''}" data-w="${esc(w)}">${esc(w)}</button>`).join('')}</div></div>`).join('');
+}
+function lxSetTab(kind){
+  lx.tab = kind;
+  $$('#lxPanel .lx-tab').forEach(b => b.classList.toggle('on', b.dataset.lx === kind));
+  $$('#lxPanel .lx-sec').forEach(s => s.hidden = s.dataset.sec !== kind);
+  lxRender(kind);
+  const inp = lxIn(kind); inp.focus(); inp.select();
+}
+function lxLookup(w){                     // điền sẵn cho cả hai mục rồi tra
+  lxIn('forms').value = w; lxIn('syn').value = w;
+  lxRun('forms', true); lxRun('syn', true);
+}
+function lxOpen(){
+  const sel = (window.getSelection && String(window.getSelection())).trim();
+  trClose();
+  $('#lxPanel').hidden = false; $('#lxFab').classList.add('on');
+  if(sel && sel.length < 40 && !$('#lxPanel').contains(window.getSelection().anchorNode)) lxLookup(sel);
+  lxSetTab(lx.tab);
+}
+function lxClose(){ $('#lxPanel').hidden = true; $('#lxFab').classList.remove('on'); }
+$('#lxFab').addEventListener('mousedown', e => e.preventDefault());       // giữ nguyên vùng chữ đang bôi đen
+$('#lxFab').addEventListener('click', () => $('#lxPanel').hidden ? lxOpen() : lxClose());
+$('#lxClose').addEventListener('click', lxClose);
+$$('#lxPanel .lx-tab').forEach(b => b.addEventListener('click', () => lxSetTab(b.dataset.lx)));
+['forms', 'syn'].forEach(kind => {
+  let timer = null;
+  lxIn(kind).addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => lxRun(kind), 600); });
+  lxIn(kind).addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); clearTimeout(timer); lxRun(kind, true); }
+    if(e.key === 'Escape'){ e.stopPropagation(); lxClose(); }
+  });
+});
+$('#lxPanel').addEventListener('click', e => {
+  const b = e.target.closest('.lx-chip'); if(!b) return;
+  lxLookup(b.dataset.w);
+});
+document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('#lxPanel').hidden) lxClose(); });
+window.lxReady = true;
+lxRender('forms'); lxRender('syn');
 
 /* ── Màn chuyển tiếp giữa các nhiệm vụ ── */
 function renderTkTrans(area){
@@ -6344,7 +6615,7 @@ function startQuiz(){
   const w = pickWordLimited(pool);
   lastShownId = w.id;
   preloadWordAudio(w);
-  quiz = { w, mode: w.kind, startAt: now(), hintLevel:0, typed:[], pickedIdx:[],
+  quiz = { w, mode: w.kind, meaning: pickMeaningPart(w), startAt: now(), hintLevel:0, typed:[], pickedIdx:[],
            phraseMode: localStorage.getItem(modeKey(w.kind)) === 'type' ? 'type' : 'chips',
            typedPhrase: '' };           
   if(w.kind === 'đơn'){
@@ -6384,7 +6655,7 @@ function renderQuiz(){
     <div class="q-prompt ${spk?'has-speak':''}">
       ${spk ? `<button class="speak-btn q-speak" id="qSpeak" title="${t('listenTitle')}">${I('sound')}</button>` : ''}
       <div class="label">${t(w.kind==='đơn' ? (typeMode?'qLabelSingleType':'qLabelSingle') : (typeMode?'qLabelPhraseType':'qLabelPhrase'))}</div>
-      <div class="meaning">${esc(w.meaning)} ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''} ${w.saved?`<svg class="ic" style="fill:#FFC83D;width:18px;height:18px"><use href="#i-star"/></svg>`:''}</div>
+      <div class="meaning">${esc(quiz.meaning)} ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''} ${w.saved?`<svg class="ic" style="fill:#FFC83D;width:18px;height:18px"><use href="#i-star"/></svg>`:''}</div>
       ${w.kind==='cụm' && w.sentence && w.sentence.toLowerCase()!==w.word.toLowerCase()
         ? `<div class="hintline">${t('qExample')} <span class="mono">${esc(w.sentence)}</span></div>` : ''}
       ${hint}
@@ -6612,20 +6883,21 @@ function fcPool(){
 /* Tạo 4 phương án: 1 nghĩa đúng + 3 nghĩa nhiễu
    (ưu tiên cùng nhóm > cùng loại đơn/cụm — nhiễu càng "gần" càng khó đoán mò) */
 function buildOptions(w){
-  const seen = new Set([w.meaning.toLowerCase()]);
+  const right = pickMeaningPart(w);
+  const seen = new Set(meaningParts(w.meaning).map(m => m.toLowerCase()));
   const rank = x => (x.group && x.group === w.group ? 2 : 0) + (x.kind === w.kind ? 1 : 0);
   const cands = shuffle(words.filter(x => x.id !== w.id && x.meaning))
                   .sort((a,b) => rank(b) - rank(a));
   const distract = [];
   for(const x of cands){
-    const m = x.meaning.trim();
+    const m = pickMeaningPart(x);
     if(!m || seen.has(m.toLowerCase())) continue;
-    seen.add(m.toLowerCase());
+    meaningParts(x.meaning).forEach(p => seen.add(p.toLowerCase()));
     distract.push(m);
     if(distract.length === 3) break;
   }
-  const opts = shuffle([w.meaning, ...distract]);
-  return { opts, correctIdx: opts.indexOf(w.meaning) };
+  const opts = shuffle([right, ...distract]);
+  return { opts, correctIdx: opts.indexOf(right) };
 }
 
 function startFc(){
@@ -6682,7 +6954,7 @@ function renderFc(){
           </div>
           ${answered ? (fc.picked === fc.correctIdx
               ? `<div class="fc-verdict ok">${I('check')} ${t('fcCorrect')}</div>`
-              : `<div class="fc-verdict bad">${I('x')} ${t('fcWrongAns', '<b>'+esc(w.meaning)+'</b>')}</div>`)
+              : `<div class="fc-verdict bad">${I('x')} ${t('fcWrongAns', '<b>'+esc(opts[fc.correctIdx])+'</b>')}</div>`)
             : (clozeHtml(w) ? `<div class="fc-cloze">${clozeHtml(w)}</div>` : '')}
           <span class="fc-lv">${lvBadge(w)}</span>
           <div class="fc-tap">${answered ? t('fcTapAnswered') : t('fcTapChoose')}</div>
@@ -6761,7 +7033,7 @@ function answerFc(i){
     v.className = 'fc-verdict ' + (correct ? 'ok' : 'bad');
     v.innerHTML = correct
       ? I('check') + ' ' + t('fcCorrect')
-      : I('x') + ' ' + t('fcWrongAns', '<b>'+esc(fc.w.meaning)+'</b>');
+      : I('x') + ' ' + t('fcWrongAns', '<b>'+esc(fc.opts[fc.correctIdx])+'</b>');
     const tap = front.querySelector('.fc-tap');
     front.insertBefore(v, tap);
     if(tap) tap.textContent = t('fcTapAnswered');
@@ -8194,7 +8466,7 @@ async function enterApp(){
   quiz = null; fc = null; quizGroupAll = true; quizGroupSet = new Set(); groupFilter.reset(); fcGroupFilter.reset(); wordSel.sel.clear(); resetLimitLog(); updateStreakUI(quizStreak); lastShownId = null;
   applyI18n();
   activateTab($('.tab-btn[data-tab="tasks"]'));
-  $('#trFab').hidden = false;
+  $('#trFab').hidden = false; $('#lxFab').hidden = false;
   loadGarden();
   renderTable();
   renderStats();
@@ -8211,7 +8483,7 @@ $('#userChip').addEventListener('click', () => {
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ
   if(tasks) saveTasks(true);
   saveFocusLog(true);
-  closeHist(); trClose(); $('#trFab').hidden = true;
+  closeHist(); trClose(); lxClose(); $('#trFab').hidden = true; $('#lxFab').hidden = true;
   currentUser = null; words = []; tasks = null; focusLog = {}; writeLog = [];
   updateTasksBadge(); updateHistBadge();
   renderTable(); renderStats();

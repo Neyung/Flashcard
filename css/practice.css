@@ -1,0 +1,173 @@
+/* ── Luyện gõ ───────────────────────── */
+.quiz-stage{max-width:760px;margin:0 auto}
+.q-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+.q-prompt{
+  border:var(--bd);border-radius:var(--r);box-shadow:var(--shadow);padding:22px;
+  background:var(--sky);margin-bottom:20px;position:relative;
+}
+.q-prompt .label{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.8px;color:#23284A99}
+.q-prompt .meaning{font-size:22px;font-weight:800;margin-top:4px}
+.q-prompt .hintline{margin-top:8px;font-size:13.5px;font-weight:600;color:#23284ACC}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 18px;min-height:58px}
+.tile{
+  width:48px;height:54px;border:var(--bd);border-radius:10px;background:var(--paper);
+  box-shadow:var(--shadow-sm);display:grid;place-items:center;
+  font-family:'JetBrains Mono',monospace;font-weight:800;font-size:22px;text-transform:lowercase;
+  transition:background .12s, transform .12s;
+}
+.tile.filled{background:var(--lemon)}
+.tile.cursor{outline:3px dashed var(--blue);outline-offset:2px}
+.tile.space{border:none;box-shadow:none;background:transparent;width:18px}
+.tile.ok{background:var(--mint);animation:bump .3s}
+.tile.bad{background:var(--pink);animation:shake .35s}
+@keyframes bump{50%{transform:scale(1.12)}}
+@keyframes shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.chips{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin-bottom:18px;min-height:50px}
+.chip-w{
+  font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;cursor:pointer;
+  padding:9px 14px;border:var(--bd);border-radius:10px;background:var(--lav);
+  box-shadow:var(--shadow-sm);transition:transform .1s;user-select:none;
+}
+.chip-w:hover{transform:translate(-1px,-1px)}
+.chip-w:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.chip-w.used{opacity:.25;pointer-events:none}
+.chip-w.letter{background:var(--peach);text-transform:lowercase}
+.answer-line{
+  min-height:56px;border:2.5px dashed var(--ink);border-radius:12px;background:#FFFEF6;
+  display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:9px;margin-bottom:18px;
+}
+.answer-line .chip-w{background:var(--mint)}
+.answer-line .placeholder{color:var(--muted);font-size:13px;font-weight:700;margin:0 auto}
+.quiz-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.feedback{
+  margin-top:16px;padding:14px 16px;border:var(--bd);border-radius:12px;font-weight:700;
+  font-size:14.5px;display:none;
+}
+.feedback.show{display:block;animation:pop .25s}
+.feedback.good{background:var(--mint)} .feedback.bad{background:var(--pink)}
+.feedback .ans{font-family:'JetBrains Mono',monospace;font-weight:800}
+
+/* ── Flashcard ──────────────────────── */
+.fc-stage{max-width:620px;margin:0 auto;text-align:center}
+.fc-scene{perspective:1400px;margin-bottom:20px}
+.fc-card{
+  position:relative;width:100%;min-height:330px;cursor:pointer;
+  transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.7,.3,1.1);
+}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{
+  position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
+  border:3px solid var(--ink);border-radius:20px;box-shadow:6px 6px 0 var(--ink);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:28px;
+}
+.fc-front{background:var(--peach)}
+.fc-back{background:var(--mint);transform:rotateY(180deg)}
+.fc-word{font-family:'JetBrains Mono',monospace;font-weight:800;letter-spacing:-1px;
+  word-break:break-word;overflow-wrap:break-word;hyphens:auto;
+  font-size:clamp(16px,5.5vw,44px);           /* co xuống tối thiểu 16px */
+  line-height:1.25;max-width:100%;padding:0 6px}
+.fc-word.len-med{font-size:clamp(16px,4.5vw,34px)}   /* 20–35 ký tự */
+.fc-word.len-long{font-size:clamp(14px,3.5vw,26px)}  /* 36–55 ký tự */
+.fc-word.len-xlong{font-size:clamp(13px,2.6vw,20px)} /* 56+ ký tự   */
+.fc-meaning{font-size:24px;font-weight:800}
+.fc-sentence{font-family:'JetBrains Mono',monospace;font-size:14.5px;font-weight:500;background:#FFFFFFB0;border:2px solid var(--ink);border-radius:10px;padding:8px 14px}
+.fc-note{font-size:13px;font-weight:600;color:#23284ACC;max-width:90%}
+.fc-tap{position:absolute;bottom:12px;left:0;right:0;font-size:11.5px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:#23284A88}
+.fc-corner{position:absolute;top:12px;left:16px;display:flex;gap:8px;align-items:center}
+.fc-star{position:absolute;top:12px;right:12px;background:none;border:none;cursor:pointer;color:var(--ink);opacity:.4;transition:.15s;padding:4px}
+.fc-star .ic{width:24px;height:24px}
+.fc-star.on{opacity:1;transform:scale(1.15)}
+.fc-star.on .ic{fill:#FFC83D}
+.grade-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.grade-row .btn{font-size:14.5px;padding:12px 20px}
+.fc-progress{margin-top:16px;font-size:13px;font-weight:700;color:var(--muted)}
+
+/* ── Icon hệ thống (SVG tự thiết kế) ─ */
+.ic{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;flex:none}
+.btn .ic,.chip .ic{width:15px;height:15px}
+.tab-btn .ic{margin-right:7px;vertical-align:-2.5px}
+.logo-badge .ic{width:28px;height:28px;stroke-width:2.2}
+.empty .ic{width:44px;height:44px;stroke-width:1.8;margin-bottom:8px;color:var(--muted)}
+
+/* ── Trắc nghiệm flashcard ──────────── */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;text-align:left}
+.opt{
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:14.5px;cursor:pointer;
+  padding:13px 15px;border:var(--bd);border-radius:12px;background:var(--paper);
+  box-shadow:var(--shadow-sm);transition:transform .1s, box-shadow .1s;color:var(--ink);
+  display:flex;gap:11px;align-items:center;text-align:left;
+}
+.opt .key{
+  font-family:'JetBrains Mono',monospace;font-weight:800;font-size:12px;flex:none;
+  border:2px solid var(--ink);border-radius:7px;width:24px;height:24px;
+  display:grid;place-items:center;background:var(--lemon);
+}
+.opt:hover:not(:disabled){transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.opt:active:not(:disabled){transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--mint)}
+.opt.right .key{background:var(--green);color:#fff;border-color:var(--ink)}
+.opt.wrong{background:var(--pink);animation:shake .35s}
+.opt.dim{opacity:.45}
+@media (max-width:560px){.opts{grid-template-columns:1fr}}
+
+/* ── Toast / misc ───────────────────── */
+#toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);
+  background:var(--ink);color:#fff;font-weight:700;font-size:14px;padding:12px 20px;
+  border-radius:12px;box-shadow:4px 4px 0 #23284A55;z-index:99;
+  opacity:0;visibility:hidden;transition:transform .3s, opacity .25s, visibility 0s .3s;
+}
+#toast.show{transform:translateX(-50%) translateY(0);opacity:1;visibility:visible;transition:transform .3s, opacity .2s}
+.empty{
+  text-align:center;padding:40px 20px;color:var(--muted);font-weight:700;
+}
+.empty .big{font-size:40px;margin-bottom:8px}
+.switch-row{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800}
+.switch-row input{width:18px;height:18px;accent-color:var(--blue)}
+@media (max-width:760px){
+  .col-3,.col-4,.col-6,.col-8,.col-9{grid-column:span 12}
+  .head-stats{margin-left:0}
+  .tile{width:40px;height:46px;font-size:18px}
+}
+/* ── Luyện gõ: bộ lọc nhóm nhiều lựa chọn ───────────────── */
+.gsel{position:relative;flex:0 1 300px;width:300px;max-width:100%}
+.gsel-btn{width:100%;display:flex;align-items:center;justify-content:space-between;gap:10px;
+  border:var(--bd);border-radius:12px;background:#fff;box-shadow:var(--shadow-sm);
+  padding:10px 14px;font:800 14px 'Manrope',sans-serif;color:var(--ink);cursor:pointer;text-align:left;
+  transition:transform .1s, box-shadow .1s}
+.gsel-btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+.gsel-btn:focus-visible{outline:3px dashed var(--blue);outline-offset:2px}
+.gsel-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gsel .caret{transition:transform .15s}
+.gsel.open .caret{transform:rotate(180deg)}
+.gsel-menu{position:absolute;z-index:40;top:calc(100% + 8px);left:0;width:100%;min-width:260px;max-width:min(420px,92vw);
+  max-height:320px;overflow:auto;border:var(--bd);border-radius:12px;background:var(--paper);
+  box-shadow:var(--shadow);padding:6px;animation:pop .15s}
+.gsel-menu[hidden]{display:none}
+.gsel-opt{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;cursor:pointer;
+  font:700 13.5px 'Manrope',sans-serif;user-select:none}
+.gsel-opt:hover{background:var(--lemon)}
+.gsel-opt input{width:18px;height:18px;accent-color:var(--blue);flex:none;cursor:pointer;margin:0}
+.gsel-opt .n{margin-left:auto;font:700 11.5px 'JetBrains Mono',monospace;color:var(--muted)}
+.gsel-opt.all{background:var(--sky);border-bottom:2px dashed var(--ink);border-radius:8px;margin-bottom:6px;font-weight:800}
+.q-prompt .q-star{vertical-align:middle}
+.q-prompt .q-star .ic{width:20px;height:20px}
+.q-prompt.has-speak{padding-right:72px}
+.q-prompt .q-speak{position:absolute;top:16px;right:16px}
+.btn.limit-on{background:var(--ink);color:#fff}
+/* ── Bảng Ghi chú / Mẫu câu: lọc tick + chọn nhiều dòng ── */
+.toolbar .gsel{flex:0 1 230px;width:230px}
+.toolbar .gsel-btn{padding:9px 14px;font-size:13.5px}
+.sel-col{width:36px;padding-right:0 !important}
+.row-cb{width:17px;height:17px;accent-color:var(--blue);cursor:pointer;margin:0;vertical-align:middle}
+tbody tr.sel{background:#E8F4FF}
+tbody tr.sel:hover{background:var(--sky)}
+.bulk-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 12px;padding:8px 10px 8px 14px;
+  border:var(--bd);border-radius:12px;background:var(--ink);color:#fff;box-shadow:var(--shadow-sm);animation:pop .15s}
+.bulk-bar[hidden]{display:none}
+.bulk-n{font-weight:800;font-size:13px;margin-right:auto;display:flex;align-items:center;gap:8px}
+.bulk-n .ic{width:15px;height:15px}
+.btn.danger{background:var(--red);color:#fff}
+.bulk-bar .btn{border-color:#fff;box-shadow:none}
+.bulk-bar .btn.ghost{background:transparent;color:#fff}

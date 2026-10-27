@@ -1,0 +1,166 @@
+/* ── Streak: hiệu ứng lên cấp dần theo số câu đúng liên tiếp ── */
+/* lớp vẽ riêng: hiệu ứng lửa / cầu vồng / ánh kính của khiên chạy liên tục chỉ vẽ lại chip này, không kéo cả thanh trên cùng vẽ lại */
+.streak-chip{position:relative;transition:background .4s;will-change:transform}
+.streak-chip .ic{color:var(--muted);transform-origin:50% 90%;transition:color .3s}
+.streak-chip .num{display:inline-block;min-width:1ch}
+.streak-chip .num.pop{animation:streakPop .35s}
+.streak-chip::after{content:'';position:absolute;inset:-5px;border-radius:999px;border:3px solid #FF6B3D;opacity:0;pointer-events:none}
+.streak-chip.tier-up::after{animation:streakRing .7s ease-out}
+.streak-chip.lost{animation:shake .35s}
+.streak-chip[data-tier="1"] .ic{color:#E5484D}
+.streak-chip[data-tier="2"]{background:var(--peach)}
+.streak-chip[data-tier="2"] .ic{color:#F2711C;fill:#F2711C33;animation:flame 1.5s ease-in-out infinite}
+.streak-chip[data-tier="3"]{background:#FFD3A1;box-shadow:var(--shadow-sm),0 0 14px #FF8A3D88}
+.streak-chip[data-tier="3"] .ic{width:18px;height:18px;color:#E5484D;fill:#FFB02E88;animation:flame 1s ease-in-out infinite}
+.streak-chip[data-tier="4"]{background:linear-gradient(90deg,#FFD3A1,#FFB3C7);animation:streakGlow 1.2s ease-in-out infinite}
+.streak-chip[data-tier="4"] .ic{width:20px;height:20px;color:#E5484D;fill:#FFC83D;animation:flame .65s ease-in-out infinite}
+.streak-chip[data-tier="5"]{background:linear-gradient(110deg,#FFF1B3,#FFD9E8,#E4DBFF,#CFE9FF,#C9F4DE,#FFF1B3);
+  background-size:300% 100%;animation:streakRainbow 3s linear infinite, streakGlow 1s ease-in-out infinite}
+.streak-chip[data-tier="5"] .ic{width:22px;height:22px;color:#B5179E;fill:#FFC83D;animation:flame .45s ease-in-out infinite}
+.streak-chip[data-tier="5"] .num{font-size:16px}
+/* Mốc 50 → 100: lửa đổi màu (xanh lam → tím → vàng kim), to dần, có tàn lửa bay lên */
+.streak-chip .embers{position:absolute;left:8px;bottom:50%;width:26px;height:0;pointer-events:none;display:none}
+.streak-chip .embers i{position:absolute;bottom:0;width:4px;height:4px;border-radius:50%;background:var(--ember,#FFB02E);
+  box-shadow:0 0 6px var(--ember,#FFB02E);opacity:0;animation:ember 1.4s ease-out infinite}
+.streak-chip .embers i:nth-child(1){left:2px;animation-delay:0s}
+.streak-chip .embers i:nth-child(2){left:10px;animation-delay:.35s;width:3px;height:3px}
+.streak-chip .embers i:nth-child(3){left:18px;animation-delay:.7s}
+.streak-chip .embers i:nth-child(4){left:6px;animation-delay:1.05s;width:3px;height:3px}
+.streak-chip .embers i:nth-child(5){left:14px;animation-delay:.55s;width:5px;height:5px}
+.streak-chip[data-tier="6"] .embers,.streak-chip[data-tier="7"] .embers,.streak-chip[data-tier="8"] .embers,
+.streak-chip[data-tier="9"] .embers,.streak-chip[data-tier="10"] .embers,.streak-chip[data-tier="11"] .embers{display:block}
+.streak-chip[data-tier="6"]{--ember:#7FE3FF;color:#fff;background:linear-gradient(110deg,#1F4FD8,#2E8BFF,#38C6F4,#2E8BFF,#1F4FD8);
+  background-size:300% 100%;animation:streakRainbow 3s linear infinite, streakGlowBlue 1s ease-in-out infinite}
+.streak-chip[data-tier="6"] .ic{width:25px;height:25px;color:#E6FAFF;fill:#7FE3FF;
+  filter:drop-shadow(0 0 4px #7FE3FF);animation:flame .4s ease-in-out infinite}
+.streak-chip[data-tier="6"] .num{font-size:17px}
+.streak-chip[data-tier="7"]{--ember:#FF8BF0;color:#fff;background:linear-gradient(110deg,#5B21B6,#9333EA,#DB2777,#9333EA,#5B21B6);
+  background-size:300% 100%;animation:streakRainbow 2.4s linear infinite, streakGlowViolet .9s ease-in-out infinite}
+.streak-chip[data-tier="7"] .ic{width:27px;height:27px;color:#FFE4FB;fill:#E879F9;
+  filter:drop-shadow(0 0 5px #F0ABFC);animation:flame .35s ease-in-out infinite}
+.streak-chip[data-tier="7"] .num{font-size:18px}
+.streak-chip[data-tier="8"]{--ember:#FFE58A;color:#FFF6D6;border-color:#B8860B;
+  background:linear-gradient(110deg,#23284A,#5A3A00,#B8860B,#FFD54A,#B8860B,#5A3A00,#23284A);
+  background-size:300% 100%;animation:streakRainbow 2s linear infinite, streakGlowGold .8s ease-in-out infinite}
+.streak-chip[data-tier="8"] .ic{width:38px;height:38px;margin:-10px -3px -6px;color:#FFFFFF;fill:#FFD54A;
+  filter:drop-shadow(0 0 6px #FFE58A) drop-shadow(0 0 12px #FF9F1C);animation:flame .3s ease-in-out infinite}
+.streak-chip[data-tier="8"] .num{font-size:19px;color:#fff;text-shadow:0 1px 0 #5A3A00,0 0 6px #FF9F1C,0 0 12px #FFD54A}
+.streak-chip[data-tier="8"] > span:not(.num):not(.embers){text-shadow:0 1px 1px #3A2600}
+.streak-chip[data-tier="8"]::before{content:'👑';position:absolute;top:-15px;left:6px;font-size:16px;
+  transform:rotate(-18deg);filter:drop-shadow(0 0 4px #FFD54A);animation:crownBob 1.6s ease-in-out infinite}
+.streak-chip[data-tier="6"]::after{border-color:#38C6F4}
+.streak-chip[data-tier="7"]::after{border-color:#C026D3}
+.streak-chip[data-tier="8"]::after{border-color:#FFD54A;border-width:4px}
+/* Mốc 125 → 200: lửa ngọc lục bảo → lửa cầu vồng → lửa vũ trụ (huyền thoại) */
+.streak-chip[data-tier="9"]{--ember:#6EF7B5;color:#fff;border-color:#065F46;
+  background:linear-gradient(110deg,#064E3B,#059669,#34D399,#A7F3D0,#34D399,#059669,#064E3B);
+  background-size:300% 100%;animation:streakRainbow 1.8s linear infinite, streakGlowJade .8s ease-in-out infinite}
+.streak-chip[data-tier="9"] .ic{width:40px;height:40px;margin:-11px -3px -7px;color:#F0FFF8;fill:#34D399;
+  filter:drop-shadow(0 0 6px #6EF7B5) drop-shadow(0 0 12px #10B981);animation:flame .28s ease-in-out infinite}
+.streak-chip[data-tier="9"] .num{font-size:19px;color:#fff;text-shadow:0 1px 0 #064E3B,0 0 8px #6EF7B5}
+.streak-chip[data-tier="9"]::before{content:'✨';position:absolute;top:-14px;left:4px;font-size:15px;animation:sparkSpin 1.8s ease-in-out infinite}
+.streak-chip[data-tier="10"]{--ember:#fff;color:#fff;border-color:#23284A;
+  background:linear-gradient(110deg,#FF3D6E,#FF9F1C,#FFE14D,#2EE59D,#38C6F4,#7C5CFF,#E040FB,#FF3D6E);
+  background-size:400% 100%;animation:streakRainbow 2.2s linear infinite, streakGlowRainbow 2.2s linear infinite}
+.streak-chip[data-tier="10"] .ic{width:42px;height:42px;margin:-12px -4px -8px;color:#fff;fill:#FF4D8D;
+  filter:drop-shadow(0 0 6px #fff) drop-shadow(0 0 10px #FFE14D);animation:flame .26s ease-in-out infinite, fillRainbow 1.5s linear infinite}
+.streak-chip[data-tier="10"] .num{font-size:20px;color:#fff;text-shadow:0 1px 0 #23284A,0 0 8px #fff}
+.streak-chip[data-tier="10"] > span:not(.num):not(.embers){text-shadow:0 1px 1px #23284A}
+.streak-chip[data-tier="10"] .embers i{animation-name:ember,emberRainbow;animation-duration:1.4s,1s}
+.streak-chip[data-tier="10"]::before{content:'💎';position:absolute;top:-16px;left:4px;font-size:17px;
+  filter:drop-shadow(0 0 5px #38C6F4);animation:crownBob 1.4s ease-in-out infinite}
+.streak-chip[data-tier="11"]{--ember:#B9F3FF;color:#fff;border-color:#000;
+  background:radial-gradient(1.5px 1.5px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 45% 70%,#fff,transparent),
+    radial-gradient(1.5px 1.5px at 70% 25%,#fff,transparent),radial-gradient(1px 1px at 85% 65%,#fff,transparent),
+    radial-gradient(1px 1px at 58% 45%,#FFE58A,transparent),
+    linear-gradient(110deg,#0B0B2B,#2A1060,#0E3A7A,#3B0F5C,#0B0B2B);
+  background-size:100% 100%,100% 100%,100% 100%,100% 100%,100% 100%,300% 100%;
+  animation:streakCosmos 3s linear infinite, streakGlowCosmic 1.6s linear infinite}
+.streak-chip[data-tier="11"] .ic{width:46px;height:46px;margin:-14px -4px -9px;color:#fff;fill:#B9F3FF;
+  filter:drop-shadow(0 0 5px #fff) drop-shadow(0 0 12px #7C5CFF) drop-shadow(0 0 20px #E040FB);
+  animation:flame .24s ease-in-out infinite, fillCosmic 2.4s linear infinite}
+.streak-chip[data-tier="11"] .num{font-size:21px;color:#fff;animation:numGlow 1.6s linear infinite}
+.streak-chip[data-tier="11"]::before{content:'👑';position:absolute;top:-19px;left:6px;font-size:20px;
+  filter:drop-shadow(0 0 6px #FFD54A) drop-shadow(0 0 10px #E040FB);animation:crownBob 1.2s ease-in-out infinite}
+.streak-chip[data-tier="9"]::after{border-color:#34D399}
+.streak-chip[data-tier="10"]::after{border-color:#E040FB;border-width:4px}
+.streak-chip[data-tier="11"]::after{border-color:#B9F3FF;border-width:5px}
+@keyframes streakGlowJade{0%,100%{box-shadow:var(--shadow-sm),0 0 16px #34D39999}50%{box-shadow:var(--shadow-sm),0 0 38px #34D399,0 0 64px #10B98166}}
+@keyframes streakGlowRainbow{0%{box-shadow:var(--shadow-sm),0 0 30px #FF3D6E}25%{box-shadow:var(--shadow-sm),0 0 34px #FFE14D}
+  50%{box-shadow:var(--shadow-sm),0 0 34px #2EE59D}75%{box-shadow:var(--shadow-sm),0 0 34px #7C5CFF}100%{box-shadow:var(--shadow-sm),0 0 30px #FF3D6E}}
+@keyframes streakGlowCosmic{0%,100%{box-shadow:var(--shadow-sm),0 0 22px #7C5CFF,0 0 60px #E040FB88}
+  50%{box-shadow:var(--shadow-sm),0 0 34px #38C6F4,0 0 80px #7C5CFFAA}}
+@keyframes streakCosmos{to{background-position:0 0,0 0,0 0,0 0,0 0,300% 0}}
+@keyframes fillRainbow{0%,100%{fill:#FF4D8D}17%{fill:#FF9F1C}33%{fill:#FFE14D}50%{fill:#2EE59D}67%{fill:#38C6F4}83%{fill:#7C5CFF}}
+@keyframes emberRainbow{0%,100%{background:#FF4D8D;box-shadow:0 0 6px #FF4D8D}33%{background:#FFE14D;box-shadow:0 0 6px #FFE14D}
+  66%{background:#38C6F4;box-shadow:0 0 6px #38C6F4}}
+@keyframes fillCosmic{0%,100%{fill:#B9F3FF}33%{fill:#C4B5FD}66%{fill:#F5A3FF}}
+@keyframes sparkSpin{0%,100%{transform:scale(.8) rotate(0)}50%{transform:scale(1.15) rotate(20deg)}}
+@keyframes numGlow{0%,100%{text-shadow:0 0 6px #B9F3FF,0 0 12px #7C5CFF}50%{text-shadow:0 0 8px #FFE58A,0 0 16px #E040FB}}
+.streak-chip[data-tier="6"].tier-up,.streak-chip[data-tier="7"].tier-up,.streak-chip[data-tier="8"].tier-up,
+.streak-chip[data-tier="9"].tier-up,.streak-chip[data-tier="10"].tier-up,.streak-chip[data-tier="11"].tier-up{
+  animation:streakBurst .6s ease-out, streakRainbow 2s linear infinite}
+@keyframes ember{0%{opacity:0;transform:translate(0,0) scale(1)}15%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx,3px),-30px) scale(.4)}}
+.streak-chip .embers i:nth-child(even){--dx:-4px}
+@keyframes streakGlowBlue{0%,100%{box-shadow:var(--shadow-sm),0 0 12px #38C6F477}50%{box-shadow:var(--shadow-sm),0 0 30px #38C6F4EE}}
+@keyframes streakGlowViolet{0%,100%{box-shadow:var(--shadow-sm),0 0 14px #C026D388}50%{box-shadow:var(--shadow-sm),0 0 34px #E879F9F0}}
+@keyframes streakGlowGold{0%,100%{box-shadow:var(--shadow-sm),0 0 16px #FFD54A99}50%{box-shadow:var(--shadow-sm),0 0 40px #FFC107,0 0 70px #FF9F1C66}}
+@keyframes streakBurst{0%{transform:scale(1)}35%{transform:scale(1.22)}70%{transform:scale(.96)}100%{transform:scale(1)}}
+@keyframes crownBob{0%,100%{transform:translateY(0) rotate(-18deg)}50%{transform:translateY(-3px) rotate(-12deg)}}
+/* Mốc 100 (lửa đỏ–vàng) & 200 (lửa xanh): một luồng lửa ngắn thổi thẳng VÀO ngọn lửa nhỏ của chip,
+   ngọn lửa hút dần rồi bùng lên và từ đó giữ cỡ lớn hơn bình thường */
+.flare-cv{position:fixed;left:0;top:0;z-index:90;pointer-events:none}
+.streak-chip.feeding .ic{animation:flareFeed .12s linear infinite!important}
+.streak-chip.ignite .ic{animation:flareIgnite .75s cubic-bezier(.2,1.6,.4,1)!important}
+.streak-chip.ignite{animation:flareHeat .75s ease-out}
+@keyframes flareFeed{0%,100%{transform:scale(.8,.75) rotate(-5deg)}50%{transform:scale(.9,.95) rotate(5deg)}}
+@keyframes flareIgnite{0%{transform:scale(.7)}30%{transform:scale(2.1,2.5)}55%{transform:scale(1.25,1.45)}75%{transform:scale(1.4,1.6)}100%{transform:scale(1)}}
+/* Gãy chuỗi dài: trạng thái tạm của chip trong lúc hiệu ứng chạy */
+.streak-chip.frozen{background:linear-gradient(#EAF8FF,#B5E2FB)!important;border-color:#5AA9D6;color:#2C6E96;transition:background .6s}
+.streak-chip.frozen .ic{color:#7CC4EE}
+.streak-chip.zapped{animation:zapShake .45s linear!important;background:#3A3A44!important;color:#E8E8F0;filter:contrast(1.2)}
+.streak-chip.zapped .ic{color:#FFE14D;fill:#FFE14D}
+.streak-chip.blessed{box-shadow:var(--shadow-sm),0 0 26px #FFD54A!important;transition:box-shadow .6s}
+@keyframes zapShake{0%,100%{transform:none}15%{transform:translate(-5px,2px) rotate(-3deg)}30%{transform:translate(5px,-2px) rotate(3deg)}
+  45%{transform:translate(-4px,1px) rotate(-2deg)}60%{transform:translate(3px,-1px)}80%{transform:translate(-2px,0)}}
+@keyframes flareHeat{0%,100%{transform:scale(1)}30%{transform:scale(1.12) rotate(-1.5deg)}60%{transform:scale(1.05) rotate(1deg)}}
+@keyframes flame{0%,100%{transform:scale(1) rotate(-3deg)}25%{transform:scale(1.1,1.22) rotate(3deg)}
+  50%{transform:scale(.94,1.06) rotate(-2deg)}75%{transform:scale(1.08,1.16) rotate(4deg)}}
+@keyframes streakGlow{0%,100%{box-shadow:var(--shadow-sm),0 0 10px #FF6B3D66}50%{box-shadow:var(--shadow-sm),0 0 26px #FF6B3DCC}}
+@keyframes streakRainbow{to{background-position:300% 0}}
+@keyframes streakPop{0%{transform:scale(1)}40%{transform:scale(1.4)}100%{transform:scale(1)}}
+@keyframes streakRing{0%{opacity:.9;transform:scale(.9)}100%{opacity:0;transform:scale(1.4)}}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}
+}
+
+/* ── Khiên bảo vệ chuỗi: lớp kính trong suốt bao quanh thanh streak, tinh xảo dần theo số khiên ── */
+.streak-chip .shield-aura{position:absolute;inset:-7px;border-radius:999px;pointer-events:none;display:none;z-index:1;
+  border:1.5px solid rgba(140,195,255,.85);
+  background:linear-gradient(160deg,rgba(255,255,255,.28),rgba(190,225,255,.10) 45%,rgba(255,255,255,.04) 55%,rgba(170,215,255,.16));
+  box-shadow:0 0 10px rgba(140,195,255,.55),inset 0 0 9px rgba(255,255,255,.55)}
+.streak-chip .shield-aura::before{content:'';position:absolute;inset:0;border-radius:inherit;opacity:.6;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.7) 49%,transparent 60%);background-size:260% 100%;
+  animation:shieldSheen 5s ease-in-out infinite}
+.streak-chip:not([data-shield="0"])[data-shield] .shield-aura{display:block}
+.streak-chip[data-shield="2"] .shield-aura{box-shadow:0 0 0 3px rgba(170,215,255,.35),0 0 12px rgba(140,195,255,.6),inset 0 0 10px rgba(255,255,255,.6)}
+.streak-chip[data-shield="3"] .shield-aura,.streak-chip[data-shield="4"] .shield-aura,.streak-chip[data-shield="5"] .shield-aura{
+  background:repeating-linear-gradient(60deg,rgba(255,255,255,.12) 0 1px,transparent 1px 9px),
+    repeating-linear-gradient(-60deg,rgba(255,255,255,.12) 0 1px,transparent 1px 9px),
+    linear-gradient(160deg,rgba(255,255,255,.3),rgba(190,225,255,.1) 45%,rgba(170,215,255,.18));
+  box-shadow:0 0 0 3px rgba(170,215,255,.4),0 0 14px rgba(140,195,255,.7),inset 0 0 12px rgba(255,255,255,.65)}
+.streak-chip[data-shield="4"] .shield-aura,.streak-chip[data-shield="5"] .shield-aura{border-color:rgba(236,190,80,.95);
+  box-shadow:0 0 0 2px rgba(255,255,255,.55),0 0 0 4px rgba(255,214,120,.5),0 0 16px rgba(255,214,120,.6),inset 0 0 12px rgba(255,255,255,.7)}
+.streak-chip[data-shield="5"] .shield-aura::after{content:'';position:absolute;inset:-6px;border-radius:inherit;
+  border:1.5px dotted rgba(230,180,60,.95);animation:shieldPulse 2.4s ease-in-out infinite}
+.streak-chip .shield-n{position:absolute;top:-12px;right:-9px;z-index:2;display:none;align-items:center;gap:2px;padding:1px 6px 1px 4px;
+  border-radius:999px;background:#fff;border:1.5px solid #8CC3FF;font:800 10.5px 'JetBrains Mono',monospace;color:#2B5C9E;
+  box-shadow:0 1px 4px rgba(60,120,200,.3);text-shadow:none!important}
+.streak-chip .shield-n .sh-ic{width:11px;height:11px;fill:#CFE6FF;stroke:#2B5C9E;stroke-width:2}
+.streak-chip:not([data-shield="0"])[data-shield] .shield-n{display:inline-flex}
+.streak-chip[data-shield="4"] .shield-n,.streak-chip[data-shield="5"] .shield-n{border-color:#E8B730;color:#7A5A00}
+.streak-chip.sh-hit{animation:shHit .4s ease-out}
+@keyframes shHit{0%,100%{transform:none}20%{transform:translate(-2px,1px) scale(.98)}45%{transform:translate(2px,-1px)}70%{transform:translate(-1px,0)}}
+@keyframes shieldSheen{0%,55%{background-position:150% 0}100%{background-position:-110% 0}}
+@keyframes shieldPulse{0%,100%{opacity:.45}50%{opacity:1}}

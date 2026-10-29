@@ -151,13 +151,13 @@
 .gsel-opt input{width:18px;height:18px;accent-color:var(--blue);flex:none;cursor:pointer;margin:0}
 .gsel-opt .n{margin-left:auto;font:700 11.5px 'JetBrains Mono',monospace;color:var(--muted)}
 .gsel-opt.all{background:var(--sky);border-bottom:2px dashed var(--ink);border-radius:8px;margin-bottom:6px;font-weight:800}
-#quizArea .q-prompt{padding-right:60px}          /* chừa chỗ cho sao cố định ở góc phải */
-#quizArea .q-prompt.has-speak{padding-right:104px}
-.q-prompt .q-star{position:absolute;top:14px;right:14px;opacity:1;padding:4px}
+#quizArea .q-prompt{padding-right:60px}          /* chừa chỗ cho sao cố định ở góc dưới phải */
+#quizArea .q-prompt.has-speak{padding-right:72px;min-height:108px}   /* thẻ thấp: loa (trên) và sao (dưới) không đè nhau */
+.q-prompt .q-star{position:absolute;bottom:10px;right:14px;opacity:1;padding:4px}
 .q-prompt .q-star:hover .ic{fill:#FFC83D66}
 .q-prompt .q-star .ic{width:24px;height:24px;stroke-width:2.4}
 .q-prompt.has-speak{padding-right:104px}
-.q-prompt .q-speak{position:absolute;top:16px;right:58px}
+.q-prompt .q-speak{position:absolute;top:16px;right:16px}
 .btn.limit-on{background:var(--ink);color:#fff}
 /* ── Bảng Ghi chú / Mẫu câu: lọc tick + chọn nhiều dòng ── */
 .toolbar .gsel{flex:0 1 230px;width:230px}

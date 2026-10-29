@@ -119,7 +119,7 @@ async function doSetup(){
     aHash: await hashText(a.toLowerCase(), salt),
   };
   await putAuth(currentUser, rec);
-  enterApp();
+  enterApp(rec.pwHash);
 }
 
 /* Lần sau: nhập mật khẩu + quên mật khẩu */
@@ -144,7 +144,7 @@ function renderLogin(rec){
   $('#lgForgot').addEventListener('click', () => renderForgot(rec));
   const go = async () => {
     const h = await hashText($('#lgPw').value, rec.salt);
-    if(h === rec.pwHash) enterApp();
+    if(h === rec.pwHash) enterApp(rec.pwHash);
     else $('#lgErr').textContent = t('errPwWrong');
   };
   $('#lgGo').addEventListener('click', go);
@@ -182,8 +182,30 @@ function renderForgot(rec){
   $('#lgA').focus();
 }
 
+/* Ghi nhớ đăng nhập trên máy: tải lại trang không phải đăng nhập lại.
+   Lưu kèm bản băm mật khẩu lúc đăng nhập — đổi mật khẩu / xoá tài khoản → phiên tự hết hiệu lực.
+   "Đổi người dùng" xoá phiên; quá SESSION_DAYS ngày cũng phải đăng nhập lại. */
+const SESSION_KEY = 'soTuSession_v1', SESSION_DAYS = 30;
+function saveSession(user, pwHash){
+  try{ localStorage.setItem(SESSION_KEY, JSON.stringify({ user, pwHash, at: now() })); }catch(e){}
+}
+function clearSession(){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} }
+async function restoreSession(){
+  let s = null;
+  try{ s = JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }catch(e){}
+  if(!s || !s.user || !s.pwHash || now() - (s.at || 0) > SESSION_DAYS * DAY){ clearSession(); return false; }
+  loginSteps().innerHTML = `<p class="login-sub">${t('checking')}</p>`;
+  await loadUserList();
+  const rec = userList.includes(s.user) ? await getAuth(s.user) : null;
+  if(!rec || rec.pwHash !== s.pwHash){ clearSession(); return false; }
+  currentUser = s.user;
+  await enterApp(rec.pwHash);
+  return true;
+}
+
 /* Vào app sau khi đăng nhập */
-async function enterApp(){
+async function enterApp(pwHash){
+  if(pwHash) saveSession(currentUser, pwHash);
   loginSteps().innerHTML = `<p class="login-sub">${t('openingBook', currentUser)}</p>`;
   await loadUser();
   await loadTasks();
@@ -206,6 +228,7 @@ async function enterApp(){
 
 /* Đổi người dùng */
 $('#userChip').addEventListener('click', () => {
+  clearSession();                       // chủ động đổi người → lần sau phải đăng nhập lại
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
   recAbort();
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ

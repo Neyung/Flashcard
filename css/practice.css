@@ -151,8 +151,9 @@
 .gsel-opt input{width:18px;height:18px;accent-color:var(--blue);flex:none;cursor:pointer;margin:0}
 .gsel-opt .n{margin-left:auto;font:700 11.5px 'JetBrains Mono',monospace;color:var(--muted)}
 .gsel-opt.all{background:var(--sky);border-bottom:2px dashed var(--ink);border-radius:8px;margin-bottom:6px;font-weight:800}
-.q-prompt .q-star{vertical-align:middle}
-.q-prompt .q-star .ic{width:20px;height:20px}
+.q-prompt .q-star{vertical-align:middle;opacity:1}
+.q-prompt .q-star:hover .ic{fill:#FFC83D66}
+.q-prompt .q-star .ic{width:24px;height:24px;stroke-width:2.4}
 .q-prompt.has-speak{padding-right:72px}
 .q-prompt .q-speak{position:absolute;top:16px;right:16px}
 .btn.limit-on{background:var(--ink);color:#fff}

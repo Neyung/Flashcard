@@ -11,6 +11,7 @@ function activateTab(btn){
   if(tab==='flash'){ fcGroupFilter.fill(); startFc(); }
   if(tab==='notes'){ if(words && !words.length) addPanelSet(true); renderTable(true); cefrClassify(false); }
   if(tab==='focus'){ renderFocus(); renderGarden(); }
+  if(tab==='topic') renderTopic();
   if(tab==='tasks') renderTasks(); else recAbort();
 }
 $$('.tab-btn').forEach(b=>b.addEventListener('click', ()=>activateTab(b)));
@@ -24,6 +25,7 @@ function refreshCurrentView(){
   else if(tab==='flash'){ fcGroupFilter.fill(); if(fc) renderFc(); else startFc(); }
   else if(tab==='tasks') renderTasks();
   else if(tab==='focus'){ renderFocus(); renderGarden(); }
+  else if(tab==='topic') renderTopic(true);
 }
 function setLang(l){
   LANG = l;

@@ -53,9 +53,10 @@ function renderQuiz(){
   const spk = quizSpeakerOn();
   const promptHtml = `
     <div class="q-prompt ${spk?'has-speak':''}">
+      <button class="star-btn q-star ${w.saved?'on':''}" id="qStar" title="${t('saveToLearning')}" aria-pressed="${!!w.saved}">${I('star')}</button>
       ${spk ? `<button class="speak-btn q-speak" id="qSpeak" title="${t('listenTitle')}">${I('sound')}</button>` : ''}
       <div class="label">${t(w.kind==='đơn' ? (typeMode?'qLabelSingleType':'qLabelSingle') : (typeMode?'qLabelPhraseType':'qLabelPhrase'))}</div>
-      <div class="meaning">${esc(quiz.meaning)} ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''} <button class="star-btn q-star ${w.saved?'on':''}" id="qStar" title="${t('saveToLearning')}" aria-pressed="${!!w.saved}">${I('star')}</button></div>
+      <div class="meaning">${esc(quiz.meaning)} ${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''}</div>
       ${w.kind==='cụm' && w.sentence && w.sentence.toLowerCase()!==w.word.toLowerCase()
         ? `<div class="hintline">${t('qExample')} <span class="mono">${esc(w.sentence)}</span></div>` : ''}
       ${hint}

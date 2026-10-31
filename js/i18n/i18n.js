@@ -9,6 +9,7 @@ function t(key, ...args){
   return typeof v === 'function' ? v(...args) : v;
 }
 const I18N_BINDINGS = [
+  ['loginBrand','text','appName'], ['hdrBrand','text','appName'],
   ['stTotalLbl','text','statWords'], ['stSavedLbl','text','statLearning'], ['stDueLbl','text','statDue'],
   ['nAddTitle','text','nAddTitle'], ['nWordLbl','text','nWordLbl'], ['nGroupLbl','text','nGroupLbl'], ['fGroup','placeholder','nGroupPh'],
   ['nPosLbl','text','nPosLbl'], ['nMeaningLbl','text','nMeaningLbl'], ['nKindLbl','text','nKindLbl'],

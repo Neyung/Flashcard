@@ -1,10 +1,10 @@
 /* ═════════════ GỢI Ý THEO ĐỀ TÀI (tab "Đề tài") ═════════════
    Nhập một đề tài → AI trên máy (Gemini Nano, miễn phí, không cần API key) chia đề tài thành
-   3–4 ý, gợi ý từ vựng cho từng ý (cấp độ CEFR, cụm kết hợp, mẹo dùng, câu ví dụ) rồi soạn câu
-   mẫu cho cả bài. Gemini Nano chỉ viết tiếng Anh → phần tiếng Việt (nghĩa, cách dùng, bản dịch
+   3–4 ý, chọn từ CÓ SẴN trong sổ cho từng ý (không lấy từ ngoài sổ), mỗi từ kèm một cụm đề xuất
+   ghép từ đó với từ mới, cách dùng và câu ví dụ, rồi soạn câu mẫu cho cả bài. Gemini Nano chỉ viết tiếng Anh → phần tiếng Việt (nghĩa, cách dùng, bản dịch
    câu) dịch qua trFetch (Google Dịch, dự phòng MyMemory).
    Lịch sử: localStorage soTuTopics_<user> + users/<user>/topics, giữ tối đa TP_MAX đề tài.
-   Lưu từ: thêm thẳng vào sổ từ vựng hiện có (makeWord), nhóm = tên đề tài. */
+   Lưu: chỉ cụm đề xuất là mới → thêm vào sổ từ vựng hiện có (makeWord), nhóm = tên đề tài. */
 const TP_MAX = 30;
 const TP_LEN = 1500;                               // đề tài có thể là cả một đoạn văn / đề bài dài
 const TP_POOL = 360, TP_CHUNK = 120;               // số từ trong sổ đưa cho AI chọn (ưu tiên từ có sao, rồi từ mới thêm)
@@ -51,9 +51,9 @@ const TP_SYS = 'You help Vietnamese learners of English prepare to write or talk
 const TP_LV = { type: 'string', enum: CEFR };
 const TP_PLAN = { type: 'object', required: ['title', 'ideas'], properties: { title: { type: 'string' },
   ideas: { type: 'array', minItems: 3, maxItems: 4, items: { type: 'string' } } } };
-const TP_WORDS = { type: 'object', required: ['words'], properties: { words: { type: 'array', minItems: 4, maxItems: 6, items: {
-  type: 'object', required: ['word', 'pos', 'level', 'collocation', 'usage', 'example', 'exampleLevel'], properties: {
-    word: { type: 'string' }, pos: { type: 'string', enum: TP_POS }, level: TP_LV, collocation: { type: 'string' },
+const TP_WORDS = { type: 'object', required: ['words'], properties: { words: { type: 'array', minItems: 1, maxItems: 5, items: {
+  type: 'object', required: ['word', 'pos', 'level', 'phrase', 'usage', 'example', 'exampleLevel'], properties: {
+    word: { type: 'string' }, pos: { type: 'string', enum: TP_POS }, level: TP_LV, phrase: { type: 'string' },
     usage: { type: 'string' }, example: { type: 'string' }, exampleLevel: TP_LV } } } } };
 const TP_PICK = { type: 'object', required: ['words'], properties: { words: { type: 'array', maxItems: 20, items: { type: 'string' } } } };
 const TP_SENTS = { type: 'object', required: ['sentences'], properties: { sentences: { type: 'array', minItems: 5, maxItems: 7, items: {
@@ -95,7 +95,7 @@ async function tpVi(lines){
   return out;
 }
 
-/* ── Từ trong sổ: AI chọn những từ hợp với đề tài, các ý dùng chúng trước rồi mới thêm từ mới ── */
+/* ── Từ trong sổ: AI chỉ được chọn trong danh sách này; từ mới chỉ xuất hiện trong cụm ghép với từ trong sổ ── */
 function tpBookPool(){
   const list = (words || []).filter(w => w.word && w.word.trim() && w.word.trim().length <= 40);
   const ord = [...list.filter(w => w.saved).reverse(), ...list.filter(w => !w.saved).reverse()];
@@ -158,46 +158,49 @@ async function tpGenerate(topic){
     tpProg(t('tpStepBook'));
     const book = await tpPickBook(e, alive);
     if(!alive()) return;
-    const have = tpInBook();
-    const used = new Set();
+    e.bk = 1;                                         // kiểu mới: chỉ từ trong sổ + cụm ghép
+    if(!book.length) e.noBook = true;
+    const byKey = new Map(book.map(w => [w.toLowerCase(), w]));
+    const used = new Set(), phrases = [];
     let fails = 0;
-    for(let i = 0; i < e.ideas.length; i++){
+    for(let i = 0; i < e.ideas.length && book.length; i++){
       const d = e.ideas[i];
       tpProg(t('tpStepWords', i + 1, e.ideas.length, d.idea));
+      const fresh = book.filter(w => !used.has(w.toLowerCase()));
+      const cand = fresh.length >= 3 ? fresh : book;  // sổ ít từ hợp → cho phép dùng lại ở ý khác
       let res = null;
       try{
-        res = await tpAsk(`Topic: "${e.title}"\nIdea: "${d.idea}"\nSuggest 5 useful English words or short phrases for writing `
-          + 'about this idea, from easy to advanced (A2 to C1).'
-          + (book.some(w => !used.has(w.toLowerCase())) ? `\nThe learner already studies these words: ${book.filter(w => !used.has(w.toLowerCase())).join('; ')}. `
-            + 'First choose the ones that fit THIS idea (copy them exactly), then add new words only to reach 5.' : '')
-          + (used.size ? `\nDo not use these again: ${[...used].slice(-20).join(', ')}.` : '')
-          + '\nFor each: word = base form; pos = n, v, adj, adv or phrase; level = its CEFR level; collocation = a common '
-          + '2-4 word combination with it; usage = one sentence telling the learner how to use this word to '
-          + 'make a point about this idea (which point it helps express and a typical pattern), max 22 words; example = one natural sentence about the topic using it, max 20 words; exampleLevel = CEFR level of that sentence.',
-          TP_WORDS);
+        res = await tpAsk(`Topic: "${e.title}"\nIdea: "${d.idea}"\nThe learner's own words: ${cand.join('; ')}\n`
+          + 'Choose up to 5 words ONLY from this list that help to write about this idea. Copy each word exactly as in the '
+          + 'list. Never suggest a word that is not in the list.\nFor each: word = the word copied from the list; pos = n, v, '
+          + 'adj, adv or phrase; level = its CEFR level; phrase = a natural 2-5 word phrase that combines this word with other '
+          + 'words to express this idea (e.g. "have an impact on"); usage = one sentence telling the learner how to use the '
+          + 'word and the phrase to make a point about this idea, max 22 words; example = one natural sentence about the topic '
+          + 'using the phrase, max 20 words; exampleLevel = CEFR level of that sentence.', TP_WORDS);
       }catch(err){ if(!alive()) return; }
-      const ws = [];
+      const ws = [], seen = new Set();
       asArr(res && res.words).forEach(x => {
-        const w = tpTxt(x && x.word, 50).replace(/[.!?,;:]+$/, '');
-        const k = w.toLowerCase();
-        if(!w || used.has(k) || w.split(' ').length > 6) return;
-        used.add(k);
-        ws.push({ w, pos: TP_POS.includes(x.pos) ? x.pos : '', lv: tpLv(x.level), col: tpTxt(x.collocation, 80),
+        const w = byKey.get(tpTxt(x && x.word, 60).replace(/[.!?,;:]+$/, '').toLowerCase());
+        if(!w || seen.has(w.toLowerCase())) return;   // không có trong sổ → bỏ
+        seen.add(w.toLowerCase()); used.add(w.toLowerCase());
+        let ph = tpTxt(x.phrase, 80).replace(/[.!?,;:]+$/, '');
+        if(!ph || ph.toLowerCase() === w.toLowerCase() || ph.split(' ').length > 7 || !findTarget(ph, w).length) ph = '';
+        if(ph) phrases.push(ph);
+        ws.push({ w, pos: TP_POS.includes(x.pos) ? x.pos : '', lv: tpLv(x.level), ph,
           use: tpTxt(x.usage, 200), ex: tpTxt(x.example, 220), exLv: tpLv(x.exampleLevel), mean: '', useVi: '' });
       });
       if(!ws.length){ fails++; continue; }
-      const rank = w => (have.has(w.w.toLowerCase()) ? 0 : 10) + (CEFR.indexOf(w.lv) + 9) % 9;   // từ trong sổ lên trước
-      ws.sort((a, b) => rank(a) - rank(b));
+      ws.sort((a, b) => (CEFR.indexOf(a.lv) + 9) % 9 - (CEFR.indexOf(b.lv) + 9) % 9);
       d.words = ws; step();
       tpProg(t('tpStepVi'));
-      const vi = await tpVi([...ws.map(w => w.w), ...ws.map(w => w.use)]);       // nghĩa chỉ dùng khi lưu vào sổ
+      const vi = await tpVi([...ws.map(w => w.ph), ...ws.map(w => w.use)]);      // nghĩa cụm chỉ dùng khi lưu vào sổ
       ws.forEach((w, j) => { w.mean = vi[j]; w.useVi = vi[ws.length + j]; });
       step();
     }
     tpProg(t('tpStepSents'));
     let sr = null;
     try{
-      sr = await tpAsk(`Topic: "${e.title}"\nIdeas: ${e.ideas.map(d => d.idea).join('; ')}\nUseful words: ${[...used].slice(0, 18).join(', ')}\n`
+      sr = await tpAsk(`Topic: "${e.title}"\nIdeas: ${e.ideas.map(d => d.idea).join('; ')}\nUseful words: ${[...used, ...phrases].slice(0, 24).join(', ')}\n`
         + 'Write 6 model sentences a learner can use to build a short essay or talk on this topic: 1 opening sentence, then '
         + 'sentences that develop the ideas (include one example and one opinion), and 1 closing sentence. Use some of the useful '
         + 'words. Keep each sentence under 25 words. level = CEFR level of each sentence.', TP_SENTS);
@@ -205,7 +208,7 @@ async function tpGenerate(topic){
     const ss = asArr(sr && sr.sentences).map(x => ({ s: tpTxt(x && x.sentence, 260), lv: tpLv(x && x.level),
       role: TP_ROLES.includes(x && x.role) ? x.role : 'idea' })).filter(x => x.s);
     if(ss.length) e.sents = ss;
-    e.st = fails || !ss.length || !e.ideas.some(d => d.words.length) ? 'part' : 'done';
+    e.st = fails || !ss.length || (!e.noBook && !e.ideas.some(d => d.words.length)) ? 'part' : 'done';
   })().catch(err => {
     if(!alive()) return;
     if(!e.ideas.length){                              // chưa có gì để giữ → bỏ khỏi lịch sử
@@ -223,17 +226,20 @@ async function tpGenerate(topic){
 
 /* ── Lưu từ vào sổ ── */
 const tpInBook = () => new Set((words || []).map(w => w.word.trim().toLowerCase()));
+const tpNew = x => 'ph' in x ? x.ph : x.w;
 function tpAddWords(e, list){
   if(!currentUser || !words) return 0;
   const have = tpInBook();
   const group = e.name ? tpTxt(e.name, 40) : e.topic.length <= 40 ? e.topic : tpTxt(e.titleVi || e.title, 40);
   let n = 0;
   list.forEach(x => {
-    const k = x.w.trim().toLowerCase();
+    const text = tpNew(x);                          // kiểu mới: cụm đề xuất; kiểu cũ: chính từ đó
+    if(!text) return;
+    const k = text.trim().toLowerCase();
     if(have.has(k)) return;
     have.add(k);
-    const kind = /\s/.test(x.w) ? 'cụm' : 'đơn';
-    const w = makeWord(x.w, x.pos, x.mean || '', x.ex || '', x.useVi || x.use || '', kind, false, group);
+    const kind = /\s/.test(text) ? 'cụm' : 'đơn';
+    const w = makeWord(text, 'ph' in x ? '' : x.pos, x.mean || '', x.ex || '', x.useVi || x.use || '', kind, false, group);
     words.push(w); n++;
     if(kind === 'đơn') fetchPhonetics(w);
   });
@@ -243,6 +249,9 @@ function tpAddWords(e, list){
 
 /* ── Giao diện ── */
 const tpCur = () => tp.list.find(e => e.id === tp.cur) || null;
+/* Tên hiển thị: tên tự đặt → tiêu đề tóm tắt (tiếng Việt nếu đang chọn tiếng Việt) → đề tài gốc */
+const tpAuto = e => (LANG === 'vi' && e.titleVi) || e.title || e.topic;
+const tpTitle = e => e.name || tpAuto(e);
 const tpBadge = lv => lv ? `<span class="cefr cefr-${lv}" title="${esc(t('tpLvTip', lv))}">${lv}</span>` : '';
 const tpSay = s => `<button class="tp-say" data-tp="say" data-say="${esc(s)}" title="${esc(t('tpSpeak'))}" aria-label="${esc(t('tpSpeak'))}">${I('sound')}</button>`;
 /* Tô đậm các từ được gợi ý xuất hiện trong câu (kể cả dạng chia) */
@@ -303,27 +312,32 @@ function tpRenderRes(){
   if(!e){ box.innerHTML = `<div class="panel tp-empty">${I('bulb')}<p>${t('tpEmpty')}</p></div>`; return; }
   const running = tp.run && e.st === 'run';
   const have = tpInBook();
-  const all = e.ideas.flatMap(d => d.words.map(w => w.w));
+  const all = e.ideas.flatMap(d => d.words.flatMap(w => w.ph ? [w.w, w.ph] : [w.w]));
   const noVi = !running && e.ideas.some(d => d.words.some(w => w.use && !w.useVi));
-  const nBook = all.filter(w => have.has(w.toLowerCase())).length;
+  const uniq = xs => [...new Set(xs.filter(Boolean).map(x => x.toLowerCase()))];
+  const nNew = uniq(e.ideas.flatMap(d => d.words.map(tpNew))).filter(x => !have.has(x)).length;
+  const nBook = uniq(e.ideas.flatMap(d => d.words.map(w => w.w))).length;
   const ideas = e.ideas.map((d, i) => `<section class="tp-idea">
       <div class="tp-idea-h"><span class="tp-n">${i + 1}</span><div><b>${esc(d.ideaVi || d.idea)}</b></div>
-        ${d.words.length && d.words.some(w => !have.has(w.w.toLowerCase())) ? `<button class="btn sm ghost" data-tp="addAll" data-i="${i}">${I('plus')}${t('tpSaveAll')}</button>` : ''}</div>
+        ${d.words.some(w => tpNew(w) && !have.has(tpNew(w).toLowerCase())) ? `<button class="btn sm ghost" data-tp="addAll" data-i="${i}">${I('plus')}${t('tpSaveAll')}</button>` : ''}</div>
       ${d.words.length ? `<div class="tp-words">${d.words.map((w, j) => {
-        const inB = have.has(w.w.toLowerCase());
+        const nw = tpNew(w), inB = !nw || have.has(nw.toLowerCase());
+        const btn = `<button class="btn sm ${inB ? 'tp-in' : 'mint'}" data-tp="add" data-i="${i}" data-j="${j}" ${inB ? 'disabled' : ''}>${I(inB ? 'check' : 'plus')}${t(inB ? 'tpSaved' : 'tpSave')}</button>`;
+        const isNew = 'ph' in w;
         return `<article class="tp-w">
           <div class="tp-w-top">${tpBadge(w.lv)}<b class="tp-word">${esc(w.w)}</b>${w.pos ? `<span class="tp-pos">${esc(w.pos)}</span>` : ''}${tpSay(w.w)}
-            <button class="btn sm ${inB ? 'tp-in' : 'mint'}" data-tp="add" data-i="${i}" data-j="${j}" ${inB ? 'disabled' : ''}>${I(inB ? 'check' : 'plus')}${t(inB ? 'tpSaved' : 'tpSave')}</button></div>
+            ${isNew ? `<span class="tp-own">${I('check')}${t('tpSaved')}</span>` : btn}</div>
           <dl class="tp-guide">
             ${w.use ? `<div><dt>${t('tpUse')}</dt><dd>${esc(w.useVi || w.use)}</dd></div>` : ''}
+            ${w.ph ? `<div><dt>${t('tpPhrase')}</dt><dd><div class="tp-line tp-ph"><span class="tp-en">${tpMark(w.ph, [w.w])}</span>${tpSay(w.ph)}${btn}</div></dd></div>` : ''}
             ${w.col ? `<div><dt>${t('tpCol')}</dt><dd class="tp-en">${tpMark(w.col, [w.w])}</dd></div>` : ''}
             ${w.ex ? `<div><dt>${t('tpEx')}</dt><dd><div class="tp-line">${tpBadge(w.exLv)}<span class="tp-en">${tpMark(w.ex, [w.w])}</span>${tpSay(w.ex)}</div></dd></div>` : ''}
           </dl></article>`;
-      }).join('')}</div>` : running ? '' : `<p class="tp-miss">${t('tpIdeaMiss')}</p>`}
+      }).join('')}</div>` : running || e.noBook ? '' : `<p class="tp-miss">${t(e.bk ? 'tpIdeaMissBook' : 'tpIdeaMiss')}</p>`}
     </section>`).join('');
   box.innerHTML = `<div class="panel tp-res">
       <div class="tp-head">
-        <div class="tp-head-t"><h2>${esc(e.name || e.titleVi || e.title || e.topic)}</h2>
+        <div class="tp-head-t"><h2>${esc(tpTitle(e))}</h2>
           <div class="tp-meta">${tpDate(e.at)}</div></div>
         ${e.sents.length ? `<button class="btn sm" data-tp="copy">${I('copy')}${t('tpCopy')}</button>` : ''}
       </div>
@@ -332,7 +346,8 @@ function tpRenderRes(){
       ${e.st === 'part' && !running ? `<p class="tp-warn">${t('tpPart')}</p>` : ''}
       ${noVi ? `<p class="tp-warn">${t('tpViFail')}</p>` : ''}
       ${e.ideas.length ? `<h3 class="tp-h"><span class="dot" style="background:var(--mint)"></span>${t('tpWordsH')}</h3>
-        ${all.length ? `<p class="tp-book">${t('tpBookN', nBook, all.length - nBook)}</p>` : ''}${ideas}` : ''}
+        ${e.noBook && !running ? `<p class="tp-warn">${t('tpNoBook')}</p>` : ''}
+        ${nBook ? `<p class="tp-book">${e.bk ? t('tpBookN2', nBook, nNew) : t('tpBookN', all.filter(w => have.has(w.toLowerCase())).length, nNew)}</p>` : ''}${ideas}` : ''}
       ${e.sents.length ? `<h3 class="tp-h"><span class="dot" style="background:var(--sky)"></span>${t('tpSentsH')}</h3>
         <ol class="tp-sents">${e.sents.map(s => `<li>
           <div class="tp-s-tags">${tpBadge(s.lv)}<span class="tp-role tp-role-${s.role}">${t('tpRole_' + s.role)}</span></div>
@@ -344,7 +359,7 @@ function tpRenderHist(){
   box.innerHTML = `<div class="panel-title"><span class="dot" style="background:var(--lav)"></span><span>${t('tpHist')}</span>
       ${tp.list.length ? `<span class="tp-cnt">${tp.list.length}</span>` : ''}</div>`
     + (tp.list.length ? `<ul class="tp-hl">${tp.list.map(e => `<li class="${e.id === tp.cur ? 'on' : ''}">
-        <button class="tp-hi" data-tp="open" data-id="${e.id}"><b>${esc(e.name || e.topic)}</b>
+        <button class="tp-hi" data-tp="open" data-id="${e.id}"><b title="${esc(e.topic.slice(0, 300))}">${esc(tpTitle(e))}</b>
           <small>${tpDate(e.at)} · ${e.st === 'run' && tp.run ? t('tpRunning') : t('tpWordsN', tpWordN(e))}${e.st === 'part' ? ' · ' + t('tpPartShort') : ''}</small></button>
         <button class="icon-btn tp-del" data-tp="ren" data-id="${e.id}" title="${esc(t('tpRen'))}" aria-label="${esc(t('tpRen'))}">${I('edit')}</button>
         <button class="icon-btn tp-del" data-tp="del" data-id="${e.id}" title="${esc(t('tpDel'))}" aria-label="${esc(t('tpDel'))}">${I('trash')}</button>
@@ -360,12 +375,12 @@ $('#topicArea').addEventListener('submit', ev => {
   $('#tpIn').blur();
   tpGenerate(v);
 });
-/* Đổi tên đề tài ngay trong lịch sử: Enter / bấm ra ngoài = lưu, Esc = huỷ, để trống = về tên gốc */
+/* Đổi tên đề tài ngay trong lịch sử: Enter / bấm ra ngoài = lưu, Esc = huỷ, để trống = về tiêu đề tóm tắt */
 function tpRename(id){
   const e = tp.list.find(x => x.id === id), li = $(`#tpHist [data-tp="open"][data-id="${id}"]`);
   if(!e || !li) return;
   const inp = document.createElement('input');
-  inp.className = 'tp-ren'; inp.maxLength = 80; inp.value = e.name || e.topic.slice(0, 80);
+  inp.className = 'tp-ren'; inp.maxLength = 80; inp.value = tpTitle(e).slice(0, 80);
   inp.setAttribute('aria-label', t('tpRen'));
   li.replaceWith(inp); inp.focus(); inp.select();
   let done = false;
@@ -373,7 +388,7 @@ function tpRename(id){
     if(done) return; done = true;
     if(ok){
       const v = tpTxt(inp.value, 80);
-      const name = v && v !== e.topic ? v : '';
+      const name = v && v !== tpAuto(e) ? v : '';
       if(name !== (e.name || '')){ if(name) e.name = name; else delete e.name; tpSave(true); if(tp.cur === id) tpRenderRes(); }
     }
     tpRenderHist();
@@ -409,7 +424,7 @@ $('#topicArea').addEventListener('click', ev => {
     const d = e.ideas[+b.dataset.i]; if(!d) return;
     const list = act === 'add' ? [d.words[+b.dataset.j]].filter(Boolean) : d.words;
     const n = tpAddWords(e, list);
-    toast(n ? (act === 'add' ? t('trAdded', list[0].w) : t('tpSavedN', n)) : t('tpSavedNone'));
+    toast(n ? (act === 'add' ? t('trAdded', tpNew(list[0])) : t('tpSavedN', n)) : t('tpSavedNone'));
     tpRenderRes();
     return;
   }

@@ -89,11 +89,18 @@ const fam = config.widgetFamily || 'accessoryRectangular';
 if (!list.length) {
   wg.addText(Array.isArray(state.words) ? 'Chưa có từ nào cần học' : 'Không tải được — kiểm tra tên người dùng');
 } else if (fam.startsWith('accessory')) {           // màn hình khoá: chỉ từ + nghĩa, mỗi lần 1 từ
+  // Ô chữ nhật chỉ cao ~4 dòng: bỏ lề, nghĩa tối đa 3 dòng và tự thu nhỏ chữ trước khi phải cắt "…";
+  // nghĩa quá dài (nhiều nghĩa ngăn bởi ";" hoặc "/") → chỉ lấy nghĩa đầu tiên
   const w = list[idx];
+  let mean = (w.meaning || '').trim();
+  if (mean.length > 55) mean = mean.split(/[;\/]/)[0].trim() || mean;
+  // từ / cụm từ dài (> 18 ký tự) được xuống 2 dòng thay vì bị cắt "…", nghĩa nhường lại 1 dòng
+  const longWord = w.word.length > 18;
+  wg.setPadding(0, 0, 0, 0);
   const h = wg.addText(w.word);
-  h.font = Font.boldSystemFont(16); h.lineLimit = 1; h.minimumScaleFactor = 0.6;
-  const m = wg.addText(w.meaning || '');
-  m.font = Font.systemFont(14); m.lineLimit = 2; m.minimumScaleFactor = 0.8;
+  h.font = Font.boldSystemFont(longWord ? 14 : 15); h.lineLimit = longWord ? 2 : 1; h.minimumScaleFactor = 0.6;
+  const m = wg.addText(mean);
+  m.font = Font.systemFont(13); m.lineLimit = longWord ? 2 : 3; m.minimumScaleFactor = 0.65;
 } else {                                            // màn hình chính: cả danh sách
   wg.backgroundColor = new Color('#FFFDF4');
   const ink = new Color('#23284A');

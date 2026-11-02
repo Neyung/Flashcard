@@ -337,6 +337,6 @@ const I18N_EN = {
   tpLvTip:lv=>`CEFR level (AI estimate): ${lv}`,
   tpRole_opening:'Opening', tpRole_idea:'Develop idea', tpRole_example:'Example', tpRole_opinion:'Opinion', tpRole_closing:'Closing',
   qrOpen:'Quick 10', qrExit:'Exit', qrFinish:'Done · back to notes', qrEmpty:'Your book has no words yet',
-  miniOpen:'LangBook · Flashcards', miniClose:'Close mini window', miniNextCard:'Next card', miniAllSkipped:'Every word is skipped for today',
+  miniToggleTip:'Turn the mini window on / off', miniTapFlip:'Tap the card to flip', miniOpen:'LangBook · Flashcards', miniClose:'Close mini window', miniNextCard:'Next card', miniAllSkipped:'Every word is skipped for today',
   qrDoneToast:(k,n)=>`Reviewed ${n} words · ${k}/${n} correct`,
 };

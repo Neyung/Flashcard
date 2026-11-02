@@ -8,17 +8,17 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700;800&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=20261102b">
-<link rel="stylesheet" href="css/practice.css?v=20261102b">
-<link rel="stylesheet" href="css/streak.css?v=20261102b">
-<link rel="stylesheet" href="css/sacred.css?v=20261102b">
-<link rel="stylesheet" href="css/components.css?v=20261102b">
-<link rel="stylesheet" href="css/tasks.css?v=20261102b">
-<link rel="stylesheet" href="css/tools.css?v=20261102b">
-<link rel="stylesheet" href="css/responsive.css?v=20261102b">
-<link rel="stylesheet" href="css/topic.css?v=20261102b">
-<link rel="stylesheet" href="css/quick.css?v=20261102b">
-<link rel="stylesheet" href="css/game/garden.css?v=20261102b">
+<link rel="stylesheet" href="css/base.css?v=20261102c">
+<link rel="stylesheet" href="css/practice.css?v=20261102c">
+<link rel="stylesheet" href="css/streak.css?v=20261102c">
+<link rel="stylesheet" href="css/sacred.css?v=20261102c">
+<link rel="stylesheet" href="css/components.css?v=20261102c">
+<link rel="stylesheet" href="css/tasks.css?v=20261102c">
+<link rel="stylesheet" href="css/tools.css?v=20261102c">
+<link rel="stylesheet" href="css/responsive.css?v=20261102c">
+<link rel="stylesheet" href="css/topic.css?v=20261102c">
+<link rel="stylesheet" href="css/quick.css?v=20261102c">
+<link rel="stylesheet" href="css/game/garden.css?v=20261102c">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -113,6 +113,7 @@
         <button data-lang="en" id="langEnBtn" data-short="EN"></button>
       </div>
       <button class="hist-btn" id="histBtn"><svg class="ic"><use href="#i-clock"/></svg></button>
+      <button class="hist-btn mini-toggle" id="miniToggle" hidden aria-pressed="false"><svg class="ic"><use href="#i-ext"/></svg></button>
       <button class="chip c-lav" id="userChip" style="cursor:pointer;font-family:inherit;font-size:13px">
         <svg class="ic"><use href="#i-user"/></svg> <span class="num" id="userName"></span>
         <span class="sync-dot" id="syncDot"></span>
@@ -469,42 +470,42 @@
 
 
 <!-- Thứ tự nạp quan trọng: các file dùng chung phạm vi toàn cục, file sau dùng hàm/biến của file trước. -->
-<script src="js/core/config.js?v=20261102b"></script>
-<script src="js/i18n/vi.js?v=20261102b"></script>
-<script src="js/i18n/en.js?v=20261102b"></script>
-<script src="js/i18n/i18n.js?v=20261102b"></script>
-<script src="js/core/state.js?v=20261102b"></script>
-<script src="js/core/storage.js?v=20261102b"></script>
-<script src="js/services/pronunciation.js?v=20261102b"></script>
-<script src="js/core/ui-utils.js?v=20261102b"></script>
-<script src="js/core/srs.js?v=20261102b"></script>
-<script src="js/tabs/notes.js?v=20261102b"></script>
-<script src="js/tasks/tasks-state.js?v=20261102b"></script>
-<script src="js/services/speech-recognition.js?v=20261102b"></script>
-<script src="js/tasks/tasks-ui.js?v=20261102b"></script>
-<script src="js/tasks/task-write.js?v=20261102b"></script>
-<script src="js/services/ai-writing.js?v=20261102b"></script>
-<script src="js/tasks/write-history.js?v=20261102b"></script>
-<script src="js/tools/translate.js?v=20261102b"></script>
-<script src="js/tools/lexicon.js?v=20261102b"></script>
-<script src="js/tools/floating-buttons.js?v=20261102b"></script>
-<script src="js/tasks/tasks-events.js?v=20261102b"></script>
-<script src="js/tabs/quiz-filters.js?v=20261102b"></script>
-<script src="js/effects/streak-fx.js?v=20261102b"></script>
-<script src="js/tabs/quiz.js?v=20261102b"></script>
-<script src="js/tabs/flashcard.js?v=20261102b"></script>
-<script src="js/tabs/focus.js?v=20261102b"></script>
-<script src="js/features/sacred-challenge.js?v=20261102b"></script>
-<script src="js/features/cefr.js?v=20261102b"></script>
-<script src="js/features/topic-ideas.js?v=20261102b"></script>
-<script src="js/features/quick-review.js?v=20261102b"></script>
-<script src="js/features/mini-window.js?v=20261102b"></script>
-<script src="js/effects/shield-fx.js?v=20261102b"></script>
-<script src="js/game/garden/garden-items.js?v=20261102b"></script>
-<script src="js/game/garden/garden-map.js?v=20261102b"></script>
-<script src="js/game/garden/garden-ui.js?v=20261102b"></script>
-<script src="js/app/navigation.js?v=20261102b"></script>
-<script src="js/app/login.js?v=20261102b"></script>
-<script src="js/app/main.js?v=20261102b"></script>
+<script src="js/core/config.js?v=20261102c"></script>
+<script src="js/i18n/vi.js?v=20261102c"></script>
+<script src="js/i18n/en.js?v=20261102c"></script>
+<script src="js/i18n/i18n.js?v=20261102c"></script>
+<script src="js/core/state.js?v=20261102c"></script>
+<script src="js/core/storage.js?v=20261102c"></script>
+<script src="js/services/pronunciation.js?v=20261102c"></script>
+<script src="js/core/ui-utils.js?v=20261102c"></script>
+<script src="js/core/srs.js?v=20261102c"></script>
+<script src="js/tabs/notes.js?v=20261102c"></script>
+<script src="js/tasks/tasks-state.js?v=20261102c"></script>
+<script src="js/services/speech-recognition.js?v=20261102c"></script>
+<script src="js/tasks/tasks-ui.js?v=20261102c"></script>
+<script src="js/tasks/task-write.js?v=20261102c"></script>
+<script src="js/services/ai-writing.js?v=20261102c"></script>
+<script src="js/tasks/write-history.js?v=20261102c"></script>
+<script src="js/tools/translate.js?v=20261102c"></script>
+<script src="js/tools/lexicon.js?v=20261102c"></script>
+<script src="js/tools/floating-buttons.js?v=20261102c"></script>
+<script src="js/tasks/tasks-events.js?v=20261102c"></script>
+<script src="js/tabs/quiz-filters.js?v=20261102c"></script>
+<script src="js/effects/streak-fx.js?v=20261102c"></script>
+<script src="js/tabs/quiz.js?v=20261102c"></script>
+<script src="js/tabs/flashcard.js?v=20261102c"></script>
+<script src="js/tabs/focus.js?v=20261102c"></script>
+<script src="js/features/sacred-challenge.js?v=20261102c"></script>
+<script src="js/features/cefr.js?v=20261102c"></script>
+<script src="js/features/topic-ideas.js?v=20261102c"></script>
+<script src="js/features/quick-review.js?v=20261102c"></script>
+<script src="js/features/mini-window.js?v=20261102c"></script>
+<script src="js/effects/shield-fx.js?v=20261102c"></script>
+<script src="js/game/garden/garden-items.js?v=20261102c"></script>
+<script src="js/game/garden/garden-map.js?v=20261102c"></script>
+<script src="js/game/garden/garden-ui.js?v=20261102c"></script>
+<script src="js/app/navigation.js?v=20261102c"></script>
+<script src="js/app/login.js?v=20261102c"></script>
+<script src="js/app/main.js?v=20261102c"></script>
 </body>
 </html>

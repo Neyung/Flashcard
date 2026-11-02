@@ -24,7 +24,7 @@ const I18N_BINDINGS = [
   ['thWord','text','thWord'], ['thPos','text','thPos'], ['thMeaning','text','thMeanFull'], ['thSentence','text','thSentence'],
   ['thNote','text','thNote'], ['thKind','text','thKind'], ['thAcc','text','thAcc'], ['thDue','text','thDue'], ['thDue','title','thDueTitle'], ['thLv','text','thLv'],
   ['qAllGroups','text','qAllGroups'], ['qSavedOnlyLbl','text','qSavedOnlyLbl'], ['qStreakLbl','text','qStreakLbl'],
-  ['fSavedOnlyLbl','text','fSavedOnlyLbl'], ['qrOpenLbl','text','qrOpen'],
+  ['fSavedOnlyLbl','text','fSavedOnlyLbl'], ['qrOpenLbl','text','qrOpen'], ['miniToggle','title','miniToggleTip'], ['miniToggle','aria-label','miniToggleTip'],
   ['awayMsg','text','awayDefault'], ['focusSub','text','focusSubDefault'],
   ['focusPauseLbl','text','focusPause'], ['focusStopLbl','text','focusStop'], ['gardenTitle','text','gardenTitle'],
 ];

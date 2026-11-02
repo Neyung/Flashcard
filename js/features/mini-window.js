@@ -1,22 +1,29 @@
 /* ═══════════════════════════════════════════════════════════
    CỬA SỔ NHỎ (kiểu YouTube thu nhỏ) — luôn nổi trên cùng kể cả khi chuyển sang trang/ứng dụng khác.
    Chỉ máy tính: Document Picture-in-Picture (Chrome/Edge 116+); điện thoại / máy tính bảng không bao giờ mở.
-   - Không có nút: tự bật ở lần bấm/gõ phím đầu tiên trên trang sau khi đăng nhập (trình duyệt bắt buộc phải
-     có một thao tác của người dùng). Thêm handler "enterpictureinpicture" để Chrome tự bật khi chuyển tab
-     trong lúc trang vừa phát âm (điều kiện của Chrome: có tiếng trong 2 giây gần nhất).
-   - Người dùng tắt bằng ✕ hoặc nút đóng → không tự bật lại cho tới khi tải lại trang
-   - Chỉ chế độ Flashcard: trắc nghiệm 4 nghĩa giống tab Flashcard, kèm câu ví dụ; từ được bốc lần lượt
-     từ toàn bộ sổ bằng đúng bộ lập lịch (pickWordLimited) và chấm bằng applyGrade
+   - Nút bật/tắt dạng icon cạnh nút tài khoản (#miniToggle); lựa chọn ghi nhớ ở soTuMini_v2
+   - Đang bật → tự mở ở lần bấm/gõ phím đầu tiên trên trang (trình duyệt bắt buộc phải có một thao tác
+     của người dùng). Thêm handler "enterpictureinpicture" để Chrome tự mở khi chuyển tab trong lúc trang
+     vừa phát âm (điều kiện của Chrome: có tiếng trong 2 giây gần nhất).
+   - Tắt bằng ✕ / nút đóng của cửa sổ = tắt luôn (nút trên thanh tiêu đề chuyển sang tắt)
+   - Thẻ hai mặt giống tab Flashcard: mặt trước chỉ có từ, mặt sau nghĩa + câu ví dụ; chạm để lật qua lại.
+     Nhớ / Quên chấm bằng applyGrade rồi sang từ kế, bốc lần lượt từ toàn bộ sổ bằng pickWordLimited
    ═══════════════════════════════════════════════════════════ */
 let mini = null;          // {win, root, fc, lastId, byApp}
-let miniOff = false;      // người dùng đã tự tắt trong lần mở trang này
+const MINI_LS = 'soTuMini_v2';
+let miniOn = (() => { try{ return localStorage.getItem(MINI_LS) !== 'off'; }catch(e){ return true; } })();
 
 const miniSupported = () => 'documentPictureInPicture' in window && !isMobileDevice();
+function miniSetOn(on){
+  miniOn = on;
+  try{ localStorage.setItem(MINI_LS, on ? 'on' : 'off'); }catch(e){}
+  $('#miniToggle').setAttribute('aria-pressed', String(on));
+}
 
 async function openMini(){
-  if(!miniSupported() || mini || miniOff || !currentUser || !words || !words.length) return;
+  if(!miniSupported() || mini || !currentUser || !words || !words.length) return;
   let win;
-  try{ win = await documentPictureInPicture.requestWindow({ width: 400, height: 470 }); }
+  try{ win = await documentPictureInPicture.requestWindow({ width: 380, height: 420 }); }
   catch(e){ return; }                                     // chưa có thao tác người dùng → chờ lần bấm sau
   if(mini){ win.close(); return; }                        // hai lần bấm dồn dập
   const d = win.document;
@@ -32,7 +39,7 @@ async function openMini(){
   d.addEventListener('keydown', miniKey);
   win.addEventListener('pagehide', () => {
     if(!mini || mini.win !== win) return;
-    if(!mini.byApp) miniOff = true;                       // người dùng tự đóng → thôi tự bật
+    if(!mini.byApp) miniSetOn(false);                     // người dùng tự đóng → nút chuyển sang tắt
     mini = null; stopSpeech();
   });
   miniNext(false);
@@ -48,8 +55,7 @@ function miniNext(speak){
   if(!w){ mini.fc = null; mini.root.innerHTML = `${miniTop(null)}<div class="mn-empty">${t('miniAllSkipped')}</div>`; return; }
   mini.lastId = w.id;
   preloadWordAudio(w);
-  const { opts, correctIdx } = buildOptions(w);
-  mini.fc = { w, opts, correctIdx, startAt: now(), answered: false, picked: -1 };
+  mini.fc = { w, startAt: now(), flipped: false };
   miniRender();
   if(speak) speakWord(w);
 }
@@ -61,67 +67,69 @@ const miniTop = w => `<div class="mn-top">
   </div>`;
 
 function miniRender(){
-  const { w, opts, correctIdx, answered, picked } = mini.fc;
-  const ok = picked === correctIdx, mc = opts.length >= 2;
-  const sentence = answered ? (w.sentence ? `<div class="mn-sent">${highlightHtml(w)}</div>` : '')
-                            : (clozeHtml(w) ? `<div class="mn-cloze">${clozeHtml(w)}</div>` : '');
+  const { w, flipped } = mini.fc;
   mini.root.innerHTML = `${miniTop(w)}
-    <div class="mn-card ${answered ? (ok ? 'ok' : 'bad') : ''}">
-      <div class="mn-tags">${w.pos ? `<span class="mn-pos">${esc(w.pos)}</span>` : ''}${lvBadge(w)}</div>
-      <div class="mn-word ${w.word.length > 22 ? 'long' : ''}">${esc(w.word)}</div>
-      <div class="mn-ipa"><button class="mn-spk" data-act="speak" title="${t('listenTitle')}">${I('sound')}</button>
-        <span>${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span></div>
-      ${answered ? `<div class="mn-verdict">${I(ok ? 'check' : 'x')}<span>${esc(w.meaning)}</span></div>` : ''}
-      ${sentence}
-    </div>
-    ${mc ? `<div class="mn-opts">${opts.map((m, i) => {
-        let c = 'mn-opt';
-        if(answered) c += i === correctIdx ? ' right' : i === picked ? ' wrong' : ' dim';
-        return `<button class="${c}" data-i="${i}" ${answered ? 'disabled' : ''}><span class="key">${i + 1}</span><span class="txt">${esc(m)}</span></button>`;
-      }).join('')}</div>`
-      : answered ? '' : `<div class="mn-opts">
-        <button class="mn-opt wrong" data-act="forgot">${I('x')}<span class="txt">${t('fcForgot')}</span></button>
-        <button class="mn-opt right" data-act="knew">${I('check')}<span class="txt">${t('fcKnew')}</span></button></div>`}
-    ${answered ? `<button class="mn-next" data-act="next">${t('miniNextCard')} ${I('next')}</button>` : ''}`;
+    <div class="mn-scene"><div class="mn-card ${flipped ? 'flipped' : ''}" data-act="flip">
+      <div class="mn-face mn-front">
+        <div class="mn-tags">${w.pos ? `<span class="mn-pos">${esc(w.pos)}</span>` : ''}${lvBadge(w)}</div>
+        <div class="mn-word ${w.word.length > 22 ? 'long' : ''}">${esc(w.word)}</div>
+        <div class="mn-ipa"><button class="mn-spk" data-act="speak" title="${t('listenTitle')}">${I('sound')}</button>
+          <span>${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span></div>
+        <div class="mn-tap">${t('miniTapFlip')}</div>
+      </div>
+      <div class="mn-face mn-back">
+        <div class="mn-mean">${esc(w.meaning)}</div>
+        ${w.sentence ? `<div class="mn-sent">${highlightHtml(w)}</div>` : ''}
+        <div class="mn-tap">${t('miniTapFlip')}</div>
+      </div>
+    </div></div>
+    <div class="mn-grade">
+      <button class="mn-g forgot" data-act="forgot">${I('x')}${t('fcForgot')}</button>
+      <button class="mn-g knew" data-act="knew">${I('check')}${t('fcKnew')}</button>
+    </div>`;
 }
 
-function miniAnswer(i, grade){
-  const f = mini.fc;
-  if(!f || f.answered) return;
-  const elapsed = now() - f.startAt;
-  f.answered = true; f.picked = i;
-  if(grade == null) grade = i === f.correctIdx ? (elapsed < 7000 ? 2 : 1) : 0;   // giống answerFc
-  applyGrade(f.w, grade, elapsed);
+function miniGrade(grade){
+  const f = mini.fc; if(!f) return;
+  applyGrade(f.w, grade, now() - f.startAt);
   if(fc && fc.w.id === f.w.id) renderFc();                // cùng từ đang mở ở tab Flashcard → cập nhật
-  miniRender();
+  miniNext(true);
 }
 
 function miniClick(e){
   if(!mini) return;
-  const o = e.target.closest('[data-i]');
-  if(o) return miniAnswer(+o.dataset.i);
   const b = e.target.closest('[data-act]'); if(!b) return;
   switch(b.dataset.act){
     case 'close':  closeMini(); break;
     case 'speak':  if(mini.fc) speakWord(mini.fc.w); break;
-    case 'next':   miniNext(true); break;
-    case 'knew':   miniAnswer(mini.fc.correctIdx, 2); break;
-    case 'forgot': miniAnswer(-1, 0); break;
+    case 'flip':                                          // lật tại chỗ, không vẽ lại
+      if(mini.fc){ mini.fc.flipped = !mini.fc.flipped; b.classList.toggle('flipped', mini.fc.flipped); } break;
+    case 'knew':   miniGrade(2); break;
+    case 'forgot': miniGrade(0); break;
   }
 }
-/* Phím tắt trong cửa sổ nhỏ: 1–4 chọn nghĩa · Enter/Space thẻ tiếp · Esc tắt */
+/* Phím tắt trong cửa sổ nhỏ: Space/Enter lật thẻ · 1 = Quên · 2 = Nhớ · Esc tắt */
 function miniKey(e){
-  if(!mini) return;
-  const f = mini.fc;
+  if(!mini || !mini.fc) { if(e.key === 'Escape') closeMini(); return; }
+  const click = act => { const el = mini.root.querySelector(`[data-act="${act}"]`); if(el){ e.preventDefault(); el.click(); } };
   if(e.key === 'Escape') closeMini();
-  else if(f && !f.answered && /^[1-4]$/.test(e.key) && +e.key <= f.opts.length) miniAnswer(+e.key - 1);
-  else if(f && f.answered && (e.key === 'Enter' || e.key === ' ')){ e.preventDefault(); miniNext(true); }
+  else if(e.key === ' ' || e.key === 'Enter') click('flip');
+  else if(e.key === '1') click('forgot');
+  else if(e.key === '2') click('knew');
 }
 
-/* Tự bật: lần bấm / gõ phím đầu tiên trên trang (sau khi đăng nhập) */
+/* Nút bật/tắt + tự mở */
 if(miniSupported()){
-  const autoOpen = () => { if(!mini && !miniOff && currentUser && $('#loginOverlay').style.display === 'none') openMini(); };
+  const tg = $('#miniToggle');
+  tg.hidden = false;
+  tg.setAttribute('aria-pressed', String(miniOn));
+  tg.addEventListener('click', e => {
+    e.stopPropagation();                                  // không để autoOpen bắt cùng cú bấm
+    if(mini){ closeMini(); return; }                      // đang mở → tắt (pagehide đặt trạng thái tắt)
+    miniSetOn(true); openMini();
+  });
+  const autoOpen = () => { if(miniOn && !mini && currentUser && $('#loginOverlay').style.display === 'none') openMini(); };
   document.addEventListener('click', autoOpen);
   document.addEventListener('keydown', autoOpen);
-  try{ navigator.mediaSession.setActionHandler('enterpictureinpicture', autoOpen); }catch(e){}   // Chrome tự bật khi chuyển tab (nếu đủ điều kiện)
+  try{ navigator.mediaSession.setActionHandler('enterpictureinpicture', autoOpen); }catch(e){}   // Chrome tự mở khi chuyển tab (nếu đủ điều kiện)
 }

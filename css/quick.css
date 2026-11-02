@@ -6,4 +6,7 @@
 .qr-bar i{display:block;height:100%;background:var(--blue);transition:width .25s}
 .qr-exit{padding:7px 12px;font-size:13px}
 .qr-exit .ic{width:14px;height:14px}
-#qrOpenBtn[hidden]{display:none}   /* nút Ôn nhanh chỉ hiện trên điện thoại / máy tính bảng */
+#qrOpenBtn[hidden],#miniToggle[hidden]{display:none}
+/* Nút bật/tắt cửa sổ nhỏ (chỉ máy tính) — cạnh nút tài khoản, cùng cỡ nút lịch sử */
+.mini-toggle{background:var(--paper)}
+.mini-toggle[aria-pressed="true"]{background:var(--ink);color:#fff}   /* nút Ôn nhanh chỉ hiện trên điện thoại / máy tính bảng */

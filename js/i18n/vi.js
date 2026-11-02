@@ -337,6 +337,6 @@ const I18N_VI = {
   tpLvTip:lv=>`Cấp độ CEFR (AI ước lượng): ${lv}`,
   tpRole_opening:'Mở bài', tpRole_idea:'Triển khai ý', tpRole_example:'Ví dụ', tpRole_opinion:'Quan điểm', tpRole_closing:'Kết bài',
   qrOpen:'Ôn nhanh 10 từ', qrExit:'Thoát', qrFinish:'Xong · về sổ từ', qrEmpty:'Sổ chưa có từ nào',
-  miniOpen:'Sổ Ngữ · Flashcard', miniClose:'Tắt cửa sổ nhỏ', miniNextCard:'Thẻ tiếp', miniAllSkipped:'Hôm nay đã bỏ qua hết các từ',
+  miniToggleTip:'Bật / tắt cửa sổ nhỏ', miniTapFlip:'Chạm thẻ để lật', miniOpen:'Sổ Ngữ · Flashcard', miniClose:'Tắt cửa sổ nhỏ', miniNextCard:'Thẻ tiếp', miniAllSkipped:'Hôm nay đã bỏ qua hết các từ',
   qrDoneToast:(k,n)=>`Ôn xong ${n} từ · đúng ${k}/${n}`,
 };

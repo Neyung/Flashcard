@@ -40,6 +40,7 @@ function buildOptions(w){
 }
 
 function startFc(){
+  if(fcQuick) return startFcQuick();             // đang Ôn nhanh 10 từ (js/features/quick-review.js)
   const pool = fcPool();
   const area = $('#fcArea');
   if(!pool.length){
@@ -80,7 +81,7 @@ function renderFc(){
       </div>
 `;
 
-  $('#fcArea').innerHTML = `
+  $('#fcArea').innerHTML = `${fcQuick ? qrTopHtml() : ''}
     <div class="fc-scene">
       <div class="fc-card ${flipped?'flipped':''}" id="fcCard">
         <div class="fc-face fc-front">
@@ -113,7 +114,7 @@ function renderFc(){
     </div>
     ${optsHtml}
     ${answered ? `<div style="margin-bottom:6px">
-      <button class="btn primary" id="fcNext">${t('fcNextCard')} ${I('next')}</button></div>` : ''}
+      <button class="btn primary" id="fcNext">${fcNextLabel()} ${I('next')}</button></div>` : ''}
     <div class="fc-progress">
       ${t('fcSeen')} <b class="mono">${w.stats.seen}</b> · <b class="mono">${w.stats.seen?Math.round(accuracy(w)*100):0}%</b> ${t('fcCorrectPct')}
       · ${w.stats.interval ? t('fcReviewIn', `<b class="mono">${w.stats.interval<1?t('fcToday'):t('fcDays', Math.round(w.stats.interval))}</b>`) : t('fcNewCard')}
@@ -145,8 +146,8 @@ function renderFc(){
   const next = $('#fcNext');
   if(next) next.addEventListener('click', startFc);
   const fg = $('#fbForgot'), kn = $('#fbKnew');
-  if(fg) fg.addEventListener('click', ()=>{ applyGrade(w, 0, now()-fc.startAt); startFc(); });
-  if(kn) kn.addEventListener('click', ()=>{ applyGrade(w, 2, now()-fc.startAt); startFc(); });
+  if(fg) fg.addEventListener('click', ()=>{ qrCount(false); applyGrade(w, 0, now()-fc.startAt); startFc(); });
+  if(kn) kn.addEventListener('click', ()=>{ qrCount(true); applyGrade(w, 2, now()-fc.startAt); startFc(); });
 }
 
 function updateFcIpa(){
@@ -188,13 +189,14 @@ function answerFc(i){
     d.style.cssText = 'margin:14px 0 6px;text-align:center';
     const btn = document.createElement('button');
     btn.className = 'btn primary'; btn.id = 'fcNext';
-    btn.innerHTML = t('fcNextCard') + ' ' + I('next');
+    btn.innerHTML = fcNextLabel() + ' ' + I('next');
     btn.addEventListener('click', startFc);
     d.appendChild(btn);
     optsEl.after(d);
     if(matchMedia('(max-width:640px), (max-height:500px)').matches) requestAnimationFrame(() => btn.scrollIntoView({ block: 'nearest', behavior: 'smooth' }));
   }
 
+  qrCount(correct);
   applyGrade(fc.w, correct ? (elapsed < 7000 ? 2 : 1) : 0, elapsed);   // chấm điểm SAU khi đã hiện kết quả
 }
 

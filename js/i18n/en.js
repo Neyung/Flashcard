@@ -336,4 +336,10 @@ const I18N_EN = {
   tpEmpty:'Enter a topic above to start. You get the main ideas, vocabulary with CEFR levels, usage notes in Vietnamese and model sentences.',
   tpLvTip:lv=>`CEFR level (AI estimate): ${lv}`,
   tpRole_opening:'Opening', tpRole_idea:'Develop idea', tpRole_example:'Example', tpRole_opinion:'Opinion', tpRole_closing:'Closing',
+  qrOpen:'Quick 10', qrExit:'Exit', qrFinish:'Done · back to notes', qrEmpty:'Your book has no words yet',
+  miniOpen:'Mini window', miniTip:'Open an always-on-top mini window that keeps showing words while you browse other pages',
+  miniAuto:'Auto', miniFlash:'Flashcard', miniClose:'Close mini window', miniPrev:'Previous word', miniNext:'Next word',
+  miniPause:'Pause', miniPlay:'Resume', miniReveal:'Show meaning', miniForgot:'Not yet', miniKnew:'Got it',
+  miniAcc:p=>`${p}% correct`, miniNoSupport:'This browser has no mini window support — use Chrome or Edge on a computer',
+  qrDoneToast:(k,n)=>`Reviewed ${n} words · ${k}/${n} correct`,
 };

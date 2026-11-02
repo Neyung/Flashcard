@@ -336,4 +336,10 @@ const I18N_VI = {
   tpEmpty:'Nhập đề tài ở trên để bắt đầu. Kết quả gồm các ý chính, từ vựng có cấp độ CEFR, cách dùng bằng tiếng Việt và câu mẫu.',
   tpLvTip:lv=>`Cấp độ CEFR (AI ước lượng): ${lv}`,
   tpRole_opening:'Mở bài', tpRole_idea:'Triển khai ý', tpRole_example:'Ví dụ', tpRole_opinion:'Quan điểm', tpRole_closing:'Kết bài',
+  qrOpen:'Ôn nhanh 10 từ', qrExit:'Thoát', qrFinish:'Xong · về sổ từ', qrEmpty:'Sổ chưa có từ nào',
+  miniOpen:'Cửa sổ nhỏ', miniTip:'Mở cửa sổ nhỏ luôn nổi trên cùng — vẫn hiện từ khi bạn chuyển sang trang khác',
+  miniAuto:'Tự chạy', miniFlash:'Flashcard', miniClose:'Tắt cửa sổ nhỏ', miniPrev:'Từ trước', miniNext:'Từ sau',
+  miniPause:'Tạm dừng', miniPlay:'Chạy tiếp', miniReveal:'Hiện nghĩa', miniForgot:'Chưa nhớ', miniKnew:'Đã nhớ',
+  miniAcc:p=>`đúng ${p}%`, miniNoSupport:'Trình duyệt này chưa hỗ trợ cửa sổ nhỏ — hãy dùng Chrome hoặc Edge trên máy tính',
+  qrDoneToast:(k,n)=>`Ôn xong ${n} từ · đúng ${k}/${n}`,
 };

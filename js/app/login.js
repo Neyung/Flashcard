@@ -224,12 +224,14 @@ async function enterApp(pwHash){
   if(memoryOnly) toast(t('memoryOnlyWarn'));
   cefrInit();
   scShowPending();                       // thử thách còn dang dở (tải lại trang giữa chừng) → mở lại
+  qrAutoOpen();                          // vào từ widget màn hình khoá (…/?quick) → mở Ôn nhanh
 }
 
 /* Đổi người dùng */
 $('#userChip').addEventListener('click', () => {
   clearSession();                       // chủ động đổi người → lần sau phải đăng nhập lại
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
+  closeMini();                          // tắt cửa sổ nhỏ của người dùng cũ
   recAbort();
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ
   if(tasks) saveTasks(true);

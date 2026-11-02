@@ -1,0 +1,10 @@
+/* ═══ ÔN NHANH 10 TỪ trong tab Flashcard (js/features/quick-review.js) ═══ */
+#tab-flash.fc-quick .q-meta{display:none}
+.qr-top{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.qr-step{font-weight:800;white-space:nowrap}
+.qr-bar{flex:1;min-width:40px;height:8px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:#fff}
+.qr-bar i{display:block;height:100%;background:var(--blue);transition:width .25s}
+.qr-exit{padding:7px 12px;font-size:13px}
+.qr-exit .ic{width:14px;height:14px}
+#miniOpenBtn[hidden]{display:none}
+@media (hover:none) and (pointer:coarse){#miniOpenBtn{display:none!important}}   /* cửa sổ nhỏ chỉ cho máy tính */

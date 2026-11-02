@@ -7,6 +7,7 @@ function activateTab(btn){
   $$('.tab-page').forEach(p=>p.classList.toggle('active', p.id==='tab-'+btn.dataset.tab));
   queueInfoLayout();
   const tab = btn.dataset.tab;
+  if(tab!=='flash' && fcQuick) quitQuick(true);   // rời tab giữa chừng → huỷ lượt Ôn nhanh
   if(tab==='quiz'){ fillQuizGroups(); startQuiz(); }
   if(tab==='flash'){ fcGroupFilter.fill(); startFc(); }
   if(tab==='notes'){ if(words && !words.length) addPanelSet(true); renderTable(true); cefrClassify(false); }

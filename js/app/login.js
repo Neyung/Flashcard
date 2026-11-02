@@ -231,7 +231,7 @@ async function enterApp(pwHash){
 $('#userChip').addEventListener('click', () => {
   clearSession();                       // chủ động đổi người → lần sau phải đăng nhập lại
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
-  closeMini();                          // tắt cửa sổ nhỏ của người dùng cũ
+  closeMini(true);                      // tắt cửa sổ nhỏ của người dùng cũ
   recAbort();
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ
   if(tasks) saveTasks(true);

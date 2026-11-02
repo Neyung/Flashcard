@@ -14,12 +14,14 @@
 //
 // Thứ tự 10 từ giống hệt chế độ "Ôn nhanh 10 từ" trong web (js/features/quick-review.js):
 // điểm ưu tiên priorityScore (js/core/srs.js), từ ⭐ ×1.8, bỏ từ "bỏ qua hôm nay".
-// iOS tự quyết thời điểm làm mới widget (thường 15–30 phút/lần) → mỗi lần làm mới hiện từ kế tiếp.
+// Đổi từ mỗi 5 phút: từ hiển thị được tính theo đồng hồ (mốc 5 phút) và widget xin iOS làm mới
+// đúng mốc kế tiếp. iOS có "ngân sách" làm mới riêng nên đôi khi trễ hơn 5 phút — khi làm mới,
+// widget luôn nhảy tới đúng từ của mốc hiện tại.
 // ═══════════════════════════════════════════════════════════
 const CLOUD_URL = 'https://flashcard-53fb0-default-rtdb.firebaseio.com';
 const APP_URL = 'https://flashcard.knowlytics.work/?quick';
 const USER = (args.widgetParameter || '').trim() || 'Tom';
-const N = 10, DAY = 86400000, STAR_BOOST = 1.8;
+const N = 10, DAY = 86400000, STAR_BOOST = 1.8, SLOT = 5 * 60 * 1000;
 
 // Chạy script trong app Scriptable hoặc chạm widget → mở web Ôn nhanh
 if (!config.runsInWidget) {
@@ -62,9 +64,12 @@ try {
   req.timeoutInterval = 10;
   words = await req.loadJSON();
 } catch (e) {}
-let state = { idx: 0 };
+let state = {};
 if (fm.fileExists(cachePath)) { try { state = JSON.parse(fm.readString(cachePath)); } catch (e) {} }
-if (Array.isArray(words)) state.words = words.map(w => ({ word: w.word, meaning: w.meaning, saved: !!w.saved, limitDay: w.limitDay, stats: w.stats }));
+if (Array.isArray(words)) {
+  state.words = words.map(w => ({ word: w.word, meaning: w.meaning, saved: !!w.saved, limitDay: w.limitDay, stats: w.stats }));
+  fm.writeString(cachePath, JSON.stringify(state));
+}
 words = state.words || [];
 
 const base = { seen: 0, correct: 0, streak: 0, lapses: 0, due: now, avgTime: 0 };
@@ -73,13 +78,12 @@ const list = words.filter(w => w && w.word && w.limitDay !== todayKey())
   .map(w => ({ w, p: priorityScore(w) * (w.saved ? STAR_BOOST : 1) }))
   .sort((a, b) => b.p - a.p).slice(0, N).map(x => x.w);
 
-const idx = list.length ? (state.idx || 0) % list.length : 0;
-state.idx = idx + 1;                                   // lần làm mới sau → từ kế tiếp
-fm.writeString(cachePath, JSON.stringify(state));
+const slot = Math.floor(now / SLOT);                   // mốc 5 phút hiện tại
+const idx = list.length ? slot % list.length : 0;
 
 const wg = new ListWidget();
 wg.url = APP_URL;
-wg.refreshAfterDate = new Date(now + 15 * 60 * 1000);
+wg.refreshAfterDate = new Date((slot + 1) * SLOT);    // xin làm mới đúng mốc 5 phút kế tiếp
 const fam = config.widgetFamily || 'accessoryRectangular';
 
 if (!list.length) {

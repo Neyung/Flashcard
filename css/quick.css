@@ -6,5 +6,4 @@
 .qr-bar i{display:block;height:100%;background:var(--blue);transition:width .25s}
 .qr-exit{padding:7px 12px;font-size:13px}
 .qr-exit .ic{width:14px;height:14px}
-#miniOpenBtn[hidden]{display:none}
-@media (hover:none) and (pointer:coarse){#miniOpenBtn{display:none!important}}   /* cửa sổ nhỏ chỉ cho máy tính */
+#qrOpenBtn[hidden]{display:none}   /* nút Ôn nhanh chỉ hiện trên điện thoại / máy tính bảng */

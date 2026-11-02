@@ -337,9 +337,6 @@ const I18N_EN = {
   tpLvTip:lv=>`CEFR level (AI estimate): ${lv}`,
   tpRole_opening:'Opening', tpRole_idea:'Develop idea', tpRole_example:'Example', tpRole_opinion:'Opinion', tpRole_closing:'Closing',
   qrOpen:'Quick 10', qrExit:'Exit', qrFinish:'Done · back to notes', qrEmpty:'Your book has no words yet',
-  miniOpen:'Mini window', miniTip:'Open an always-on-top mini window that keeps showing words while you browse other pages',
-  miniAuto:'Auto', miniFlash:'Flashcard', miniClose:'Close mini window', miniPrev:'Previous word', miniNext:'Next word',
-  miniPause:'Pause', miniPlay:'Resume', miniReveal:'Show meaning', miniForgot:'Not yet', miniKnew:'Got it',
-  miniAcc:p=>`${p}% correct`, miniNoSupport:'This browser has no mini window support — use Chrome or Edge on a computer',
+  miniOpen:'LangBook · Flashcards', miniClose:'Close mini window', miniNextCard:'Next card', miniAllSkipped:'Every word is skipped for today',
   qrDoneToast:(k,n)=>`Reviewed ${n} words · ${k}/${n} correct`,
 };

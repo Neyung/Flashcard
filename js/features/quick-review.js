@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════
    ÔN NHANH 10 TỪ — chạy ngay trong tab Flashcard (cùng thẻ, trắc nghiệm, lật thẻ, chấm điểm)
    nhưng chỉ lần lượt 10 từ được bốc ra; học xong quay về sổ từ (tab Ghi chú).
-   - Mở bằng đường dẫn ?quick (widget màn hình khoá iPhone) hoặc nút "Ôn nhanh 10 từ"
+   - Mở bằng đường dẫn ?quick (widget màn hình khoá iPhone) hoặc nút "Ôn nhanh 10 từ" (chỉ hiện trên điện thoại)
    - 10 từ = ưu tiên cao nhất theo bộ lập lịch (priorityScore, từ ⭐ ×STAR_BOOST, bỏ từ
      "bỏ qua hôm nay") — cùng thứ tự với widget Scriptable (docs/ios-lockscreen-widget.js)
    - Chấm điểm vẫn qua applyGrade trong flashcard.js → % đúng và lịch SRS cập nhật như thường
@@ -67,4 +67,10 @@ function qrTopHtml(){
 }
 
 $('#fcArea').addEventListener('click', e => { if(e.target.closest('#qrExit')) quitQuick(); });
+/* Điện thoại / máy tính bảng — trên máy tính thay bằng cửa sổ nhỏ tự bật (mini-window.js) */
+const isMobileDevice = () => !!(navigator.userAgentData && navigator.userAgentData.mobile)
+  || /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+  || (navigator.maxTouchPoints > 1 && /Macintosh/.test(navigator.userAgent))        // iPad báo là Mac
+  || matchMedia('(hover: none) and (pointer: coarse)').matches;
+$('#qrOpenBtn').hidden = !isMobileDevice();
 $('#qrOpenBtn').addEventListener('click', openQuick);

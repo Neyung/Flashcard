@@ -23,20 +23,22 @@ function miniSetOn(on){
 async function openMini(){
   if(!miniSupported() || mini || !currentUser || !words || !words.length) return;
   let win;
-  try{ win = await documentPictureInPicture.requestWindow({ width: 380, height: 420 }); }
+  try{ win = await documentPictureInPicture.requestWindow({ width: 300, height: 250, preferInitialWindowPlacement: true }); }   // luôn mở lại đúng cỡ ban đầu
   catch(e){ return; }                                     // chưa có thao tác người dùng → chờ lần bấm sau
   if(mini){ win.close(); return; }                        // hai lần bấm dồn dập
   const d = win.document;
   d.title = t('miniOpen');
   for(const href of [ document.querySelector('link[href*="fonts.googleapis"]').href,
                       new URL(document.querySelector('link[href*="css/quick.css"]').getAttribute('href').replace('quick.css', 'mini.css'), location.href).href ]){
-    const l = d.createElement('link'); l.rel = 'stylesheet'; l.href = href; d.head.append(l);
+    const l = d.createElement('link'); l.rel = 'stylesheet'; l.href = href; l.onload = () => miniFit(); d.head.append(l);
   }
   d.body.append(document.querySelector('svg symbol').closest('svg').cloneNode(true));   // bộ icon dùng chung
   const root = d.createElement('div'); root.className = 'mn'; d.body.append(root);
   mini = { win, root, fc: null, lastId: null, byApp: false };
   root.addEventListener('click', miniClick);
   d.addEventListener('keydown', miniKey);
+  win.addEventListener('resize', () => miniFit());       // kéo đổi cỡ cửa sổ → co giãn chữ lại
+  d.fonts.ready.then(() => miniFit());
   win.addEventListener('pagehide', () => {
     if(!mini || mini.win !== win) return;
     if(!mini.byApp) miniSetOn(false);                     // người dùng tự đóng → nút chuyển sang tắt
@@ -70,23 +72,42 @@ function miniRender(){
   const { w, flipped } = mini.fc;
   mini.root.innerHTML = `${miniTop(w)}
     <div class="mn-scene"><div class="mn-card ${flipped ? 'flipped' : ''}" data-act="flip">
-      <div class="mn-face mn-front">
+      <div class="mn-face mn-front" title="${t('miniTapFlip')}"><span class="mn-flip">${I('swap')}</span><div class="mn-fit">
         <div class="mn-tags">${w.pos ? `<span class="mn-pos">${esc(w.pos)}</span>` : ''}${lvBadge(w)}</div>
-        <div class="mn-word ${w.word.length > 22 ? 'long' : ''}">${esc(w.word)}</div>
+        <div class="mn-word">${esc(w.word)}</div>
         <div class="mn-ipa"><button class="mn-spk" data-act="speak" title="${t('listenTitle')}">${I('sound')}</button>
-          <span>${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span></div>
-        <div class="mn-tap">${t('miniTapFlip')}</div>
-      </div>
-      <div class="mn-face mn-back">
+          ${w.kind === 'đơn' && w.ipa ? `<span>${esc(w.ipa)}</span>` : ''}</div>
+      </div></div>
+      <div class="mn-face mn-back" title="${t('miniTapFlip')}"><span class="mn-flip">${I('swap')}</span><div class="mn-fit">
         <div class="mn-mean">${esc(w.meaning)}</div>
         ${w.sentence ? `<div class="mn-sent">${highlightHtml(w)}</div>` : ''}
-        <div class="mn-tap">${t('miniTapFlip')}</div>
-      </div>
+      </div></div>
     </div></div>
     <div class="mn-grade">
       <button class="mn-g forgot" data-act="forgot">${I('x')}${t('fcForgot')}</button>
       <button class="mn-g knew" data-act="knew">${I('check')}${t('fcKnew')}</button>
     </div>`;
+  miniFit();
+}
+
+/* Tự co chữ cho vừa: mỗi mặt thẻ bắt đầu ở cỡ chữ gốc rồi giảm dần tới khi toàn bộ nội dung nằm gọn
+   trong thẻ (không tràn dọc, không có chữ nào tràn ngang). Mọi cỡ chữ trong thẻ tính bằng em nên co
+   cùng tỉ lệ. Nhỏ nhất vẫn chưa vừa (nghĩa / câu cực dài) → cho ngắt giữa từ và cuộn trong thẻ,
+   tuyệt đối không cắt "…". */
+const MINI_FS_MAX = 13, MINI_FS_MIN = 7;
+function miniFit(){
+  if(!mini) return;
+  mini.root.querySelectorAll('.mn-face').forEach(face => {
+    const box = face.querySelector('.mn-fit'); if(!box) return;
+    const cs = getComputedStyle(face);
+    const availH = face.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    const fits = () => box.offsetHeight <= availH && [...box.children].every(el => el.scrollWidth <= box.clientWidth + 1);
+    face.classList.remove('squeeze');
+    let fs = MINI_FS_MAX;
+    face.style.fontSize = fs + 'px';
+    while(fs > MINI_FS_MIN && !fits()){ fs -= 0.5; face.style.fontSize = fs + 'px'; }
+    if(!fits()) face.classList.add('squeeze');
+  });
 }
 
 function miniGrade(grade){

@@ -339,4 +339,8 @@ const I18N_VI = {
   qrOpen:'Ôn nhanh 10 từ', qrExit:'Thoát', qrFinish:'Xong · về sổ từ', qrEmpty:'Sổ chưa có từ nào',
   miniToggleTip:'Bật / tắt cửa sổ nhỏ', miniTapFlip:'Chạm thẻ để lật', miniOpen:'Sổ Ngữ · Flashcard', miniClose:'Tắt cửa sổ nhỏ', miniNextCard:'Thẻ tiếp', miniAllSkipped:'Hôm nay đã bỏ qua hết các từ',
   qrDoneToast:(k,n)=>`Ôn xong ${n} từ · đúng ${k}/${n}`,
+  cbTitle:w=>`Cụm ghép với <b>${w}</b>`, cbSub:'Chỉ ghép với các từ đã có trong sổ của bạn', cbLoading:'Đang tìm cụm ghép trong sổ…',
+  cbDl:p=>`Đang tải mô hình AI… ${p}%`, cbClose:'Ẩn bảng cụm ghép', cbSaveAll:n=>`Lưu cả ${n} cụm`,
+  cbScan:(d,n)=>`Đang chuẩn bị sẵn cụm ghép: ${d}/${n} từ`, cbExPh:'Tự đặt câu ví dụ… (Enter để lưu)', cbExEdit:'Sửa câu ví dụ',
+  cbExNoPh:p=>`Đã lưu — lưu ý câu chưa chứa cụm "${p}"`,
 };

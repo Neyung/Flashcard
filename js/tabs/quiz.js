@@ -3,13 +3,15 @@ function startQuiz(){
   const pool = quizPool();
   const area = $('#quizArea');
   if(!pool.length){
+    cbOnWord(null);
     const none = !quizGroupAll && quizGroupSet.size === 0;
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
       ${none ? t('qNoGroupPicked') : t('emptyQuiz', $('#quizSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     quiz = null; return;
   }
-  const w = pickWordLimited(pool);
+  const w = pageTakeWord('qw', pool) || pickWordLimited(pool);   // tải lại trang → giữ từ đang gõ
   if(!w){
+    cbOnWord(null);
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>${t('qAllSkipped')}</div></div>`;
     quiz = null; return;
   }
@@ -26,6 +28,7 @@ function startQuiz(){
     quiz.shuffled = shuffle(ws.map((t,i)=>({t,i})));
   }
   renderQuiz();
+  cbOnWord(w);                                     // ẩn cụm ghép của từ trước + chuẩn bị sẵn cho từ này
 }
 
 function shuffle(a){
@@ -215,6 +218,7 @@ document.addEventListener('keydown', e=>{
   }
 });
 
+const qNextBtn = () => `<button class="btn sm mint q-next" style="margin-top:8px" onclick="stopSpeech();startQuiz()">${t('qNextWord')} ${I('next')}<kbd>Enter</kbd></button>`;
 function checkQuiz(){
   if(!quiz || quiz.graded) return;
   quiz.graded = true;
@@ -248,11 +252,8 @@ function checkQuiz(){
       ${w.sentence?` — <span class="mono">${esc(w.sentence)}</span>`:''}
       <span class="muted">(${(timeMs/1000).toFixed(1)}s${wpm?` · ~${wpm} WPM`:''}${quiz.hintLevel?' '+t('qHintUsedSuffix')+(quiz.hintLevel>1?' ×2':''):''})</span>`;
       $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('ok'));
-    quiz.speaking = true;
-    const cur = quiz;
-    Promise.all([speakWord(w), new Promise(r => setTimeout(r, 1400))]).then(() => {
-      if(quiz === cur) startQuiz();
-    });
+    speakWord(w);                                  // không tự nhảy từ: bấm "Từ tiếp theo" hoặc Enter khi đã xem xong
+    fb.innerHTML += `<br>${qNextBtn()}`;
   }else{
     shielded = prevStreak >= SHIELD_MIN && sacredConsume('quiz_' + w.id + '_' + quiz.startAt);
     if(!shielded) quizStreak = 0;        // còn khiên → khiên chịu thay, chuỗi giữ nguyên
@@ -260,9 +261,10 @@ function checkQuiz(){
     fb.className = 'feedback show bad';
     fb.innerHTML = `${I('x')} ${t('qWrong')} <span class="ans">${esc(w.word)}</span>
       ${w.note?`<br>${I('pin')} ${esc(w.note)}`:''}${shielded?`<br>${I('shield')} ${t('qShielded')}`:''}<br>
-      <button class="btn sm mint" style="margin-top:8px" onclick="startQuiz()">${t('qNextWord')} ${I('next')}</button>`;
+      ${qNextBtn()}`;
     $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('bad'));
   }
   updateStreakUI(prevStreak, shielded);
+  cbShow(w);                                       // từ đơn → bảng cụm ghép với từ trong sổ (js/features/typing-combos.js)
 }
 $('#quizSavedOnly').addEventListener('change', startQuiz);

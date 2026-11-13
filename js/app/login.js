@@ -215,7 +215,8 @@ async function enterApp(pwHash){
   $('#loginOverlay').style.display = 'none';
   quiz = null; fc = null; quizGroupAll = true; quizGroupSet = new Set(); groupFilter.reset(); fcGroupFilter.reset(); wordSel.sel.clear(); resetLimitLog(); updateStreakUI(quizStreak); lastShownId = null;
   applyI18n();
-  activateTab($('.tab-btn[data-tab="tasks"]'));
+  cbHide();
+  pageRestore();                         // tải lại trang → về đúng tab + bộ lọc + từ đang học (mặc định: Nhiệm vụ)
   $('#trFab').hidden = false; $('#lxFab').hidden = false; $('#topFab').hidden = false; $('#dialFab').hidden = false; updateTopFab();
   loadGarden();
   renderTable();
@@ -225,6 +226,8 @@ async function enterApp(pwHash){
   cefrInit();
   scShowPending();                       // thử thách còn dang dở (tải lại trang giữa chừng) → mở lại
   qrAutoOpen();                          // vào từ widget màn hình khoá (…/?quick) → mở Ôn nhanh
+  pageScroll();
+  setTimeout(cbScanStart, 5000);         // máy tính có Gemini Nano → quét trước cụm ghép cho cả sổ lúc rảnh
 }
 
 /* Đổi người dùng */
@@ -233,6 +236,7 @@ $('#userChip').addEventListener('click', () => {
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
   closeMini(true);                      // tắt cửa sổ nhỏ của người dùng cũ
   recAbort();
+  saveFlush(); cbFlush();               // lưu nốt phần lưu gộp đang chờ
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ
   if(tasks) saveTasks(true);
   saveFocusLog(true);

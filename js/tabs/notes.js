@@ -103,7 +103,9 @@ function makeCheckFilter(root, o){
     sync(); o.onChange();
   });
   return { ok: k => st.all || st.set.has(k), none: () => !st.all && !st.set.size, fill, close: () => toggle(false),
-           reset(){ st.all = true; st.set = new Set(); } };
+           reset(){ st.all = true; st.set = new Set(); },
+           get: () => ({ all: st.all, set: [...st.set] }),                                    // lưu / khôi phục khi tải lại trang
+           set(v){ if(v){ st.all = v.all !== false; st.set = new Set(v.set || []); } } };
 }
 
 /* ── Chọn nhiều dòng để xoá hàng loạt (chỉ giữ các dòng đang hiển thị) ── */

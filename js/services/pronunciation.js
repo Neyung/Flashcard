@@ -68,11 +68,11 @@ async function fetchPhonetics(w){
     w.ipa   = (us && us.text)
            || (phs.find(p => p.text) || {}).text
            || (data[0] && data[0].phonetic) || '';
-    if(w.ipa || w.audio){ save(); return true; }
+    if(w.ipa || w.audio){ saveSoon(); return true; }
     throw 0;
   }catch(e){                               // Free Dictionary lỗi / chặn → lấy IPA từ Datamuse
     const ipa = await ipaDatamuse(w.word);
-    if(ipa){ w.ipa = ipa; save(); return true; }
+    if(ipa){ w.ipa = ipa; saveSoon(); return true; }
     ipaFailed.add(w.id); return false;
   }
 }
@@ -144,7 +144,7 @@ function speakWord(w){
   return p;
 }
 /* Tra sẵn phiên âm cho mọi từ đơn còn thiếu — chạy nền sau khi đăng nhập,
-   cách nhau 300ms để lịch sự với API. IPA hiện ra ngay, không cần bấm loa. */
+   cách nhau 300ms để lịch sự với API, chỉ lúc rảnh tay (whenIdle); lưu gộp bằng saveSoon thay vì lưu cả sổ mỗi từ. */
 let ipaQueueRunning = false;
 async function prefetchPhonetics(){
   if(ipaQueueRunning) return;
@@ -154,13 +154,15 @@ async function prefetchPhonetics(){
   let found = 0;
   for(const w of targets){
     if(currentUser !== user) break;          // đổi người dùng → dừng
+    await whenIdle(1500);                    // chỉ tra lúc rảnh tay, không chen ngang lúc đang gõ / bấm
+    if(currentUser !== user) break;
     if(await fetchPhonetics(w)){
       found++;
       if(fc && fc.w.id === w.id) updateFcIpa();
     }
     await new Promise(r => setTimeout(r, 300));
   }
-  if(found && currentUser === user) renderTable();
+  if(found && currentUser === user){ saveFlush(); renderTable(); }
   ipaQueueRunning = false;
 }
 

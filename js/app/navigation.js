@@ -8,12 +8,13 @@ function activateTab(btn){
   queueInfoLayout();
   const tab = btn.dataset.tab;
   if(tab!=='flash' && fcQuick) quitQuick(true);   // rời tab giữa chừng → huỷ lượt Ôn nhanh
-  if(tab==='quiz'){ fillQuizGroups(); startQuiz(); }
+  if(tab==='quiz'){ fillQuizGroups(); startQuiz(); cbScanStart(); }
   if(tab==='flash'){ fcGroupFilter.fill(); startFc(); }
   if(tab==='notes'){ if(words && !words.length) addPanelSet(true); renderTable(true); cefrClassify(false); }
   if(tab==='focus'){ renderFocus(); renderGarden(); }
   if(tab==='topic') renderTopic();
   if(tab==='tasks') renderTasks(); else recAbort();
+  pageSave();
 }
 $$('.tab-btn').forEach(b=>b.addEventListener('click', ()=>activateTab(b)));
 
@@ -22,7 +23,7 @@ function refreshCurrentView(){
   const activeTab = $('.tab-btn.active'); if(!activeTab) return;
   const tab = activeTab.dataset.tab;
   if(tab==='notes') renderTable();
-  else if(tab==='quiz'){ fillQuizGroups(); if(quiz) renderQuiz(); else startQuiz(); }
+  else if(tab==='quiz'){ fillQuizGroups(); if(quiz) renderQuiz(); else startQuiz(); cbRender(); }
   else if(tab==='flash'){ fcGroupFilter.fill(); if(fc) renderFc(); else startFc(); }
   else if(tab==='tasks') renderTasks();
   else if(tab==='focus'){ renderFocus(); renderGarden(); }

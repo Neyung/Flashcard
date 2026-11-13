@@ -10,6 +10,7 @@
      Nhớ / Quên chấm bằng applyGrade rồi sang từ kế, bốc lần lượt từ toàn bộ sổ bằng pickWordLimited
    ═══════════════════════════════════════════════════════════ */
 let mini = null;          // {win, root, fc, lastId, byApp}
+let miniFailAt = 0;
 const MINI_LS = 'soTuMini_v2';
 let miniOn = (() => { try{ return localStorage.getItem(MINI_LS) !== 'off'; }catch(e){ return true; } })();
 
@@ -23,8 +24,9 @@ function miniSetOn(on){
 async function openMini(){
   if(!miniSupported() || mini || !currentUser || !words || !words.length) return;
   let win;
+  if(now() - miniFailAt < 8000) return;                  // vừa mở thất bại → không thử lại ở mỗi phím / cú bấm
   try{ win = await documentPictureInPicture.requestWindow({ width: 300, height: 250, preferInitialWindowPlacement: true }); }   // luôn mở lại đúng cỡ ban đầu
-  catch(e){ return; }                                     // chưa có thao tác người dùng → chờ lần bấm sau
+  catch(e){ miniFailAt = now(); return; }                 // chưa có thao tác người dùng / bị chặn → chờ lát nữa
   if(mini){ win.close(); return; }                        // hai lần bấm dồn dập
   const d = win.document;
   d.title = t('miniOpen');
@@ -147,7 +149,7 @@ if(miniSupported()){
   tg.addEventListener('click', e => {
     e.stopPropagation();                                  // không để autoOpen bắt cùng cú bấm
     if(mini){ closeMini(); return; }                      // đang mở → tắt (pagehide đặt trạng thái tắt)
-    miniSetOn(true); openMini();
+    miniSetOn(true); miniFailAt = 0; openMini();           // bấm nút = thử ngay
   });
   const autoOpen = () => { if(miniOn && !mini && currentUser && $('#loginOverlay').style.display === 'none') openMini(); };
   document.addEventListener('click', autoOpen);

@@ -48,7 +48,7 @@ function startFc(){
       ${fcGroupFilter.none() ? t('qNoGroupPicked') : t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     fc = null; return;
   }
-  const w = pickWordLimited(pool);
+  const w = pageTakeWord('fw', pool) || pickWordLimited(pool);   // tải lại trang → giữ thẻ đang mở
   if(!w){
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>${t('qAllSkipped')}</div></div>`;
     fc = null; return;

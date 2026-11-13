@@ -42,6 +42,8 @@ function cefrClassify(interactive){
     cefrBtnSync();
     for(;;){
       if(currentUser !== user) return;
+      if(!interactive) await whenIdle(3000);          // chạy nền: chỉ lúc rảnh tay (Gemini Nano dùng GPU, làm nặng máy)
+      if(currentUser !== user) return;
       const batch = cefrTodo().slice(0, 10);
       if(!batch.length) break;
       const q = batch.map((w, i) => `${i + 1}. ${w.word.trim()}${w.pos ? ` (${w.pos})` : ''} — ${w.meaning || '?'}`
@@ -59,9 +61,10 @@ function cefrClassify(interactive){
         w.cefr = lv && conf >= .5 ? { lv, conf: +conf.toFixed(2), src: 'gemini-nano', at: now() }
                                   : { lv: '', guess: lv, conf: +conf.toFixed(2), src: 'gemini-nano', at: now(), chk: 1 };
       });
-      save(); cefrBtnSync();
+      saveSoon(); cefrBtnSync();
       if($('#tab-notes') && $('#tab-notes').classList.contains('active') && editingId == null) renderTable();
     }
+    saveFlush();
     if(interactive) toast(t('cefrDone', words.filter(w => w.cefr && !w.cefr.lv).length));
   })().catch(() => {}).finally(() => { cefrRun = null; cefrBtnSync(); });
   return cefrRun;

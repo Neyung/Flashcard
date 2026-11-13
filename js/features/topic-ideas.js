@@ -275,7 +275,7 @@ function renderTopic(full){
     return;
   }
   if(tp.loading) return;
-  if(!tp.cur && tp.list.length) tp.cur = tp.list[0].id;
+  if(!tp.cur && tp.list.length) tp.cur = (pageTake('tc', tp.list) || tp.list[0]).id;   // tải lại trang → mở lại đề tài đang xem
   if(full || !$('#tpForm')){
     const keep = $('#tpIn') ? $('#tpIn').value : '';
     area.innerHTML = `<div class="panel tp-ask">

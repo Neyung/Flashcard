@@ -1,0 +1,49 @@
+/* ═══ CỤM GHÉP SAU KHI GÕ (tab Luyện gõ — js/features/typing-combos.js) ═══
+   Nằm ngay dưới khung luyện gõ, cùng bề rộng (đọc một mạch từ trên xuống: gõ → kết quả → cụm ghép).
+   Thẻ cụm xếp lưới tự co: rộng thì 2–3 cột, hẹp thì 1 cột. Điện thoại không bao giờ hiện. */
+.cb-panel[hidden]{display:none}
+.cb-panel{max-width:760px;margin:16px auto 0;padding:14px 16px 12px;animation:cbIn .3s ease}
+@keyframes cbIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.cb-head{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.cb-head-t{flex:1;min-width:0;display:flex;align-items:baseline;flex-wrap:wrap;column-gap:10px;row-gap:2px}
+.cb-head-t > b{font-size:15px;font-weight:800;overflow-wrap:anywhere}
+.cb-head-t > b b{font-family:'JetBrains Mono',monospace;background:var(--lemon);border:1.5px solid var(--ink);border-radius:6px;padding:0 5px}
+.cb-sub{font-size:12px;color:var(--muted)}
+.cb-all{flex:none;padding:5px 10px;font-size:12px}
+.cb-all .ic{width:13px;height:13px}
+.cb-x{flex:none}
+.cb-load{padding:4px 0 6px;font-size:13px}
+
+.cb-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.cb-item{min-width:0;display:flex;flex-direction:column;gap:4px;padding:10px 12px;background:var(--bg);
+  border:2px solid var(--ink);border-radius:12px;transition:transform .12s,box-shadow .12s}
+.cb-item:hover{transform:translate(-1px,-1px);box-shadow:3px 3px 0 var(--ink)}
+.cb-item.in-book{background:#fff;border-style:dashed}
+.cb-item.in-book:hover{transform:none;box-shadow:none}
+
+.cb-ph{display:flex;align-items:center;gap:4px}
+.cb-ph .tp-en{flex:1;min-width:0;font-family:'JetBrains Mono',monospace;font-weight:700;font-size:14px;line-height:1.35;overflow-wrap:anywhere}
+.cb-ph .tp-en b{background:var(--lemon);border-radius:4px;padding:0 2px}
+.cb-save{flex:none;display:inline-flex;align-items:center;gap:3px;font:800 11.5px 'Manrope',system-ui,sans-serif;color:var(--ink);cursor:pointer;
+  background:var(--mint);border:1.5px solid var(--ink);border-radius:99px;padding:2px 8px 2px 6px;box-shadow:1.5px 1.5px 0 var(--ink)}
+.cb-save .ic{width:12px;height:12px}
+.cb-save:hover{transform:translate(-1px,-1px);box-shadow:2.5px 2.5px 0 var(--ink)}
+.cb-save:active{transform:translate(1px,1px);box-shadow:none}
+.cb-save:disabled{background:transparent;border-color:transparent;box-shadow:none;color:var(--muted);cursor:default;transform:none}
+
+.cb-mean{font-weight:700;font-size:13px;line-height:1.35;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:8px}
+.cb-from{font-weight:600;font-size:11px;color:var(--muted)}
+.cb-ex{display:flex;align-items:flex-start;gap:2px;font-size:12.5px;line-height:1.45;margin-top:2px;padding-top:6px;border-top:1.5px dashed #23284A33}
+.cb-ex .tp-en{flex:1;min-width:0;overflow-wrap:anywhere}
+.cb-ex .tp-say{width:22px;height:22px}
+.cb-ex .tp-say .ic{width:13px;height:13px}
+.cb-ex-in{width:100%;margin-top:2px;font:500 12.5px/1.4 'Manrope',system-ui,sans-serif;color:var(--ink);background:#fff;
+  border:1.5px dashed #23284A80;border-radius:8px;padding:6px 8px}
+.cb-ex-in:focus{outline:none;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.cb-ex-in::placeholder{color:var(--muted)}
+.cb-scan{font-size:11px;color:var(--muted);margin-top:10px;text-align:right}
+.cb-scan:empty{display:none}
+
+.q-next kbd{margin-left:6px;font:700 10px 'JetBrains Mono',monospace;border:1.5px solid currentColor;border-radius:5px;padding:0 4px;opacity:.6}
+@media (prefers-reduced-motion:reduce){.cb-panel{animation:none}.cb-item{transition:none}}

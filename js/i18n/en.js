@@ -339,4 +339,8 @@ const I18N_EN = {
   qrOpen:'Quick 10', qrExit:'Exit', qrFinish:'Done · back to notes', qrEmpty:'Your book has no words yet',
   miniToggleTip:'Turn the mini window on / off', miniTapFlip:'Tap the card to flip', miniOpen:'LangBook · Flashcards', miniClose:'Close mini window', miniNextCard:'Next card', miniAllSkipped:'Every word is skipped for today',
   qrDoneToast:(k,n)=>`Reviewed ${n} words · ${k}/${n} correct`,
+  cbTitle:w=>`Combos with <b>${w}</b>`, cbSub:'Built only from words already in your book', cbLoading:'Looking for combos in your book…',
+  cbDl:p=>`Downloading the AI model… ${p}%`, cbClose:'Hide combos', cbSaveAll:n=>`Save all ${n}`,
+  cbScan:(d,n)=>`Preparing combos: ${d}/${n} words`, cbExPh:'Write your own example… (Enter to save)', cbExEdit:'Edit example',
+  cbExNoPh:p=>`Saved — note: the sentence doesn't contain "${p}"`,
 };

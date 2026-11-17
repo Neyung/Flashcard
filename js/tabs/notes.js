@@ -169,7 +169,7 @@ function visibleWords(){
   const q = ($('#search').value||'').toLowerCase();
   return words.filter(w =>
     (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
-        || (w.note||'').toLowerCase().includes(q))
+        || (w.note||'').toLowerCase().includes(q) || (w.memo||'').toLowerCase().includes(q))
     && groupFilter.ok(w.group || NO_GROUP_F));
 }
 const wordSel = makeRowSelection({
@@ -193,6 +193,8 @@ function saveEdit(w){
   w.meaning = meaning;
   w.sentence = $('#eSentence').value.trim();
   w.note = $('#eNote').value.trim();
+  const memo = $('#eMemo').value.replace(/[ \t]+$/gm, '').trim();
+  if(memo) w.memo = memo; else delete w.memo;
   w.kind = $('#eKind').value === 'cụm' ? 'cụm' : 'đơn';
   w.group = $('#eGroup').value.trim();
   if(wordChanged || w.kind === 'cụm'){ w.ipa = ''; w.audio = ''; ipaFailed.delete(w.id); }
@@ -297,6 +299,7 @@ function tableRowHtml(w){
           <label>${t('nMeaningLbl')}<input id="eMeaning" value="${esc(w.meaning)}"></label>
           <label>${t('nSentenceLbl')}<input id="eSentence" value="${esc(w.sentence)}"></label>
           <label>${t('nNoteLbl')}<input id="eNote" value="${esc(w.note)}"></label>
+          <label class="e-memo">${t('qMemoLbl')}<textarea id="eMemo" rows="2">${esc(w.memo || '')}</textarea></label>
           <label>${t('thKind')}<select id="eKind" class="themed">
             <option value="đơn" ${w.kind==='đơn'?'selected':''}>đơn</option>
             <option value="cụm" ${w.kind==='cụm'?'selected':''}>cụm</option></select></label>
@@ -318,7 +321,7 @@ function tableRowHtml(w){
           ${w.kind === 'đơn' && w.ipa ? `<span class="tb-ipa">${esc(w.ipa)}</span>` : ''}
           <span class="wtags">${w.pos?`<span class="pos-tag">${esc(w.pos)}</span>`:''}${kindTagHtml(w)}</span></div>
       </div></td>
-      <td class="c-mean"><div class="m-main">${esc(w.meaning)}</div>${w.sentence ? `<div class="m-ex">${highlightHtml(w)}</div>` : ''}${w.note ? `<div class="m-note">${I('pin')}<span>${esc(w.note)}</span></div>` : ''}</td>
+      <td class="c-mean"><div class="m-main">${esc(w.meaning)}</div>${w.sentence ? `<div class="m-ex">${highlightHtml(w)}</div>` : ''}${w.note ? `<div class="m-note">${I('pin')}<span>${esc(w.note)}</span></div>` : ''}${w.memo ? `<div class="m-note m-memo">${I('edit')}<span>${esc(w.memo)}</span></div>` : ''}</td>
       <td class="c-acc">${acc===null
             ? '<span class="muted">—</span>'
             : `<span class="acc" title="${esc(t('accTitle', w.stats.correct, w.stats.seen))}"><span class="acc-bar"><span class="acc-fill ${acc < 50 ? 'lo' : acc < 80 ? 'mid' : ''}" style="width:${acc}%"></span></span><b>${acc}%</b></span>`}

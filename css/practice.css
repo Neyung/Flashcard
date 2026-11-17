@@ -46,6 +46,20 @@
 .feedback.show{display:block;animation:pop .25s}
 .feedback.good{background:var(--mint)} .feedback.bad{background:var(--pink)}
 .feedback .ans{font-family:'JetBrains Mono',monospace;font-weight:800}
+.feedback .q-next{display:inline-flex}
+/* Hai ô ghi chú sau khi gõ xong (js/tabs/quiz.js qNoteHtml): ghi chú riêng (w.memo) + chú thích mặc định (w.note) */
+.q-notes{margin-top:10px;display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:10px;align-items:start}
+@media (max-width:640px){.q-notes{grid-template-columns:1fr}}
+.q-note{min-width:0;display:flex;flex-direction:column;gap:4px}
+.q-note-lbl{display:flex;align-items:center;gap:5px;font-size:12px;font-weight:800;color:#23284ACC}
+.q-note-lbl .ic{width:13px;height:13px}
+.q-note-st{margin-left:auto;font-size:11px;font-weight:700;color:var(--ink);opacity:0;transition:opacity .2s}
+.q-note-st.on{opacity:.7}
+.q-note-in{width:100%;resize:none;overflow:hidden;font:500 13.5px/1.45 'Manrope',system-ui,sans-serif;color:var(--ink);
+  background:#FFFFFFD9;border:1.5px dashed #23284A80;border-radius:10px;padding:7px 10px;min-height:36px}
+.q-note-in:not(.one){min-height:56px}
+.q-note-in:focus{outline:none;background:#fff;border:1.5px solid var(--ink);box-shadow:2px 2px 0 var(--ink)}
+.q-note-in::placeholder{color:var(--muted)}
 
 /* ── Flashcard ──────────────────────── */
 .fc-stage{max-width:620px;margin:0 auto;text-align:center}

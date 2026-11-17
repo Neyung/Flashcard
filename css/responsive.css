@@ -195,6 +195,11 @@ td.c-lv,td.c-act{white-space:nowrap}
 .m-ex mark{background:var(--lemon);color:var(--ink);font-weight:700;border-radius:4px;padding:0 2px}
 .m-note{display:flex;gap:5px;align-items:flex-start;font-size:12px;font-weight:600;color:var(--muted);margin-top:4px}
 .m-note .ic{width:12px;height:12px;flex:none;margin-top:2px}
+.m-memo{color:#23284AB0;white-space:pre-line}   /* ghi chú riêng (w.memo) — giữ xuống dòng */
+.edit-grid .e-memo{grid-column:span 2}
+.edit-grid .e-memo textarea{width:100%;box-sizing:border-box;resize:vertical;min-height:40px;border:2.5px solid var(--ink);border-radius:9px;
+  padding:8px 10px;font:600 13px/1.4 'Manrope',sans-serif;background:#fff;color:var(--ink)}
+.edit-grid .e-memo textarea:focus{outline:none;box-shadow:3px 3px 0 var(--ink)}
 @media (max-width:640px){
   .toolbar{gap:8px}
   .toolbar input[type=search]{flex:1 1 0;padding:10px 12px}

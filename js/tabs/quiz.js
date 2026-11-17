@@ -218,6 +218,46 @@ document.addEventListener('keydown', e=>{
   }
 });
 
+/* Hai ô ghi chú sau khi gõ xong một từ (đều lưu trong chính từ đó → đồng bộ cùng sổ, không lưu riêng chỗ khác):
+   - "Ghi chú của bạn" (w.memo): ô MỚI, viết thoải mái nhiều dòng — Enter xuống dòng
+   - "Chú thích" (w.note): chú thích mặc định của từ (cột chú thích ở sổ từ, hiện khi bấm Gợi ý) — sửa luôn tại đây,
+     giữ một dòng vì file notes.txt mỗi từ một dòng; Enter = lưu
+   Cả hai tự lưu khi gõ (sau 600ms) và khi rời ô; Ctrl/⌘+Enter = lưu rồi sang từ tiếp; Esc = rời ô. */
+const qNoteHtml = w => `<div class="q-notes">
+    <div class="q-note">
+      <label class="q-note-lbl" for="qMemo">${I('edit')}${t('qMemoLbl')}<span class="q-note-st" aria-live="polite"></span></label>
+      <textarea id="qMemo" class="q-note-in" data-f="memo" rows="2" maxlength="2000" spellcheck="true" placeholder="${esc(t('qMemoPh'))}">${esc(w.memo || '')}</textarea>
+    </div>
+    <div class="q-note">
+      <label class="q-note-lbl" for="qNoteDef">${I('pin')}${t('qNoteDefLbl')}<span class="q-note-st" aria-live="polite"></span></label>
+      <textarea id="qNoteDef" class="q-note-in one" data-f="note" rows="1" maxlength="500" spellcheck="true" placeholder="${esc(t('qNoteDefPh'))}">${esc(w.note || '')}</textarea>
+    </div>
+  </div>`;
+function qNoteWire(w){
+  $$('#quizFb .q-note-in').forEach(ta => {
+    const f = ta.dataset.f, one = ta.classList.contains('one'), st = ta.closest('.q-note').querySelector('.q-note-st');
+    let timer = null;
+    const grow = () => { ta.style.height = 'auto'; ta.style.height = Math.min(ta.scrollHeight + 2, one ? 120 : 220) + 'px'; };
+    const commit = () => {
+      clearTimeout(timer); timer = null;
+      const v = one ? ta.value.replace(/\s*\n+\s*/g, ' ').trim() : ta.value.replace(/[ \t]+$/gm, '').trim();
+      if(v === (w[f] || '')) return;
+      if(v || f === 'note') w[f] = v; else delete w[f];
+      save();
+      st.textContent = t('qNoteSaved'); st.classList.add('on');
+      clearTimeout(st._t); st._t = setTimeout(() => st.classList.remove('on'), 1500);
+    };
+    grow();
+    ta.addEventListener('input', () => { grow(); clearTimeout(timer); timer = setTimeout(commit, 600); });
+    ta.addEventListener('blur', commit);
+    ta.addEventListener('keydown', e => {
+      if(e.isComposing) return;
+      if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)){ e.preventDefault(); commit(); stopSpeech(); startQuiz(); }
+      else if(e.key === 'Enter' && one){ e.preventDefault(); commit(); ta.blur(); }   // Enter tiếp theo (ngoài ô) = sang từ tiếp
+      else if(e.key === 'Escape'){ e.preventDefault(); ta.blur(); }
+    });
+  });
+}
 const qNextBtn = () => `<button class="btn sm mint q-next" style="margin-top:8px" onclick="stopSpeech();startQuiz()">${t('qNextWord')} ${I('next')}<kbd>Enter</kbd></button>`;
 function checkQuiz(){
   if(!quiz || quiz.graded) return;
@@ -253,17 +293,18 @@ function checkQuiz(){
       <span class="muted">(${(timeMs/1000).toFixed(1)}s${wpm?` · ~${wpm} WPM`:''}${quiz.hintLevel?' '+t('qHintUsedSuffix')+(quiz.hintLevel>1?' ×2':''):''})</span>`;
       $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('ok'));
     speakWord(w);                                  // không tự nhảy từ: bấm "Từ tiếp theo" hoặc Enter khi đã xem xong
-    fb.innerHTML += `<br>${qNextBtn()}`;
+    fb.innerHTML += qNoteHtml(w) + qNextBtn();
   }else{
     shielded = prevStreak >= SHIELD_MIN && sacredConsume('quiz_' + w.id + '_' + quiz.startAt);
     if(!shielded) quizStreak = 0;        // còn khiên → khiên chịu thay, chuỗi giữ nguyên
     applyGrade(w, 0, timeMs, charCount);
     fb.className = 'feedback show bad';
     fb.innerHTML = `${I('x')} ${t('qWrong')} <span class="ans">${esc(w.word)}</span>
-      ${w.note?`<br>${I('pin')} ${esc(w.note)}`:''}${shielded?`<br>${I('shield')} ${t('qShielded')}`:''}<br>
-      ${qNextBtn()}`;
+      ${shielded?`<br>${I('shield')} ${t('qShielded')}`:''}
+      ${qNoteHtml(w)}${qNextBtn()}`;
     $$('#tiles .tile:not(.space)').forEach(t=>t.classList.add('bad'));
   }
+  qNoteWire(w);
   updateStreakUI(prevStreak, shielded);
   cbShow(w);                                       // từ đơn → bảng cụm ghép với từ trong sổ (js/features/typing-combos.js)
 }

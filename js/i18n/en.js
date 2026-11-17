@@ -343,4 +343,6 @@ const I18N_EN = {
   cbDl:p=>`Downloading the AI model… ${p}%`, cbClose:'Hide combos', cbSaveAll:n=>`Save all ${n}`,
   cbScan:(d,n)=>`Preparing combos: ${d}/${n} words`, cbExPh:'Write your own example… (Enter to save)', cbExEdit:'Edit example',
   cbExNoPh:p=>`Saved — note: the sentence doesn't contain "${p}"`,
+  qMemoLbl:'Your notes', qMemoPh:'Memory tips, usage…',
+  qNoteDefLbl:'Note (default)', qNoteDefPh:'Short note', qNoteSaved:'Saved',
 };

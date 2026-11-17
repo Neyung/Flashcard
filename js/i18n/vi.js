@@ -343,4 +343,6 @@ const I18N_VI = {
   cbDl:p=>`Đang tải mô hình AI… ${p}%`, cbClose:'Ẩn bảng cụm ghép', cbSaveAll:n=>`Lưu cả ${n} cụm`,
   cbScan:(d,n)=>`Đang chuẩn bị sẵn cụm ghép: ${d}/${n} từ`, cbExPh:'Tự đặt câu ví dụ… (Enter để lưu)', cbExEdit:'Sửa câu ví dụ',
   cbExNoPh:p=>`Đã lưu — lưu ý câu chưa chứa cụm "${p}"`,
+  qMemoLbl:'Ghi chú của bạn', qMemoPh:'Mẹo nhớ, cách dùng…',
+  qNoteDefLbl:'Chú thích (mặc định)', qNoteDefPh:'Chú thích ngắn', qNoteSaved:'Đã lưu',
 };

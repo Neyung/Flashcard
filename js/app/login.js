@@ -227,7 +227,8 @@ async function enterApp(pwHash){
   scShowPending();                       // thử thách còn dang dở (tải lại trang giữa chừng) → mở lại
   qrAutoOpen();                          // vào từ widget màn hình khoá (…/?quick) → mở Ôn nhanh
   pageScroll();
-  setTimeout(cbScanStart, 5000);         // máy tính có Gemini Nano → quét trước cụm ghép cho cả sổ lúc rảnh
+  setTimeout(cbScanStart, 5000);
+  tourAutoStart();                       // lần đầu của người dùng này → mở hướng dẫn tương tác         // máy tính có Gemini Nano → quét trước cụm ghép cho cả sổ lúc rảnh
 }
 
 /* Đổi người dùng */
@@ -235,6 +236,7 @@ $('#userChip').addEventListener('click', () => {
   clearSession();                       // chủ động đổi người → lần sau phải đăng nhập lại
   stopFocus(true);                      // dừng phiên tập trung nếu đang chạy
   closeMini(true);                      // tắt cửa sổ nhỏ của người dùng cũ
+  tourEnd(false);
   recAbort();
   saveFlush(); cbFlush();               // lưu nốt phần lưu gộp đang chờ
   if(words) cloudSaveWords(true);       // đẩy nốt thay đổi đang chờ

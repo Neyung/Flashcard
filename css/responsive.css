@@ -405,7 +405,7 @@ td.c-lv,td.c-act{white-space:nowrap}
 /* ═══ Thanh trên cùng (điện thoại): logo · 3 ô đếm có chữ · nút tài khoản (menu: ngôn ngữ, lịch sử, đổi người dùng) ═══ */
 .hdr-menu{display:none}
 @media (max-width:640px){
-  #langSwitch,#histBtn,#userChip{display:none!important}
+  #langSwitch,#histBtn,#tourBtn,#userChip{display:none!important}
   .hdr-menu{display:block;position:relative;flex:none}
   header{grid-template-columns:auto minmax(0,1fr) auto;gap:8px}
   .hdr-menu-btn{display:flex;align-items:center;gap:2px;height:38px;padding:0 8px 0 10px;border:var(--bd);border-radius:999px;

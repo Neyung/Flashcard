@@ -39,6 +39,38 @@ function buildOptions(w){
   return { opts, correctIdx: opts.indexOf(right) };
 }
 
+/* ── Chiều thẻ (lưu ở soTuFcDir_v1):
+   'wm' = nhìn TỪ → chọn NGHĨA · 'mw' = nhìn NGHĨA → chọn TỪ · 'mix' = mỗi thẻ ngẫu nhiên một chiều (mặc định) ── */
+const FC_DIR_KEY = 'soTuFcDir_v1';
+let fcDirMode = (() => { try{ const v = localStorage.getItem(FC_DIR_KEY); return ['wm', 'mw', 'mix'].includes(v) ? v : 'mix'; }catch(e){ return 'mix'; } })();
+function fcSyncDir(){ $$('#fcDir .mode-pill').forEach(b => { const on = b.dataset.dir === fcDirMode; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); }); }
+/* Chiều Nghĩa → Từ: 1 từ đúng + 3 từ nhiễu (ưu tiên cùng nhóm > cùng loại từ > cùng đơn/cụm);
+   bỏ các từ trùng nghĩa với từ đúng để không có hai đáp án cùng đúng */
+function buildWordOptions(w){
+  const right = w.word.trim();
+  const seen = new Set([right.toLowerCase()]);
+  const mine = new Set(meaningParts(w.meaning).map(m => m.toLowerCase()));
+  const rank = x => (x.group && x.group === w.group ? 2 : 0) + (x.pos && x.pos === w.pos ? 1 : 0) + (x.kind === w.kind ? 1 : 0);
+  const cands = shuffle(words.filter(x => x.id !== w.id && x.word && x.word.trim()))
+                  .sort((a, b) => rank(b) - rank(a));
+  const distract = [];
+  for(const x of cands){
+    const k = x.word.trim().toLowerCase();
+    if(seen.has(k) || meaningParts(x.meaning || '').some(m => mine.has(m.toLowerCase()))) continue;
+    seen.add(k); distract.push(x.word.trim());
+    if(distract.length === 3) break;
+  }
+  const opts = shuffle([right, ...distract]);
+  return { opts, correctIdx: opts.indexOf(right) };
+}
+/* Tạo thẻ cho một từ theo chiều đang chọn (dùng chung với Ôn nhanh 10 từ) */
+function makeFc(w, dir){
+  dir = dir || (fcDirMode === 'mix' ? (Math.random() < 0.5 ? 'wm' : 'mw') : fcDirMode);
+  const { opts, correctIdx } = dir === 'mw' ? buildWordOptions(w) : buildOptions(w);
+  return { w, dir, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
+}
+const fcLenCls = s => s.length > 55 ? 'len-xlong' : s.length > 35 ? 'len-long' : s.length > 19 ? 'len-med' : '';
+
 function startFc(){
   if(fcQuick) return startFcQuick();             // đang Ôn nhanh 10 từ (js/features/quick-review.js)
   const pool = fcPool();
@@ -55,17 +87,29 @@ function startFc(){
   }
   lastShownId = w.id;
   preloadWordAudio(w);
-  const { opts, correctIdx } = buildOptions(w);
-  fc = { w, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
+  fc = makeFc(w);
   renderFc();
 }
 
 function renderFc(){
   const {w, opts, answered, flipped} = fc;
+  const mw = fc.dir === 'mw';                      // Nghĩa → Từ: mặt trước là nghĩa, đáp án là từ tiếng Anh
   const dueIn = (w.stats.due - now()) / DAY;
+  const ipaRow = `<div class="fc-ipa" id="fcIpa">
+            <button class="speak-btn" id="fcSpeak" title="${t('listenTitle')}">${I('sound')}</button>
+            <span id="fcIpaText">${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span>
+          </div>`;
+  const wordHtml = `<div class="fc-word ${fcLenCls(w.word)}">${esc(w.word)}</div>`;
+  /* Mặt trước: từ + phiên âm (Từ → Nghĩa) · hoặc nghĩa, còn từ + phiên âm hiện sau khi trả lời (Nghĩa → Từ) */
+  const frontMain = mw
+    ? `<div class="fc-dir-tag">${t('fcDirMw')}</div>
+          <div class="fc-mean-q ${fcLenCls(w.meaning)}">${esc(w.meaning)}</div>
+          <div class="fc-mw-ans" ${answered ? '' : 'hidden'}>${wordHtml}${ipaRow}</div>`
+    : `${wordHtml}
+          ${ipaRow}`;
 
   const optsHtml = opts.length >= 2
-    ? `<div class="opts" id="fcOpts">${opts.map((m,i)=>{
+    ? `<div class="opts ${mw ? 'opts-words' : ''}" id="fcOpts">${opts.map((m,i)=>{
         let cls = 'opt';
         if(answered){
           if(i === fc.correctIdx) cls += ' right';
@@ -92,20 +136,17 @@ function renderFc(){
             <span class="fc-lv-inline">${lvBadge(w)}</span>
           </div>
           <button class="fc-star ${w.saved?'on':''}" id="fcStar" title="${t('saveToLearning')}">${I('star')}</button>
-          <div class="fc-word ${w.word.length>55?'len-xlong':w.word.length>35?'len-long':w.word.length>19?'len-med':''}">${esc(w.word)}</div>
-          <div class="fc-ipa" id="fcIpa">
-            <button class="speak-btn" id="fcSpeak" title="${t('listenTitle')}">${I('sound')}</button>
-            <span id="fcIpaText">${w.kind === 'đơn' ? esc(w.ipa || '') : ''}</span>
-          </div>
+          ${frontMain}
           ${answered ? (fc.picked === fc.correctIdx
               ? `<div class="fc-verdict ok">${I('check')} ${t('fcCorrect')}</div>`
               : `<div class="fc-verdict bad">${I('x')} ${t('fcWrongAns', '<b>'+esc(opts[fc.correctIdx])+'</b>')}</div>`)
             : (clozeHtml(w) ? `<div class="fc-cloze">${clozeHtml(w)}</div>` : '')}
           <span class="fc-lv">${lvBadge(w)}</span>
-          <div class="fc-tap">${answered ? t('fcTapAnswered') : t('fcTapChoose')}</div>
+          <div class="fc-tap">${answered ? t('fcTapAnswered') : t(mw ? 'fcTapChooseWord' : 'fcTapChoose')}</div>
         </div>
         <div class="fc-face fc-back">
-          <div class="fc-meaning">${esc(w.meaning)}</div>
+          ${mw ? `<div class="fc-word ${fcLenCls(w.word)}">${esc(w.word)}</div><div class="fc-meaning sm">${esc(w.meaning)}</div>`
+               : `<div class="fc-meaning">${esc(w.meaning)}</div>`}
           ${w.sentence?`<div class="fc-sentence">${highlightHtml(w)}</div>`:''}
           ${w.note?`<div class="fc-note">${I('pin')} ${esc(w.note)}</div>`:''}
           <div class="fc-tap">${t('fcTapBack')}</div>
@@ -181,6 +222,8 @@ function answerFc(i){
       : I('x') + ' ' + t('fcWrongAns', '<b>'+esc(fc.opts[fc.correctIdx])+'</b>');
     const tap = front.querySelector('.fc-tap');
     front.insertBefore(v, tap);
+    const ans = front.querySelector('.fc-mw-ans');
+    if(ans){ ans.hidden = false; speakWord(fc.w); }   // Nghĩa → Từ: lộ từ đúng + phiên âm và đọc to
     if(tap) tap.textContent = t('fcTapAnswered');
   }
   const optsEl = $('#fcOpts');
@@ -213,3 +256,12 @@ document.addEventListener('keydown', e=>{
   }
 });
 $('#fcSavedOnly').addEventListener('change', startFc);
+/* Đổi chiều: thẻ đang hỏi dở → hỏi lại chính từ đó theo chiều mới; đã trả lời → sang thẻ mới */
+$('#fcDir').addEventListener('click', e => {
+  const b = e.target.closest('[data-dir]'); if(!b || b.dataset.dir === fcDirMode) return;
+  fcDirMode = b.dataset.dir;
+  try{ localStorage.setItem(FC_DIR_KEY, fcDirMode); }catch(e){}
+  fcSyncDir();
+  if(fc && !fc.answered){ fc = makeFc(fc.w); renderFc(); } else startFc();
+});
+fcSyncDir();

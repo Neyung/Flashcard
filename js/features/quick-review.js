@@ -50,8 +50,7 @@ function startFcQuick(){
   const w = fcQuick.list[fcQuick.i++];
   lastShownId = w.id;
   preloadWordAudio(w);
-  const { opts, correctIdx } = buildOptions(w);
-  fc = { w, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
+  fc = makeFc(w);
   renderFc();
   speakWord(w);                                          // nghe từ luôn (iOS chỉ phát sau một lần chạm)
 }

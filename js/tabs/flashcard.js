@@ -6,6 +6,7 @@ let fc = null; // {w, opts, correctIdx, startAt, answered, picked, flipped}
 /* Bộ lọc nhóm giống hệt Luyện gõ: tick nhiều nhóm + "Tất cả nhóm" + "Không nhóm" */
 let fcGroupDebounce = null;
 const fcGroupFilter = makeCheckFilter($('#fcGroupSel'), {
+  head: () => fcLevel.el,
   allKey:'qAllGroups', noneKey:'qGroupsNone', nKey:'qGroupsN',
   total: () => words.length,
   items: () => {
@@ -14,10 +15,12 @@ const fcGroupFilter = makeCheckFilter($('#fcGroupSel'), {
   },
   onChange: () => { clearTimeout(fcGroupDebounce); fcGroupDebounce = setTimeout(startFc, 300); },   // tick liên tiếp chỉ làm lại 1 lần
 });
-function fcPool(){
+function fcBase(){
   const savedOnly = $('#fcSavedOnly').checked;
   return words.filter(w => (!savedOnly || w.saved) && fcGroupFilter.ok(wordGroupKey(w)));
 }
+const fcLevel = makeLevelFilter({ base: fcBase, onChange: () => startFc(), tag: () => $('#fcGroupSel .gsel-lv') });
+function fcPool(){ fcLevel.paint(); return fcBase().filter(fcLevel.ok); }
 
 /* Tạo 4 phương án: 1 nghĩa đúng + 3 nghĩa nhiễu
    (ưu tiên cùng nhóm > cùng loại đơn/cụm — nhiễu càng "gần" càng khó đoán mò) */
@@ -39,11 +42,23 @@ function buildOptions(w){
   return { opts, correctIdx: opts.indexOf(right) };
 }
 
-/* ── Chiều thẻ (lưu ở soTuFcDir_v1):
-   'wm' = nhìn TỪ → chọn NGHĨA · 'mw' = nhìn NGHĨA → chọn TỪ · 'mix' = mỗi thẻ ngẫu nhiên một chiều (mặc định) ── */
-const FC_DIR_KEY = 'soTuFcDir_v1';
-let fcDirMode = (() => { try{ const v = localStorage.getItem(FC_DIR_KEY); return ['wm', 'mw', 'mix'].includes(v) ? v : 'mix'; }catch(e){ return 'mix'; } })();
-function fcSyncDir(){ $$('#fcDir .mode-pill').forEach(b => { const on = b.dataset.dir === fcDirMode; b.classList.toggle('on', on); b.setAttribute('aria-pressed', String(on)); }); }
+/* ── Chiều thẻ TỰ ĐỘNG xào hợp lý (không cần người dùng chọn):
+   'wm' = nhìn TỪ → chọn NGHĨA (nhận biết — dễ hơn) · 'mw' = nhìn NGHĨA → chọn TỪ (gợi nhớ — khó hơn)
+   - Từ mới / đang học → nghiêng về 'wm' để làm quen trước; từ đã nhớ / thuộc → nghiêng về 'mw' để gợi nhớ chủ động.
+   - Cùng một từ lần trước hỏi chiều nào thì lần sau ưu tiên chiều kia (ôn đủ cả hai chiều).
+   - Không để quá 2 thẻ liền nhau cùng một chiều (tránh nhàm, tránh đoán theo quán tính).
+   - Sổ quá ít từ để có đáp án nhiễu là từ tiếng Anh → dùng 'wm'. ── */
+const FC_MW_P = { 'lv-new': .2, 'lv-learn': .45, 'lv-known': .65, 'lv-master': .75 };
+const fcLastDir = new Map();          // id từ → chiều đã hỏi gần nhất (trong phiên)
+let fcDirRun = [];                    // chiều của 2 thẻ gần nhất
+function fcAutoDir(w){
+  let p = FC_MW_P[masteryOf(w).cls] ?? .5;
+  const prev = fcLastDir.get(w.id);
+  if(prev) p = prev === "mw" ? p * .4 : Math.min(.85, p + .25);
+  let dir = Math.random() < p ? 'mw' : 'wm';
+  if(fcDirRun.length === 2 && fcDirRun[0] === fcDirRun[1] && fcDirRun[0] === dir) dir = dir === 'mw' ? 'wm' : 'mw';
+  return dir;
+}
 /* Chiều Nghĩa → Từ: 1 từ đúng + 3 từ nhiễu (ưu tiên cùng nhóm > cùng loại từ > cùng đơn/cụm);
    bỏ các từ trùng nghĩa với từ đúng để không có hai đáp án cùng đúng */
 function buildWordOptions(w){
@@ -65,8 +80,11 @@ function buildWordOptions(w){
 }
 /* Tạo thẻ cho một từ theo chiều đang chọn (dùng chung với Ôn nhanh 10 từ) */
 function makeFc(w, dir){
-  dir = dir || (fcDirMode === 'mix' ? (Math.random() < 0.5 ? 'wm' : 'mw') : fcDirMode);
-  const { opts, correctIdx } = dir === 'mw' ? buildWordOptions(w) : buildOptions(w);
+  dir = dir || fcAutoDir(w);
+  let built = dir === 'mw' ? buildWordOptions(w) : buildOptions(w);
+  if(dir === 'mw' && built.opts.length < 3){ dir = 'wm'; built = buildOptions(w); }   // quá ít từ nhiễu → hỏi nghĩa
+  const { opts, correctIdx } = built;
+  fcLastDir.set(w.id, dir); fcDirRun = [...fcDirRun, dir].slice(-2);
   return { w, dir, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
 }
 const fcLenCls = s => s.length > 55 ? 'len-xlong' : s.length > 35 ? 'len-long' : s.length > 19 ? 'len-med' : '';
@@ -77,7 +95,7 @@ function startFc(){
   const area = $('#fcArea');
   if(!pool.length){
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
-      ${fcGroupFilter.none() ? t('qNoGroupPicked') : t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
+      ${fcGroupFilter.none() ? t('qNoGroupPicked') : fcLevel.active() ? lvEmptyHtml() : t('emptyFc', $('#fcSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     fc = null; return;
   }
   const w = pageTakeWord('fw', pool) || pickWordLimited(pool);   // tải lại trang → giữ thẻ đang mở
@@ -256,12 +274,4 @@ document.addEventListener('keydown', e=>{
   }
 });
 $('#fcSavedOnly').addEventListener('change', startFc);
-/* Đổi chiều: thẻ đang hỏi dở → hỏi lại chính từ đó theo chiều mới; đã trả lời → sang thẻ mới */
-$('#fcDir').addEventListener('click', e => {
-  const b = e.target.closest('[data-dir]'); if(!b || b.dataset.dir === fcDirMode) return;
-  fcDirMode = b.dataset.dir;
-  try{ localStorage.setItem(FC_DIR_KEY, fcDirMode); }catch(e){}
-  fcSyncDir();
-  if(fc && !fc.answered){ fc = makeFc(fc.w); renderFc(); } else startFc();
-});
-fcSyncDir();
+try{ localStorage.removeItem('soTuFcDir_v1'); }catch(e){}     // lựa chọn chiều cũ không còn dùng (nay tự động)

@@ -53,7 +53,7 @@ function makeCheckFilter(root, o){
   const st = { all:true, set:new Set() };
   root.classList.add('gsel');
   root.innerHTML = `<button type="button" class="gsel-btn" aria-haspopup="true" aria-expanded="false">
-      <span class="gsel-text"></span><svg class="ic caret" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg>
+      <span class="gsel-text"></span><span class="gsel-lv" hidden></span><svg class="ic caret" viewBox="0 0 24 24"><path d="M6 9.5l6 6 6-6"/></svg>
     </button><div class="gsel-menu" hidden></div>`;
   const btn = root.querySelector('.gsel-btn'), txt = root.querySelector('.gsel-text'), menu = root.querySelector('.gsel-menu');
   let items = [];
@@ -85,6 +85,7 @@ function makeCheckFilter(root, o){
       `<label class="gsel-opt ${cls}"><input type="checkbox" ${attr}><span>${esc(lbl)}</span><span class="n">${n}</span></label>`;
     menu.innerHTML = opt('data-all', t(o.allKey), o.total(), 'all')
       + items.map(x => opt(`data-k="${esc(x.k)}"`, x.label, x.n, '')).join('');
+    const head = o.head && o.head(); if(head) menu.prepend(head);   // bộ lọc cấp độ CEFR nằm đầu menu
     sync();
   }
   btn.addEventListener('click', e => { e.stopPropagation(); toggle(); });
@@ -155,6 +156,7 @@ function makeRowSelection(o){
 
 const NO_GROUP_F = '∅';
 const groupFilter = makeCheckFilter($('#groupFilter'), {
+  head: () => notesLevel.el,
   allKey:'nAllGroups', noneKey:'qGroupsNone', nKey:'qGroupsN',
   total: () => words.length,
   items: () => {
@@ -165,13 +167,15 @@ const groupFilter = makeCheckFilter($('#groupFilter'), {
   },
   onChange: () => renderTable(true),
 });
-function visibleWords(){
+function notesBase(){
   const q = ($('#search').value||'').toLowerCase();
   return words.filter(w =>
     (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)
         || (w.note||'').toLowerCase().includes(q) || (w.memo||'').toLowerCase().includes(q))
     && groupFilter.ok(w.group || NO_GROUP_F));
 }
+const notesLevel = makeLevelFilter({ base: notesBase, onChange: () => renderTable(true), tag: () => $('#groupFilter .gsel-lv') });
+function visibleWords(){ return notesBase().filter(notesLevel.ok); }
 const wordSel = makeRowSelection({
   tbody:'#wordTbody', selAll:'#wordSelAll', bar:'#wordBulkBar', count:'#wordSelN',
   clearBtn:'#btnWordClearSel', delBtn:'#btnWordDelSel',
@@ -244,7 +248,7 @@ function renderTable(reset){
       return (ka < kb ? -1 : ka > kb ? 1 : 0) * sortDir;
     });
   }
-  groupFilter.fill();
+  groupFilter.fill(); notesLevel.paint();
   wordSel.setShown(list.map(w => w.id));
   $('#groupList').innerHTML = groupsOf().map(g => `<option value="${esc(g)}">`).join('');
   $$('th.sortable').forEach(th => {
@@ -253,7 +257,7 @@ function renderTable(reset){
       th.dataset.sort === sortBy ? (sortDir > 0 ? '▲' : '▼') : '';
   });
   if(!list.length){
-    tb.innerHTML = `<tr><td colspan="8"><div class="empty">${I('leaf')}<br>${t('emptyWords')}</div></td></tr>`;
+    tb.innerHTML = `<tr><td colspan="8"><div class="empty">${I('leaf')}<br>${notesLevel.active() && notesBase().length ? lvEmptyHtml() : t('emptyWords')}</div></td></tr>`;
     wordSel.sync();
     return;
   }

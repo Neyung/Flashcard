@@ -17,6 +17,7 @@ function pageSave(){
     qa: quizGroupAll, qs: [...quizGroupSet], qo: $('#quizSavedOnly').checked, qw: quiz ? quiz.w.id : pageWant.qw,
     ff: fcGroupFilter.get(), fo: $('#fcSavedOnly').checked, fw: fc && !fcQuick ? fc.w.id : pageWant.fw,
     nf: groupFilter.get(), ns: $('#search').value || '',
+    ql: quizLevel.get(), fl: fcLevel.get(), nl: notesLevel.get(),
     tc: tp.user === currentUser && tp.cur ? tp.cur : pageWant.tc,
   };
   try{ localStorage.setItem(pageKey(), JSON.stringify(s)); }catch(e){}
@@ -33,6 +34,7 @@ function pageRestore(){
     quizGroupAll = s.qa !== false; quizGroupSet = new Set(s.qs || []);
     $('#quizSavedOnly').checked = !!s.qo; $('#fcSavedOnly').checked = !!s.fo;
     fcGroupFilter.set(s.ff); groupFilter.set(s.nf);
+    quizLevel.set(s.ql); fcLevel.set(s.fl); notesLevel.set(s.nl);
     $('#search').value = s.ns || '';
     pageWant = { qw: s.qw, fw: s.fw, tc: s.tc };
     pageY = s.y || 0;

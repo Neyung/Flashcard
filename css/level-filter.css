@@ -1,0 +1,48 @@
+/* ═══ Bộ lọc cấp độ CEFR — nằm đầu menu lọc nhóm (js/features/level-filter.js) ═══ */
+.lvf{position:sticky;top:-6px;z-index:1;margin:-6px -6px 6px;padding:8px 8px 9px;background:var(--paper);
+  border-bottom:2px dashed var(--ink)}
+.lvf[hidden]{display:none}
+.lvf-head{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:22px;margin:0 2px 6px}
+.lvf-lbl{font:800 10.5px 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lvf-x{border:1.5px solid var(--ink);border-radius:999px;background:var(--lemon);color:var(--ink);padding:2px 9px;
+  font:800 11px 'Manrope',sans-serif;cursor:pointer}
+.lvf-x[hidden]{display:none}
+.lvf-x:hover{background:var(--pink)}
+.lvf-steps{display:flex;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:#fff}
+.lvf-step{position:relative;flex:1 1 0;min-width:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  padding:6px 0 7px;border:none;border-left:1.5px solid #23284A33;background:transparent;color:var(--ink);cursor:pointer;
+  font-family:'JetBrains Mono',monospace;line-height:1;transition:background .12s,opacity .12s;-webkit-tap-highlight-color:transparent}
+.lvf-step:first-child{border-left:none}
+.lvf-step[hidden]{display:none}
+.lvf-step b{font-size:12.5px;font-weight:800}
+.lvf-step .n{font-size:9.5px;font-weight:700;color:var(--muted)}
+/* dải màu theo bậc: nhạt → đậm trong từng nhóm A / B / C */
+.lvf-step::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--lvc)}
+.lv-A1{--lvc:#9BE7BF;--lvb:#C9F4DE} .lv-A2{--lvc:#4CC98A;--lvb:#C9F4DE}
+.lv-B1{--lvc:#8CCBFF;--lvb:#CFE9FF} .lv-B2{--lvc:#3D93F0;--lvb:#CFE9FF}
+.lv-C1{--lvc:#B9A6FF;--lvb:#E4DBFF} .lv-C2{--lvc:#7D5CF0;--lvb:#E4DBFF}
+.lv-q{--lvc:repeating-linear-gradient(90deg,#7A7F9E 0 4px,transparent 4px 7px);--lvb:#F1F2F7}
+@media (hover:hover){ .lvf-step:hover{background:var(--lvb)} }
+.lvf-step:focus-visible{outline:2.5px dashed var(--blue);outline-offset:-4px}
+.lvf-step.zero{opacity:.38}
+.lvf.active .lvf-step:not(.on){opacity:.45}
+.lvf-step.on{background:var(--lvb);opacity:1}
+.lvf-step.on::after{height:5px}
+.lvf-step.on .n{color:var(--ink)}
+/* nhãn tóm tắt trong nút bộ lọc khi đang lọc cấp độ */
+.gsel-lv{flex:none;margin-left:auto;padding:2px 7px;border:1.5px solid var(--ink);border-radius:7px;background:var(--sky);
+  font:800 11px 'JetBrains Mono',monospace;white-space:nowrap}
+.gsel-lv[hidden]{display:none}
+.gsel-btn .gsel-lv + .caret{margin-left:-2px}
+.empty .lv-reset-btn{margin-top:10px}
+/* điện thoại: menu cao hơn để thấy cả cấp độ lẫn nhóm, ô bấm to hơn */
+@media (max-width:640px){
+  .gsel-menu{max-height:min(420px,62vh)}
+  .lvf-step{padding:9px 0 10px}
+  .lvf-step b{font-size:13px}
+  .gsel-lv{font-size:10.5px;padding:2px 6px}
+}
+.gsel-text{min-width:0}
+@media (max-width:640px){
+  .toolbar #groupFilter .gsel-menu{left:auto;right:0}       /* nút lọc ở giữa hàng → menu canh phải để không tràn màn hình */
+}

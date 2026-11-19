@@ -6,7 +6,7 @@ function startQuiz(){
     cbOnWord(null);
     const none = !quizGroupAll && quizGroupSet.size === 0;
     area.innerHTML = `<div class="panel"><div class="empty">${I('leaf')}<br>
-      ${none ? t('qNoGroupPicked') : t('emptyQuiz', $('#quizSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
+      ${none ? t('qNoGroupPicked') : quizLevel.active() ? lvEmptyHtml() : t('emptyQuiz', $('#quizSavedOnly').checked ? t('qExtraSaved') : '')}</div></div>`;
     quiz = null; return;
   }
   const w = pageTakeWord('qw', pool) || pickWordLimited(pool);   // tải lại trang → giữ từ đang gõ

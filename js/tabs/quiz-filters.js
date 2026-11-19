@@ -47,6 +47,8 @@ function fillQuizGroups(){
     `<label class="gsel-opt ${cls}"><input type="checkbox" ${attr}><span>${esc(label)}</span><span class="n">${n}</span></label>`;
   $('#quizGroupMenu').innerHTML = opt('data-all', t('qAllGroups'), words.length, 'all')
     + keys.map(k => opt(`data-k="${esc(k)}"`, k === NO_GROUP ? t('optNoGroup') : k, cnt[k] || 0, '')).join('');
+  $('#quizGroupMenu').prepend(quizLevel.el);      // bộ lọc cấp độ CEFR nằm đầu menu
+  quizLevel.paint();
   syncGroupMenu();
 }
 function toggleGroupMenu(force){
@@ -72,10 +74,12 @@ $('#quizGroupMenu').addEventListener('change', e => {
   clearTimeout(groupDebounce); groupDebounce = setTimeout(startQuiz, 300);   // tick liên tiếp chỉ làm lại 1 lần
 });
 
-function quizPool(){
+function quizBase(){
   const savedOnly = $('#quizSavedOnly').checked;
   return words.filter(w => (!savedOnly || w.saved) && quizGroupOk(w));
 }
+const quizLevel = makeLevelFilter({ base: quizBase, onChange: () => startQuiz(), tag: () => $('#quizGroupLv') });
+function quizPool(){ quizLevel.paint(); return quizBase().filter(quizLevel.ok); }
 
 /* Chế độ trả lời nhớ riêng cho từ đơn (Alphabet/Type) và cụm (Arrange words/Type) */
 const modeKey = kind => kind === 'đơn' ? 'soTuSingleMode_v1' : 'soTuPhraseMode_v1';

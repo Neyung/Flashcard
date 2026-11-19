@@ -85,7 +85,8 @@ function makeFc(w, dir){
   if(dir === 'mw' && built.opts.length < 3){ dir = 'wm'; built = buildOptions(w); }   // quá ít từ nhiễu → hỏi nghĩa
   const { opts, correctIdx } = built;
   fcLastDir.set(w.id, dir); fcDirRun = [...fcDirRun, dir].slice(-2);
-  return { w, dir, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
+  const q = dir === 'mw' ? (pickMeaningPart(w) || w.meaning) : '';   // Nghĩa → Từ: hỏi 1 nghĩa (tách theo ; hoặc /) như chiều kia
+  return { w, dir, q, opts, correctIdx, startAt: now(), answered:false, picked:-1, flipped:false };
 }
 const fcLenCls = s => s.length > 55 ? 'len-xlong' : s.length > 35 ? 'len-long' : s.length > 19 ? 'len-med' : '';
 
@@ -121,7 +122,7 @@ function renderFc(){
   /* Mặt trước: từ + phiên âm (Từ → Nghĩa) · hoặc nghĩa, còn từ + phiên âm hiện sau khi trả lời (Nghĩa → Từ) */
   const frontMain = mw
     ? `<div class="fc-dir-tag">${t('fcDirMw')}</div>
-          <div class="fc-mean-q ${fcLenCls(w.meaning)}">${esc(w.meaning)}</div>
+          <div class="fc-mean-q ${fcLenCls(fc.q)}">${esc(fc.q)}</div>
           <div class="fc-mw-ans" ${answered ? '' : 'hidden'}>${wordHtml}${ipaRow}</div>`
     : `${wordHtml}
           ${ipaRow}`;

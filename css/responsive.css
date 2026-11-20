@@ -12,7 +12,7 @@
   header{flex-wrap:nowrap}
   .head-stats{flex-wrap:nowrap;gap:8px}
   .head-stats .chip{padding:8px 11px;white-space:nowrap}
-  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  .tabs{flex-wrap:nowrap;justify-content:flex-start;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;
     padding:2px 6px 7px 2px;margin:0 -6px 16px -2px}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{flex:1 0 auto;display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;padding:10px 13px;font-size:14px}

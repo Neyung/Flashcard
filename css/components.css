@@ -111,7 +111,7 @@ th.sortable .arrow{font-size:10px;margin-left:3px}
   0%{transform:translateY(0) rotate(0);opacity:1}
   100%{transform:translateY(380px) rotate(540deg);opacity:0}}
 @media (max-width:640px){
-  .tabs{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs{justify-content:flex-start;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
   .tab-btn{flex:0 0 auto}
 }

@@ -15,10 +15,12 @@
   color:var(--ink);display:flex;flex-direction:column;gap:9px;align-items:center;transition:transform .08s}
 .user-card:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
 .user-card:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.user-del{position:absolute;top:5px;right:5px;background:none;border:none;cursor:pointer;
+.user-del,.user-reset{position:absolute;top:5px;background:none;border:none;cursor:pointer;
   color:var(--ink);opacity:.35;padding:4px;transition:opacity .12s,color .12s}
-.user-del .ic{width:14px;height:14px}
+.user-del{right:5px} .user-reset{left:5px}
+.user-del .ic,.user-reset .ic{width:14px;height:14px}
 .user-del:hover{opacity:1;color:var(--red)}
+.user-reset:hover{opacity:1;color:var(--blue)}
 .user-avatar{width:50px;height:50px;border:var(--bd);border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:20px;font-weight:800}
 .user-last{font-size:10.5px;font-weight:700;color:var(--muted);margin-top:-3px}

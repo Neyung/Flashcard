@@ -102,6 +102,15 @@ async function deleteUserAccount(user){
     try{ await cloudDelete('meta/lastLogin/' + user); }catch(e){}
   }
 }
+/* Admin đặt lại mật khẩu cho một tài khoản mà KHÔNG đọc được mật khẩu cũ:
+   chỉ xoá hồ sơ đăng nhập (mật khẩu + câu hỏi đặc biệt), giữ nguyên toàn bộ
+   dữ liệu học (từ vựng, nhiệm vụ, vườn hoa). Lần đăng nhập sau, chính chủ sẽ
+   tự đặt mật khẩu và câu hỏi mới ở màn hình tạo mật khẩu ban đầu. */
+async function resetUserAuth(user){
+  await putAuth(user, null);                       // xoá pwHash + câu hỏi/đáp án (máy + mây)
+  const s = (() => { try{ return JSON.parse(localStorage.getItem(SESSION_KEY) || 'null'); }catch(e){ return null; } })();
+  if(s && s.user === user){ try{ localStorage.removeItem(SESSION_KEY); }catch(e){} }   // có phiên ghi nhớ của tài khoản này trên máy → huỷ
+}
 let currentUser = null;
 const lsKey  = () => 'soTu_v3_' + currentUser;
 const AUTH_KEY = 'soTuAuth_v1';

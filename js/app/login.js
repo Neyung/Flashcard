@@ -12,6 +12,7 @@ async function renderPick(){
     <div class="user-grid many">
       ${userList.map(u => `
         <div class="user-card" data-user="${esc(u)}">
+          <button class="user-reset" data-reset="${esc(u)}" title="${t('resetPwTitle')}">${I('lock')}</button>
           <button class="user-del" data-del="${esc(u)}" title="${t('deleteAccountTitle')}">${I('trash')}</button>
           ${avatarHtml(u)}${esc(u)}
           <span class="user-last">${lastLoginLabel(u)}</span>
@@ -35,6 +36,17 @@ async function renderPick(){
       if(h !== DELETE_PW_HASH){ toast(t('deletePwWrong')); return; }
       await deleteUserAccount(u);
       toast(t('toastAccountDeleted', u)); renderPick();
+    }));
+  $$('#loginSteps .user-reset').forEach(btn =>
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      const u = btn.dataset.reset;
+      const pw = prompt(t('resetPwPrompt', u));        // cổng admin: dùng chung mật khẩu xác nhận với thao tác xoá
+      if(pw === null) return;                          // huỷ hộp thoại
+      const h = await hashText(pw, DELETE_PW_SALT);
+      if(h !== DELETE_PW_HASH){ toast(t('deletePwWrong')); return; }
+      await resetUserAuth(u);                          // xoá mật khẩu + câu hỏi, giữ nguyên dữ liệu
+      toast(t('toastPwReset', u)); renderPick();
     }));
   $('#addUserBtn').addEventListener('click', renderAddUser);
 }
